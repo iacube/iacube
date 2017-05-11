@@ -19,6 +19,8 @@ var messages = (function(){
 	return messageFile.message;
 }());
 
+var a = 100;
+
 function get(code,params){
 
 	if(!messages){
