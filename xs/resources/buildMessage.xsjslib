@@ -4,29 +4,6 @@ function getReplacer(list){
 	};
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 var messages = (function(){
 	
 	var messageFile;
