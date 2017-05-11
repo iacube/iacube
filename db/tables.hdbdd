@@ -1,0 +1,349 @@
+namespace iacube.db;
+
+@Schema : 'IACUBE'
+context tables{
+
+	type date	  : LocalDate;
+	type currency : String(4);
+	type name	  : String(100);
+	type bool	  : hana.TINYINT;
+/*HH.ru tables*/
+	context _HH{
+
+		type hhResumeId : String(1000);
+		type hhSID	    : String(100);
+
+		entity Resumes{
+			key	Id				: hhResumeId;
+				LatName			: name;	
+				FirstName		: name;	
+				MiddleName		: name;	
+				Age				: Integer;
+				BirthDate		: date;
+				GenderId		: hhSID;
+				City			: String(100);
+				RelocationId	: hhSID;
+				BusinessTripId	: hhSID;
+				Salary			: BinaryFloat;
+				SalaryCurr		: currency;	
+				
+				AddInfo			: String(5000);	//???
+				DesiredPosition	: String(100);	//???
+				CareerStarter	: bool;			//???//?????change to experience
+				ProfArea		: Integer; 		//???key table??
+				
+				Link			: String(1000);
+				LastChanged		: UTCTimestamp;
+		};
+
+		entity Contacts{
+			key ResumeId  : hhResumeId;
+			key ContactId : hhSID;
+				Value	  : String(1000);
+		};
+
+		entity Employments{
+			key ResumeId	 : hhResumeId;
+			key EmploymentId : hhSID;
+		};
+
+		entity Schedules{
+			key ResumeId	: hhResumeId;
+			key ScheduleId	: hhSID;
+		};
+		
+		//language??????
+		//edication???
+		
+		entity Experience{
+			key ResumeId	 : hhResumeId;
+			key Organization : String(1000); 	// ????key field
+				Position	 : String(1000);
+				StartDate	 : date;
+				EndDate		 : date;
+				Description	 : LargeString;
+		};
+		
+		entity Skills{
+			key ResumeId : hhResumeId;
+			key Skill	 : String(1000);
+		};
+		
+		entity Industries{
+			key ResumeId 	: hhResumeId;
+			key IndustryId	: hhSID;
+		};
+		
+		context _mapping{
+			entity Gender{
+				key hhId   : hhSID;
+					hhName : String(50);
+					iaId   : tables.Candidate.genderTypeId;
+			};
+			entity Relocation{
+				key hhId	 : hhSID;
+					hhName   : String(50);
+					iaId     : tables.Profile.relocationTypeId;
+			};
+			entity Contact{//phones + sites
+				key Id	 : hhSID;
+					Name : String(50);
+					iaId : tables.Candidate.contactTypeId;
+			};
+			entity Employment{
+				key Id	 : hhSID;
+					Name : String(50);
+					iaId : tables.Profile.employmentTypeId;
+			};
+			entity Schedule{
+				key Id	 : hhSID;
+					Name : String(50);
+					iaId : tables.Profile.scheduleTypeId;
+			};
+			entity BusinessTrip{
+				key Id	 : hhSID;
+					Name : String(50);
+					iaId : tables.Profile.businessTripTypeId;
+			};
+			entity Industry{
+				key Id	 : hhSID;
+					Name : String(50);
+					iaId : tables.Profile.industryTypeId;
+			};
+		};
+	};
+	
+	context _LI{
+		
+		type liSID : String(100);
+		
+		entity Profiles{
+			Id			: liSID;
+			LastName	: name;
+			FirstName	: name;
+			Headline	: String(5000);
+			Country		: String(100);
+			ZIPcode		: String(100);
+			Summary		: LargeString;
+			Link		: String(1000);
+			LastChanged	: UTCTimestamp;
+		};
+		
+		entity Experience{
+			ProfileId	: liSID;
+			Title		: String(1000);
+			Company		: String(100);
+			StartDate	: date;
+			EndDate		: date;
+			Description	: LargeString;
+		};
+		
+		entity Skills{
+			ProfileId	 : liSID;
+			Skill		 : String(1000);
+			Endorsements : BinaryFloat;
+		};
+		
+		entity Industries{
+			key ProfileId 	: liSID;
+			key IndustryId	: String(100);//????;
+		};
+		
+		context _mapping{//mapping???
+			entity Industry{
+				liId   : liSID;
+				liName : String(100);
+				iaId   : tables.Profile.industryTypeId;
+			};
+		};
+	};
+	
+	context Candidate{
+	
+		type candidateId   : Integer;
+		type genderTypeId  : Integer;
+		type contactTypeId : Integer;
+		
+		entity Candidates{
+			key Id			: candidateId;
+				LastName	: name;
+				FirstName	: name;
+				MiddleName	: name;
+				BirthDate	: date;
+				GenderId	: genderTypeId;
+				City		: String(100);
+				ProfArea	: String(1000);
+		};
+		
+		entity Contacts{
+			key CandidateId   : candidateId;
+			key ContactTypeId : contactTypeId;
+				Value		  : String(1000);
+		};
+
+		entity Profiles{
+			key CandidateId : candidateId;
+			key ProfileId	: tables.Profile.profileId;
+		};
+		
+		context _dictionary{
+			
+			entity GenderTypes{
+				key Id	 : genderTypeId;
+					Name : String(50);
+			};
+			
+			entity ContactTypes{//phones + sites
+				key Id	 : contactTypeId;
+					Name : String(50);
+			};
+		};
+	};
+
+	context Profile{
+	
+		type profileId 	 		: Integer;
+	 	type profileTypeId    	: Integer;
+		type relocationTypeId 	: Integer;
+		type businessTripTypeId	: Integer;
+		type employmentTypeId	: Integer;
+		type scheduleTypeId		: Integer;
+		type industryTypeId		: Integer;
+	
+		entity Profiles{
+			key Id				: profileId;
+				ExternalId		: String(1000);
+				ProfileTypeId	: profileTypeId;
+				Link			: String(1000);
+				Headline		: LargeString;
+				Summary			: LargeString;
+		};
+		
+		entity ProfileTypes{
+			key Id			: profileTypeId;
+				Description	: String(100);
+				IsResume	: bool;
+		};
+		
+		entity ProfileDetails{//was resumeDetails
+			ProfileId		: profileId;
+			DesiredPosition	: String(1000);
+			CareerStarter	: bool;//?????change to experience
+			Salary			: BinaryFloat;
+			SalaryCurr		: currency;
+			RelocationId	: relocationTypeId;
+			BusinessTripId	: businessTripTypeId;
+		};
+		
+		entity Employments{
+			key ProfileId	 : profileId;
+			key EmploymentId : employmentTypeId;
+		};
+		
+		entity Schedules{
+			key ProfileId	: profileId;
+			key ScheduleId	: scheduleTypeId;
+		};
+		
+		entity Experience{
+			ProfileId	: profileId;
+			Company		: String(100);
+			Position	: String(100);
+			Description	: LargeString;
+			StartDate	: date;
+			EndDate		: date;
+		};
+			
+		entity Skills{
+			key ProfileId : profileId;
+			key Skill	  : String(100);
+		};
+		
+		entity Industries{
+			key ProfileId  : profileId;
+			key IndustryId : industryTypeId;
+		};
+		
+
+		context _dictionary{
+			entity EmploymentTypes{
+				key Id	 : employmentTypeId;
+					Name : String(50);
+			};
+			
+			entity ScheduleTypes{
+				key Id	 : scheduleTypeId;
+					Name : String(50);
+			};
+			
+			entity BusinessTripTypes{
+				key Id	 : businessTripTypeId;
+					Name : String(50);
+			};
+			
+			entity RelocationTypes{
+				key Id	 : relocationTypeId;
+					Name : String(50);
+			};
+			
+			entity Industry{
+				key Id   : industryTypeId;
+					Name : String(100);
+			};
+			
+		};
+	};
+
+	context Requisition{
+		
+		type reqId 		  : Integer;
+		type statusTypeId : Integer;
+		//нужны ли в реквезишене ScheduleTypes EmploymentTypes?
+		entity Requisitions{
+			key Id			: reqId;
+				Position	: String(1000);
+				Description	: LargeString;
+				Location	: String(1000);
+		};
+		
+		entity Candidates{
+			key ReqId		 : reqId;
+			key CandidateId	 : tables.Candidate.candidateId;
+				StatusTypeId : statusTypeId;
+				Comment		 : String(5000);
+		};
+
+		entity Skills{
+			key ReqId	  : reqId;
+			key Skill	  : String(1000);
+				IsPrimary : bool;
+				Weight	  : Integer;
+		};
+		
+		context _dictionary{
+			entity StatusTypes{
+				key Id	 : statusTypeId;
+					Name : String(50);
+			};
+		};
+	};
+	
+	context Distance{
+		
+		type distanceTypeId : Integer;
+
+		entity Distances{
+			ReqId			: tables.Requisition.reqId;
+			CandidateId  	: tables.Candidate.candidateId;
+			DistanceTypeId	: distanceTypeId;
+			Distance 	 	: BinaryFloat;
+		};
+		
+		context _dictionary{
+			entity DistanceTypes{
+				key Id	 		: distanceTypeId;
+					Description : String(100);
+			};
+		};
+	};
+};

@@ -1,0 +1,14 @@
+{
+"exposed":true,
+"prevent_xsrf":true,
+"enable_etags":false,
+"cache_control":"no-store",
+"authorization":["iacube::View"],
+"authentication":[{"method":"Form"}],
+"rewrite_rules":[
+	{
+	"source": "/services/", 
+	"target": "/services/serviceExecutor.xsjs" 
+	}
+] 
+}

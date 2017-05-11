@@ -1,0 +1,17 @@
+PROCEDURE "IACUBE"."iacube.db.procedures.HH::update_HH_Resumes" (
+	IN 	Resume		"IACUBE"."iacube.db::types.update_HHResume",
+	IN 	Contacts 	"IACUBE"."iacube.db::types.update_HHContacts",
+	IN 	Employments	"IACUBE"."iacube.db::types.update_HHEmployments",
+	IN 	Experience	"IACUBE"."iacube.db::types.update_HHExperience",
+	IN 	Industries	"IACUBE"."iacube.db::types.update_HHIndustries",
+	IN 	Schedules	"IACUBE"."iacube.db::types.update_HHSchedules",
+	IN	Skills		"IACUBE"."iacube.db::types.update_HHSkills",
+	OUT	errors 		"IACUBE"."iacube.db::types.error"
+) 
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER 
+	DEFAULT SCHEMA IACUBE
+	READS SQL DATA AS
+BEGIN
+	
+END;

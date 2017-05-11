@@ -1,0 +1,12 @@
+{
+	"privileges":[
+		{
+			"name":"View",
+			"description":"View content"
+		},
+		{
+			"name":"Execute",
+			"description":"Execute OData services"
+		}
+	]
+}
