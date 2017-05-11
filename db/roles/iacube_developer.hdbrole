@@ -1,0 +1,8 @@
+//this role is created to see IACUBE chema in catalog and get access to services
+role iacube.db.roles::iacube_developer {
+	
+application privilege	: "iacube::View";
+catalog schema "IACUBE"	: ALTER,CREATE ANY,DEBUG,DELETE,DROP,EXECUTE,INDEX,INSERT,SELECT,TRIGGER,UPDATE; 
+  
+
+}

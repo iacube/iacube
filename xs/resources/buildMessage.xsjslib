@@ -4,20 +4,30 @@ function getReplacer(list){
 	};
 }
 
-var messages = (function(){
+var language = $.session.language.toUpperCase();
+var defaultLanguage = "EN";
+var messages;
+var that = this;
+
+function init(lang){
 	
 	var messageFile;
-	var resourcesPath = $.import("/iacube/xs/resources/constants.xsjslib").constants.resourcesPath;
+	var resourcesPath = $.import("iacube.xs.resources","constants.xsjslib").constants.resourcesPath;
+	
+	if(lang){
+		language = lang;
+	}
 	
 	try{
-		var language = $.session.language.toUpperCase();
 		//load file for session language
 		messageFile = $.import(resourcesPath,"messages" + language);
 	}catch(e){
-		messageFile = $.import(resourcesPath,"messagesEN");
+		messageFile = $.import(resourcesPath,"messages" + defaultLanguage);
 	}
-	return messageFile.message;
-}());
+	messages =  messageFile.message;
+	
+	return that;
+}
 
 var a = 250;
 
