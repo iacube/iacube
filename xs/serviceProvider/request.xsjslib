@@ -38,6 +38,7 @@ function transformForDb(requestData,transformation){
 			case "array":
 				convertObject = JSON.parse(requestData);
 				break;
+			//TODO: add time and date
 			default:
 				convertObject = requestData;
 		}
@@ -85,10 +86,91 @@ function prepareDbParameters(serviceParameters,method){
 			}
 		}
 	}
-    //add replace all blanks and wrong data with null and return
-	return parametersArray;//.join(",").replace(/""|'""'|NaN/g, "null");
+    
+	return parametersArray;
 }
 
-function prepareRequest(parameters,method){
-	return parameters ? prepareDbParameters(parameters,method) : [];
+function prepareByProperty(call,method){
+	
+	var serviceParameters = call.parameters;
+	var parametersArray = [];
+	var key;
+	var bodyParameters 
+	
+	function transform(){
+		//find parameters according to service definition
+		for(key in serviceParameters){
+			if(serviceParameters.hasOwnProperty(key) && bodyParameters[key] !== undefined){
+				parametersArray.push(key === "flag" ? flag : transformForDb(bodyParameters[key], serviceParameters[key]));
+			}
+		}
+	}
+
+	if(method === "get"){
+		//parameters from header for method "get"
+		bodyParameters = $.request.parameters.get("byProperty");
+		
+		if(bodyParameters){
+			bodyParameters = JSON.parse(bodyParameters);
+		}else{
+			bodyParameters = [];
+		}
+	}else{
+		//parameters in body for others methods
+		bodyParameters = JSON.parse($.request.body.asString());
+	}	
+	
+	if(bodyParameters.length === undefined){
+		bodyParameters = [bodyParameters];
+	}
+	
+	var transformed = transformForDb(bodyParameters, serviceParameters);
+	
+	transformed.forEach(function(entry){
+		var parametersObject = {
+				fields		: [],
+				values		: [],
+				fieldValues : [],
+				condition	: []
+			};
+		
+		for(key in entry){
+			if(entry.hasOwnProperty(key)){
+				parametersObject.fields.push(key);
+				parametersObject.values.push(entry(key));
+				parametersObject.fieldValues.push(key + ' = ' + entry(key));
+				if(serviceParameters[key].isKey){
+					parametersObject.condition.push(key + ' = ' + entry(key));
+				}
+			}
+		}
+		parametersArray.push({
+			statement: call.statement
+							.replace("{fields}",parametersObject.fields.join(","))
+							.replace("{values}",parametersObject.values.join(","))
+							.replace("{fieldValues}",parametersObject.values.join(","))
+							.replace("{condition}",parametersObject.values.join(" and ")),
+			parameters:[]
+		}); 
+			
+	});
+			
+	return parametersArray;
+}
+
+function prepareRequest(params){
+	
+	var prepared = [];
+	 
+	if(!params.byProperty){
+		prepared = [{
+			statement : params.call.statement,
+			procedure : params.call.procedure,
+			parameters: params.callparameters ? prepareDbParameters(params.call.parameters,params.method) : []
+		}];
+	}else{
+		prepared = prepareByProperty(params);
+	}
+	
+	return prepared;
 }

@@ -3,14 +3,14 @@ var root = "iacube";
 var constants = {
 	schema				: "IACUBE",
 	
-	typesSchema			: "G4S_TT",
+	typesSchema			: "IACUBE",
 	viewSchema			: "_SYS_BIC",
 	
 	lib					: ".xsjslib",
 	
-	dbPath				: root + ".DB",
-	viewPath			: root + ".DB.views",
-	proceduresPath		: root + ".DB.procedures",
+	dbPath				: root + ".db",
+	viewPath			: root + ".db.views",
+	proceduresPath		: root + ".db.procedures",
 	
 	resourcesPath		: root + ".xs.resources",
 	servicesPath		: root + ".xs.services",
