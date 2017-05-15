@@ -12,7 +12,7 @@ var that = this;
 function init(lang){
 	
 	var messageFile;
-	var resourcesPath = $.import("iacube.xs.resources","constants.xsjslib").constants.resourcesPath;
+	var resourcesPath = $.import("iacube.xs.resources","constants").constants.resourcesPath;
 	
 	if(lang){
 		language = lang;
@@ -20,7 +20,7 @@ function init(lang){
 	
 	try{
 		//load file for session language
-		messageFile = $.import(resourcesPath,"messages" + language);
+		messageFile = $.import(resourcesPath,"messages" + (language || defaultLanguage));
 	}catch(e){
 		messageFile = $.import(resourcesPath,"messages" + defaultLanguage);
 	}

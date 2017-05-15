@@ -46,5 +46,13 @@ var message = {
 		STATUS: "E",
 		MESSAGE: "Service Error",
 		DETAILS: "Can't find SQL query or Procedure for execution"
+	},
+//services starts from 15000
+
+//upload from external systems
+	16000:{
+		STATUS: "E",
+		MESSAGE: "Upload Error",
+		DETAILS: "Can't find upload template for {0}"
 	}
 }

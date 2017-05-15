@@ -14,10 +14,12 @@ context tables{
 		type hhSID	    : String(100);
 
 		entity Resumes{
-			key	Id				: hhResumeId;
-				LatName			: name;	
+			key	ResumeId		: hhResumeId;
+				Title			: String(1000);	
+				LastName		: name;	
 				FirstName		: name;	
-				MiddleName		: name;	
+				MiddleName		: name;
+				
 				Age				: Integer;
 				BirthDate		: date;
 				GenderId		: hhSID;
@@ -26,11 +28,6 @@ context tables{
 				BusinessTripId	: hhSID;
 				Salary			: BinaryFloat;
 				SalaryCurr		: currency;	
-				
-				AddInfo			: String(5000);	//???
-				DesiredPosition	: String(100);	//???
-				CareerStarter	: bool;			//???//?????change to experience
-				ProfArea		: Integer; 		//???key table??
 				
 				Link			: String(1000);
 				LastChanged		: UTCTimestamp;
@@ -52,7 +49,12 @@ context tables{
 			key ScheduleId	: hhSID;
 		};
 		
-		//language??????
+		/*entity Language{
+			key ResumeId	: hhResumeId;
+			key LanguageId	: hhSID;
+				LavelId		: hhSID;
+		}; + mapping + dictionary*/
+		
 		//edication???
 		
 		entity Experience{
@@ -69,10 +71,10 @@ context tables{
 			key Skill	 : String(1000);
 		};
 		
-		entity Industries{
+		/*entity Industries{
 			key ResumeId 	: hhResumeId;
 			key IndustryId	: hhSID;
-		};
+		};*/
 		
 		context _mapping{
 			entity Gender{
@@ -86,30 +88,30 @@ context tables{
 					iaId     : tables.Profile.relocationTypeId;
 			};
 			entity Contact{//phones + sites
-				key Id	 : hhSID;
-					Name : String(50);
+				key hhId	 : hhSID;
+					hhName : String(50);
 					iaId : tables.Candidate.contactTypeId;
 			};
 			entity Employment{
-				key Id	 : hhSID;
-					Name : String(50);
+				key hhId	 : hhSID;
+					hhName : String(50);
 					iaId : tables.Profile.employmentTypeId;
 			};
 			entity Schedule{
-				key Id	 : hhSID;
-					Name : String(50);
+				key hhId	 : hhSID;
+					hhName : String(50);
 					iaId : tables.Profile.scheduleTypeId;
 			};
 			entity BusinessTrip{
-				key Id	 : hhSID;
-					Name : String(50);
+				key hhId	 : hhSID;
+					hhName : String(50);
 					iaId : tables.Profile.businessTripTypeId;
 			};
-			entity Industry{
+			/*entity Industry{
 				key Id	 : hhSID;
 					Name : String(50);
 					iaId : tables.Profile.industryTypeId;
-			};
+			};*/
 		};
 	};
 	

@@ -1,6 +1,6 @@
 var call = {
 	get:{
-		statement:"",
+		statement:"select * from IACUBE.\"iacube.db::tables.Profile.Profiles\"",
 		parameters:{
 			userID:{
 				type:"string",
@@ -18,5 +18,4 @@ var call = {
 			}
 		}
 	}	
-		
-}
+};

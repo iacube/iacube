@@ -14,7 +14,8 @@ var constants = {
 	
 	resourcesPath		: root + ".xs.resources",
 	servicesPath		: root + ".xs.services",
-	serviceProvidePath 	: root + ".xs.serviceProvider",
-	uploadsPath			: root + ".xs.uploads",
-	uploadsProviderPath	: root + ".xs.uploadProvider"
+	serviceProviderPath	: root + ".xs.serviceProvider",
+	uploaderPath		: root + ".xs.uploader",
+	uploadConnectionsPath : root + ".xs.uploader.connections",
+	uploadTemplatesPath	: root + ".xs.uploader.templates"
 };

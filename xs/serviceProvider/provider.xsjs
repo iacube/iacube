@@ -17,27 +17,51 @@ function processService(service,method,byProperty){
 	//execute DB call
 	var connection = $.hdb.getConnection();
 
-	var dbResult;
+	var dbResult = [];
+	var i;
+	
+	function process(call){
+	    
+	    var result;
+	    
+	    if(call.procedure){
+			//call procedure
+			var loadedProcedure = connection.loadProcedure(constants.schema,call.procedure.replace(/\{(\w+)\}/g,replacer));
+			result = loadedProcedure.apply(connection,call.parameters);
+		}else if(call.statement){
+			//execute statement
+			result = connection.executeQuery.apply(connection,[call.statement.replace(/\{(\w+)\}/g,replacer)].concat(call.parameters));
+		}else{
+			$.response.status = $.net.http.INTERNAL_SERVER_ERROR;
+			$.response.setBody(message(10004).DETAILS);
+			result = "error";
+		}
+		return result;
+	}
 	
 	try{
-		
-		dbParameters.forEach(function(call){
+		var processed;
+		if(dbParameters.lenght > 1){
+		    for(i = 0; i < dbParameters.lenght; i++){
+		        processed = process(dbParameters[i]);
+		        if(processed === "error"){
+		            return;
+		        }else{
+		           dbResult.push(processed);
+		        }
+    		}
+		}else{
+		   processed = process(dbParameters[0]);
+		   if(processed === "error"){
+	            return;
+	        }else{
+	           dbResult = processed;
+	        }
+		}
 
-			if(call.procedure){
-				//call procedure
-				var loadedProcedure = connection.loadProcedure(constants.schema,call.procedure.replace(/\{(\w+)\}/g,replacer));
-				dbResult = dbResult.concat(loadedProcedure.apply(connection,dbParameters));
-			}else if(call.statement){
-				//execute statement
-				dbResult = dbResult.concat(connection.executeQuery.apply(connection,[call.statement.replace(/\{(\w+)\}/g,replacer)].concat(dbParameters)));
-			}else{
-				$.response.status = $.net.http.INTERNAL_SERVER_ERROR;
-				$.response.setBody(message(10004).DETAILS);
-				return;
-			}	
-		});
-		
-		if(method !== "get" && responce(dbResult,mainCall)){
+        var commitAllowed = responce(dbResult,mainCall);
+
+		if(method !== "get" && commitAllowed){
 			//commit changes 
 				connection.commit();   
 		}
