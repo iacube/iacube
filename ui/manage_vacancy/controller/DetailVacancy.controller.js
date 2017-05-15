@@ -1,5 +1,6 @@
 sap.ui.define([
-	"manage_vacancy/controller/BaseController"
+	"manage_vacancy/controller/BaseController",
+	"manage_vacancy/util/formatter"
 ], function(BaseController) {
 	"use strict";
 

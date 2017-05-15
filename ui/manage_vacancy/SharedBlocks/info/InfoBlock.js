@@ -1,4 +1,4 @@
-sap.ui.define(['sap/uxap/BlockBase'], function (BlockBase) {
+sap.ui.define(["sap/uxap/BlockBase"], function (BlockBase) {
 	"use strict";
 	var InfoBlock = BlockBase.extend("manage_vacancy.SharedBlocks.info.InfoBlock", {
 		metadata: {

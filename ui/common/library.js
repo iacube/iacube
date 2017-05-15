@@ -7,6 +7,13 @@ sap.ui.define([
 	/**
 	 * Library to define and preload controls from common. Also contains
 	 * enums and globally used methods.
+	 */
+	 
+	jQuery.sap.declare("iacube.ui.common.library");
+    jQuery.sap.require("sap.ui.core.Core");
+    // library dependencies
+    jQuery.sap.require("sap.ui.core.library");
+/**
 	 *
 	 * @namespace
 	 * @name com.gs.sls.bpo.ui.common
