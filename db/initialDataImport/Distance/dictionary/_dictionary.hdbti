@@ -1,0 +1,9 @@
+import = [ 
+	{ 	
+		table  = "iacube.db::tables.Distance._dictionary.DistanceTypes";
+		schema = "IACUBE";
+		file   = "iacube.db.initialDataImport.Distance.dictionary:DistanceTypes.csv";
+		header = true;
+		delimField = ";";
+	}
+];

@@ -77,6 +77,21 @@ context tables{
 		};*/
 		
 		context _mapping{
+			entity BusinessTrip{
+				key hhId	: hhSID;
+					hhName	: String(60);
+					iaId	: tables.Profile.businessTripTypeId;
+			};
+			entity Contact{//phones + sites
+				key hhId	: hhSID;
+					hhName 	: String(60);
+					iaId 	: tables.Candidate.contactTypeId;
+			};
+			entity Employment{
+				key hhId	: hhSID;
+					hhName	: String(60);
+					iaId	: tables.Profile.employmentTypeId;
+			};
 			entity Gender{
 				key hhId   : hhSID;
 					hhName : String(50);
@@ -87,26 +102,12 @@ context tables{
 					hhName   : String(50);
 					iaId     : tables.Profile.relocationTypeId;
 			};
-			entity Contact{//phones + sites
-				key hhId	 : hhSID;
-					hhName : String(50);
-					iaId : tables.Candidate.contactTypeId;
-			};
-			entity Employment{
-				key hhId	 : hhSID;
-					hhName : String(50);
-					iaId : tables.Profile.employmentTypeId;
-			};
 			entity Schedule{
-				key hhId	 : hhSID;
-					hhName : String(50);
-					iaId : tables.Profile.scheduleTypeId;
+				key hhId	: hhSID;
+					hhName	: String(50);
+					iaId	: tables.Profile.scheduleTypeId;
 			};
-			entity BusinessTrip{
-				key hhId	 : hhSID;
-					hhName : String(50);
-					iaId : tables.Profile.businessTripTypeId;
-			};
+			
 			/*entity Industry{
 				key Id	 : hhSID;
 					Name : String(50);
@@ -114,7 +115,7 @@ context tables{
 			};*/
 		};
 	};
-	
+/*	
 	context _LI{
 		
 		type liSID : String(100);
@@ -146,20 +147,20 @@ context tables{
 			Endorsements : BinaryFloat;
 		};
 		
-		entity Industries{
-			key ProfileId 	: liSID;
-			key IndustryId	: String(100);//????;
-		};
+		//entity Industries{
+		//	key ProfileId 	: liSID;
+		//	key IndustryId	: String(100);//????;
+		//};
 		
-		context _mapping{//mapping???
-			entity Industry{
-				liId   : liSID;
-				liName : String(100);
-				iaId   : tables.Profile.industryTypeId;
-			};
+		//context _mapping{//mapping???
+		//	entity Industry{
+		//		liId   : liSID;
+		//		liName : String(100);
+		//		iaId   : tables.Profile.industryTypeId;
+		//	};
 		};
 	};
-	
+*/	
 	context Candidate{
 	
 		type candidateId   : Integer;
@@ -261,10 +262,10 @@ context tables{
 			key Skill	  : String(100);
 		};
 		
-		entity Industries{
+		/*entity Industries{
 			key ProfileId  : profileId;
 			key IndustryId : industryTypeId;
-		};
+		};*/
 		
 
 		context _dictionary{
@@ -288,10 +289,10 @@ context tables{
 					Name : String(50);
 			};
 			
-			entity Industry{
+			/*entity Industry{
 				key Id   : industryTypeId;
 					Name : String(100);
-			};
+			};*/
 			
 		};
 	};

@@ -19,6 +19,7 @@
 					</layout:VerticalLayout>
 					<layout:VerticalLayout>
 						<m:ObjectStatus title="{i18n>location}" text="{requis>Location}"/>
+						<m:ObjectStatus title="{i18n>project}" text="{requis>Project}"/>
 					</layout:VerticalLayout>
 					<layout:VerticalLayout width="40%">
 					</layout:VerticalLayout>
@@ -54,6 +55,15 @@
 							</ObjectPageSubSection>
 						</subSections>
 					</ObjectPageSection>
+				<!--	<ObjectPageSection id="detCandidates" title="{i18n>candidates}" titleUppercase="false">
+						<subSections>
+							<ObjectPageSubSection title="">
+								<blocks>
+									<info:InfoBlock id="cand" columnLayout="2"/>
+								</blocks>
+							</ObjectPageSubSection>
+						</subSections>
+					</ObjectPageSection> -->
 				</sections>
 			</ObjectPageLayout>
 		</semantic:content>

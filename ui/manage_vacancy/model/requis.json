@@ -1,71 +1,183 @@
-{	
-	"AvailableLanguages": [
-		{
-			"SlsLang": "en_EN",
-			"LangDescr":"English"
-		},{
-			"SlsLang": "ru_RU",
-			"LangDescr": "Russian"			
+{
+	"AvailablePriorities": [{
+		"PriorityCode": "H"
+	}, {
+		"PriorityCode": "M"
+	}, {
+		"PriorityCode": "L"
+	}],
+	"AvailableLanguages": [{
+		"SlsLang": "en_EN",
+		"LangDescr": "English"
+	}, {
+		"SlsLang": "ru_RU",
+		"LangDescr": "Russian"
+	}],
+	"JobRequisCollection": [{
+		"ReqId": "1000001",
+		"Position": "SAP ABAP Developer",
+		"Description": "tratata",
+		"Location": "London, UK",
+		"Status": "Open",
+		"CreatedOn": "12.05.2017",
+		"Language": "en_EN",
+		"Project": "BURB-SAP",
+		"Priority": "L",
+		"RequisSkillsCollection": [{
+			"ReqId": "1000001",
+			"Skill": "Power Industry",
+			"IsPrimary": "",
+			"Weight": 65
+		}, {
+			"ReqId": "1000001",
+			"Skill": "Preventive Maintenance",
+			"IsPrimary": "",
+			"Weight": 75
+		}, {
+			"ReqId": "1000001",
+			"Skill": "Equipment Management",
+			"IsPrimary": "",
+			"Weight": 50
+		}],
+		"RequisCandidatesCollection": [{
+			"ReqId": "1000001",
+			"CandId": "2000001",
+			"Status": "Proposed",
+			"Candidate": {
+				"CandId": "2000001",
+				"FirstName": "Elena",
+				"SecondName": "Petrova",
+				"Distance": 96,
+				"StartYear": 2013,
+				"EndYear": 2017,
+				"ProfileCollection": [{
+					"CandId": "2000001",
+					"ProfId": "3000001L",
+					"ProfDet": {
+						"ProfId": "3000001L",
+						"Link": "http://linkedin.com/elenapetrova"
 					}
-		],
-	"JobRequisCollection": [
+				}, {
+					"CandId": "2000001",
+					"ProfId": "3000001HH",
+					"ProfDet": {
+						"ProfId": "3000001HH",
+						"Link": "http://hh.ru/elenapetrova"
+					}
+				}]
+			}
+		},
 		{
 			"ReqId": "1000001",
-			"Position": "SAP ABAP Developer",
-			"Description": "tratata",
-			"Location": "London, UK",
-			"Status": "Open",
-			"CreatedOn": "12.05.2017",
-			"Language" : "EN",
-			"RequisSkillsCollection" : [
-				{
-					"ReqId" :"1000001",
-					"Skill" :"Power Industry",
-					"IsPrimary" : "",
-					"Weight" : 65
-				},
-				{
-					"ReqId" :"1000001",
-					"Skill" :"Preventive Maintenance",
-					"IsPrimary" : "",
-					"Weight" : 75
-				},
-				{
-					"ReqId" :"1000001",
-					"Skill" :"Equipment Management",
-					"IsPrimary" : "",
-					"Weight" : 50
-				}
-			]
+			"CandId": "2000002",
+			"Status": "Proposed",
+			"Candidate": {
+				"CandId": "2000002",
+				"FirstName": "Julie",
+				"SecondName": "Armstrong",
+				"Distance": 56,
+				"StartYear": 2014,
+				"EndYear": 2017,
+				"ProfileCollection": [{
+					"CandId": "2000002",
+					"ProfId": "3000002L",
+					"ProfDet": {
+						"ProfId": "3000002L",
+						"Link": "http://linkedin.com/julie"
+					}
+				}, {
+					"CandId": "2000002",
+					"ProfId": "3000002HH",
+					"ProfDet": {
+						"ProfId": "3000002HH",
+						"Link": "http://hh.ru/julie"
+					}
+				}]
+			}
+		}]
+	},
+		
+	 {
+		"ReqId": "1000002",
+		"Position": "SAP Plant Maintenance Functional Consultant",
+		"Description": "Provide clients with full life-cycle project implementation consulting expertise including assessments, blueprinting.Prepare and facilitate assessment/blueprint workshops to analyze clients’ business requirements. Consultant must be able to explain business reasons for utilizing functionalities and transform them into business SAP best business practice.Write detailed functional mapping to SAP applications, functional gap analysis, detailed blueprint design and process documentation and detailed functional specifications for any custom development.",
+		"Location": "London, UK",
+		"Status": "Open",
+		"CreatedOn": "11.05.2017",
+		"Language": "ru_RU",
+		"Project": "EPAM-TSAP",
+		"Priority": "H",
+		"RequisSkillsCollection": [{
+			"ReqId": "1000002",
+			"Skill": "Work Clearance Management",
+			"IsPrimary": "",
+			"Weight": 95
+		}, {
+			"ReqId": "1000002",
+			"Skill": "SAP ABAP Debugger",
+			"IsPrimary": "",
+			"Weight": 100
+		}, {
+			"ReqId": "1000002",
+			"Skill": "Teamwork",
+			"IsPrimary": "",
+			"Weight": 56
+		}],
+		"RequisCandidatesCollection": [{
+			"ReqId": "1000002",
+			"CandId": "2000003",
+			"Status": "Proposed",
+			"Candidate": {
+				"CandId": "2000003",
+				"FirstName": "Anna",
+				"SecondName": "Ivanova",
+				"Distance": 26,
+				"StartYear": 2015,
+				"EndYear": 2017,
+				"ProfileCollection": [{
+					"CandId": "2000003",
+					"ProfId": "3000003L",
+					"ProfDet": {
+						"ProfId": "3000003L",
+						"Link": "http://linkedin.com/annaivanova"
+					}
+				}, {
+					"CandId": "2000003",
+					"ProfId": "3000003HH",
+					"ProfDet": {
+						"ProfId": "3000003HH",
+						"Link": "http://hh.ru/annaivanova"
+					}
+				}]
+			}
 		},
 		{
 			"ReqId": "1000002",
-			"Position": "SAP Plant Maintenance Functional Consultant",
-			"Description": "Provide clients with full life-cycle project implementation consulting expertise including assessments, blueprinting.Prepare and facilitate assessment/blueprint workshops to analyze clients’ business requirements. Consultant must be able to explain business reasons for utilizing functionalities and transform them into business SAP best business practice.Write detailed functional mapping to SAP applications, functional gap analysis, detailed blueprint design and process documentation and detailed functional specifications for any custom development.",
-			"Location": "London, UK",
-			"Status": "Open",
-			"CreatedOn": "11.05.2017",
-			"Language" : "RU",
-			"RequisSkillsCollection" : [
-				{
-					"ReqId" :"1000002",
-					"Skill" :"Work Clearance Management",
-					"IsPrimary" : "",
-					"Weight" : 95
-				},
-				{
-					"ReqId" :"1000002",
-					"Skill" :"SAP ABAP Debugger",
-					"IsPrimary" : "",
-					"Weight" : 100
-				},
-				{
-					"ReqId" :"1000002",
-					"Skill" :"Teamwork",
-					"IsPrimary" : "",
-					"Weight" : 56
-				}
-			]
-		}
-		]
+			"CandId": "2000004",
+			"Status": "Proposed",
+			"Candidate": {
+				"CandId": "2000004",
+				"FirstName": "Jone",
+				"SecondName": "Doe",
+				"Distance": 36,
+				"StartYear": 2016,
+				"EndYear": 2017,
+				"ProfileCollection": [{
+					"CandId": "2000004",
+					"ProfId": "3000004L",
+					"ProfDet": {
+						"ProfId": "3000004L",
+						"Link": "http://linkedin.com/jonedoe"
+					}
+				}, {
+					"CandId": "2000004",
+					"ProfId": "3000004HH",
+					"ProfDet": {
+						"ProfId": "3000004HH",
+						"Link": "http://hh.ru/jondoe"
+					}
+				}]
+			}
+		}]
+	}]
 }
