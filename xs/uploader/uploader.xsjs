@@ -1,6 +1,6 @@
 var constants 	 = $.import("iacube.xs.resources","constants").constants;
 var buildMessage = $.import(constants.resourcesPath,"buildMessage").init();
-//var responce	 = $.import(constants.serviceProviderPath,"responce").prepareResponce;
+var responce	 = $.import(constants.serviceProviderPath,"responce").prepareResponce;
 //var request 	 = $.import(constants.serviceProviderPath,"request").prepareRequest;
 
 var message 	 = buildMessage.get;
@@ -69,16 +69,16 @@ function upload(list){
 	
 	//execute DB call
 	var connection = $.hdb.getConnection();
-
-	var dbResult;
+	var dbResult = [];
 	
 	try{
 		var i;
 		var dbParameters;
 		var preparedData;
+		
 		for(i = 0; i < list.length; i++){
 		    
-			preparedData = transformForDb(list[i].template.getData(list[i].params),list[i].template.parameters);
+			preparedData = transformForDb(list[i].template.getData(list[i].params,constants),list[i].template.parameters);
 			dbParameters = list[i].template.transformation ? list[i].template.transformation(preparedData) : preparedData;
 			
 			if(list[i].template.procedure){

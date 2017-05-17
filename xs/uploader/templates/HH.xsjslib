@@ -14,11 +14,11 @@ var template = {
 			type: "string"
 		},
 		first_name:{
-			column: "LastName",
+			column: "FirstName",
 			type: "string"
 		},
 		middle_name:{
-			column: "LastName",
+			column: "MiddleName",
 			type: "string"
 		},
 		age:{
@@ -135,9 +135,9 @@ var template = {
         }
 		
 	},
-	getData : function(params){
-		
-		var data = $.import("iacube.xs.uploader.connections",params.connectionId).data;
+	getData : function(params,constants){
+		//for test
+		var data = $.import(constants.uploadTemplatesPath,params.connectionId).data;
 		return data.items;
 	},
 	transformation: function(data){
@@ -152,16 +152,36 @@ var template = {
 	        skill_set   : []
 	    };
 	    data.forEach(function(item){
-	        item.contact = item.contact.concat(item.sites);
-            delete item.sites;
-        
-        	["contact","employments","experience","schedules","skill_set"].forEach(function(entry){
+	        
+	        ["contact","site"].forEach(function(entry){
+	            item[entry].forEach(function(entity){
+    	           template.contact.push({
+    	               ResumeId : item.ResumeId,
+    	               ContactId: entity.type.ContactId,
+    	               Value: entity.Value
+    	           });
+	            });
+	            delete item[entry];
+	        });
+
+        	["employments","experience","schedules","skill_set"].forEach(function(entry){
         	    item[entry].forEach(function(entity){
         	        entity.ResumeId = item.ResumeId;
         	        template[entry].push(entity);
         	    });
                 delete item[entry];
     	    });
+    	    
+    	    item.BusinessTripId = item.business_trip_readiness.BusinessTripId;
+    	    item.RelocationId   = item.relocation.type.RelocationId;
+    	    item.GenderId       = item.gender.GenderId;
+    	    item.City           = item.area.City;
+  
+    	    delete item.business_trip_readiness;
+    	    delete item.relocation;
+    	    delete item.gender;
+    	    delete item.area;
+    	    
     	    template.resume.push(item);
 	    });
         
@@ -169,7 +189,7 @@ var template = {
     	
     	for(key in template){
     	    if(template.hasOwnProperty(key)){
-    	        transformed.push(template(key));
+    	        transformed.push(template[key]);
     	    }
     	}
     	
