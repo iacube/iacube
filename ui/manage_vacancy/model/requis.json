@@ -50,19 +50,25 @@
 				"Distance": 96,
 				"StartYear": 2013,
 				"EndYear": 2017,
+				"ChangedOn": "01.01.2016",
+				"Image": "",
 				"ProfileCollection": [{
 					"CandId": "2000001",
 					"ProfId": "3000001L",
 					"ProfDet": {
 						"ProfId": "3000001L",
-						"Link": "http://linkedin.com/elenapetrova"
+						"Link": "http://linkedin.com/elenapetrova",
+						"Title": "SAP specialist",
+						"Picture": "http://www.cbronline.com/wp-content/uploads/2016/06/linkedin.jpg"
 					}
 				}, {
 					"CandId": "2000001",
 					"ProfId": "3000001HH",
 					"ProfDet": {
 						"ProfId": "3000001HH",
-						"Link": "http://hh.ru/elenapetrova"
+						"Link": "http://hh.ru/elenapetrova",
+						"Title": "SAP Consultant",
+						"Picture": "https://i.hh.ru/logos/openGraph/hh.ru.png"
 					}
 				}]
 			}
@@ -78,19 +84,25 @@
 				"Distance": 56,
 				"StartYear": 2014,
 				"EndYear": 2017,
+				"ChangedOn": "03.03.2016",
+				"Image": "http://storyfox.ru/wp-content/uploads/2015/11/shutterstock_265075847-696x528.jpg",
 				"ProfileCollection": [{
 					"CandId": "2000002",
 					"ProfId": "3000002L",
 					"ProfDet": {
 						"ProfId": "3000002L",
-						"Link": "http://linkedin.com/julie"
+						"Link": "http://linkedin.com/julie",
+						"Title": "ABAP developer",
+						"Picture": "http://www.cbronline.com/wp-content/uploads/2016/06/linkedin.jpg"
 					}
 				}, {
 					"CandId": "2000002",
 					"ProfId": "3000002HH",
 					"ProfDet": {
 						"ProfId": "3000002HH",
-						"Link": "http://hh.ru/julie"
+						"Link": "http://hh.ru/julie",
+						"Title": "SAP specialist",
+						"Picture": "https://i.hh.ru/logos/openGraph/hh.ru.png"
 					}
 				}]
 			}
@@ -134,19 +146,25 @@
 				"Distance": 26,
 				"StartYear": 2015,
 				"EndYear": 2017,
+				"ChangedOn": "17.05.2017",
+				"Image": "",
 				"ProfileCollection": [{
 					"CandId": "2000003",
 					"ProfId": "3000003L",
 					"ProfDet": {
 						"ProfId": "3000003L",
-						"Link": "http://linkedin.com/annaivanova"
+						"Link": "http://linkedin.com/annaivanova",
+						"Title": "SAP specialist",
+						"Picture": "http://www.cbronline.com/wp-content/uploads/2016/06/linkedin.jpg"
 					}
 				}, {
 					"CandId": "2000003",
 					"ProfId": "3000003HH",
 					"ProfDet": {
 						"ProfId": "3000003HH",
-						"Link": "http://hh.ru/annaivanova"
+						"Link": "http://hh.ru/annaivanova",
+						"Title": "SAP specialist",
+						"Picture": "https://i.hh.ru/logos/openGraph/hh.ru.png"
 					}
 				}]
 			}
@@ -162,19 +180,25 @@
 				"Distance": 36,
 				"StartYear": 2016,
 				"EndYear": 2017,
+				"ChangedOn": "20.01.2017",
+				"Image": "",
 				"ProfileCollection": [{
 					"CandId": "2000004",
 					"ProfId": "3000004L",
 					"ProfDet": {
 						"ProfId": "3000004L",
-						"Link": "http://linkedin.com/jonedoe"
+						"Link": "http://linkedin.com/jonedoe",
+						"Title": "SAP specialist",
+						"Picture": "http://www.cbronline.com/wp-content/uploads/2016/06/linkedin.jpg"
 					}
 				}, {
 					"CandId": "2000004",
 					"ProfId": "3000004HH",
 					"ProfDet": {
 						"ProfId": "3000004HH",
-						"Link": "http://hh.ru/jondoe"
+						"Link": "http://hh.ru/jondoe",
+						"Title": "SAP specialist",
+						"Picture": "https://i.hh.ru/logos/openGraph/hh.ru.png"
 					}
 				}]
 			}

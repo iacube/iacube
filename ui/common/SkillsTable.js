@@ -5,9 +5,8 @@ sap.ui.define([
 	"sap/m/Slider",
 	"sap/m/ObjectNumber",
 	"sap/m/ColumnListItem",
-	"sap/m/Toolbar",
-	"manage_vacancy/util/formatter"
-], function(Table, Column, Text, Slider, ObjectNumber, ColumnListItem, oFormatter) {
+	"sap/m/Toolbar"
+], function(Table, Column, Text, Slider, ObjectNumber, ColumnListItem) {
 	"use strict";
 
 	return Table.extend("iacube.ui.common.SkillsTable", {
