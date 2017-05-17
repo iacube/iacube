@@ -1,0 +1,9 @@
+import = [ 
+	{ 	
+		table  = "iacube.db::tables.Requisition._dictionary.StatusTypes";
+		schema = "IACUBE";
+		file   = "iacube.db.initialDataImport.Requisition.dictionary:StatusTypes.csv";
+		header = true;
+		delimField = ";";
+	}
+];

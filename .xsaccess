@@ -8,7 +8,11 @@
 "rewrite_rules":[
 	{
 	"source": "/services/", 
-	"target": "/services/serviceExecutor.xsjs" 
+	"target": "/xs/serviceProvider/provider.xsjs" 
+	},
+	{
+	"source": "/service/test", 
+	"target": "/xs/serviceProvider/provider.xsjs?service=test" 
 	}
 ] 
 }

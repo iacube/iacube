@@ -18,7 +18,6 @@ context types {
 		details : String(1000);
 	};
 	
-	
 	type update_HHResume{
 		Id				: hhResumeId;
 		LatName			: name;	
@@ -31,39 +30,25 @@ context types {
 		RelocationId	: hhSID;
 		BusinessTripId	: hhSID;
 		Salary			: BinaryFloat;
-		SalaryCurr		: currency;	
-		
-		AddInfo			: String(5000);	//???
-		DesiredPosition	: String(100);	//???
-		CareerStarter	: bool;			//???//?????change to experience
-		ProfArea		: Integer; 		//???key table??
-		
+		SalaryCurr		: currency;
 		Link			: String(1000);
 		LastChanged		: UTCTimestamp;
-		
-		flag			: sflag;
 	};
 	
 	type update_HHContacts{
 		ResumeId  : hhResumeId;
 		ContactId : hhSID;
 		Value	  : String(1000);
-		
-		flag	  : sflag;
 	};
 	
 	type update_HHEmployments{
 		ResumeId	 : hhResumeId;
 		EmploymentId : hhSID;
-		
-		flag		 : sflag;
 	};
 
 	type update_HHSchedules{
 		ResumeId	: hhResumeId;
 		ScheduleId	: hhSID;
-		
-		flag		 : sflag;
 	};
 	
 	type update_HHExperience{
@@ -73,21 +58,10 @@ context types {
 		StartDate	 : date;
 		EndDate		 : date;
 		Description	 : LargeString;
-		
-		flag		 : sflag;
 	};
 	
 	type update_HHSkills{
 		ResumeId : hhResumeId;
 		Skill	 : String(1000);
-
-		flag		 : sflag;
-	};
-	
-	type update_HHIndustries{
-		ResumeId 	: hhResumeId;
-		IndustryId	: hhSID;
-		
-		flag		 : sflag;
 	};
 };

@@ -1,0 +1,44 @@
+import = [ 
+	{ 	
+		table  = "iacube.db::tables._HH._mapping.BusinessTrip";
+		schema = "IACUBE";
+		file   = "iacube.db.initialDataImport.HH.mapping:BusinessTrip.csv";
+		header = true;
+		delimField = ";";
+	},
+	{ 	
+		table  = "iacube.db::tables._HH._mapping.Contact";
+		schema = "IACUBE";
+		file   = "iacube.db.initialDataImport.HH.mapping:Contact.csv";
+		header = true;
+		delimField = ";";
+	},
+	{ 	
+		table  = "iacube.db::tables._HH._mapping.Employment";
+		schema = "IACUBE";
+		file   = "iacube.db.initialDataImport.HH.mapping:Employment.csv";
+		header = true;
+		delimField = ";";
+	},
+	{ 	
+		table  = "iacube.db::tables._HH._mapping.Gender";
+		schema = "IACUBE";
+		file   = "iacube.db.initialDataImport.HH.mapping:Gender.csv";
+		header = true;
+		delimField = ";";
+	},
+	{ 	
+		table  = "iacube.db::tables._HH._mapping.Relocation";
+		schema = "IACUBE";
+		file   = "iacube.db.initialDataImport.HH.mapping:Relocation.csv";
+		header = true;
+		delimField = ";";
+	},
+	{ 	
+		table  = "iacube.db::tables._HH._mapping.Schedule";
+		schema = "IACUBE";
+		file   = "iacube.db.initialDataImport.HH.mapping:Schedule.csv";
+		header = true;
+		delimField = ";";
+	}
+];
