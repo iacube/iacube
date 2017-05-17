@@ -58,7 +58,11 @@ var template = {
 		salary:{
 			amount:{
 				column:"Salary",
-				type:"SalaryCurr"
+				type:"double"
+			},
+			currency:{
+				column:"SalaryCurr",
+				type:"string"
 			}
 		},
 		url:{
@@ -177,10 +181,16 @@ var template = {
     	    item.GenderId       = item.gender.GenderId;
     	    item.City           = item.area.City;
   
+            if(!item.salary){
+                item.Salary = null;
+                item.SalaryCurr = null;
+            }
+  
     	    delete item.business_trip_readiness;
     	    delete item.relocation;
     	    delete item.gender;
     	    delete item.area;
+    	    delete item.salary;
     	    
     	    template.resume.push(item);
 	    });

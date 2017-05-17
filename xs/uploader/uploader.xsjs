@@ -1,6 +1,6 @@
 var constants 	 = $.import("iacube.xs.resources","constants").constants;
 var buildMessage = $.import(constants.resourcesPath,"buildMessage").init();
-var responce	 = $.import(constants.serviceProviderPath,"responce").prepareResponce;
+var serviceResponce	 = $.import(constants.serviceProviderPath,"responce").prepareResponce;
 //var request 	 = $.import(constants.serviceProviderPath,"request").prepareRequest;
 
 var message 	 = buildMessage.get;
@@ -50,6 +50,9 @@ function transformForDb(requestData,transformation){
     			case "array":
     				convertObject = JSON.parse(requestData);
     				break;
+    			case "timestamp":
+    				convertObject = new Date(requestData);
+    				break;
     			//TODO: add time and date
     			default:
     				convertObject = requestData;
@@ -57,12 +60,6 @@ function transformForDb(requestData,transformation){
 		}
 	}
 	return convertObject;
-}
-
-function prepareResponce(data,template){
-    
-    
-    
 }
 
 function upload(list){
@@ -92,7 +89,7 @@ function upload(list){
 			}
 		}
 		
-		if(responce(dbResult)){
+		if(serviceResponce(dbResult,{},message)){
 			//commit changes 
 				connection.commit();   
 		}

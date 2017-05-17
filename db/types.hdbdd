@@ -19,8 +19,9 @@ context types {
 	};
 	
 	type update_HHResume{
-		Id				: hhResumeId;
-		LatName			: name;	
+		ResumeId		: hhResumeId;
+		Title			: String(1000);
+		LastName		: name;	
 		FirstName		: name;	
 		MiddleName		: name;	
 		Age				: Integer;

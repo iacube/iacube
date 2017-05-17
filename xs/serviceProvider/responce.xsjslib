@@ -1,4 +1,4 @@
-function convertToResult(resultObject,transformation){
+function convertToResult(resultObject,transformation,message){
 
 	var returnObject;
 	var name = "";
@@ -35,7 +35,7 @@ function convertToResult(resultObject,transformation){
 	return returnObject;
 }
 
-function prepareResponce(dbResult,call){
+function prepareResponce(dbResult,call,message){
 	
 	var body = "";
 	var commitAllowed = true;
@@ -45,10 +45,10 @@ function prepareResponce(dbResult,call){
 	if(typeof call.result === "function"){
 		body = call.result(dbResult);
 	}else if(typeof call.result === "object"){
-		body = JSON.stringify(convertToResult(dbResult,call.result));
+		body = JSON.stringify(convertToResult(dbResult,call.result,message));
 	}else{
 		//don't transform
-		body = JSON.stringify(convertToResult(dbResult,{}));
+		body = JSON.stringify(convertToResult(dbResult,{},message));
 	}
 	if(call.noCommitIfErrors){
 		if(dbResult.ERRORS.length !== 0){
