@@ -1,0 +1,106 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:fb="sap.ui.comp.filterbar"
+	controllerName="requisitions_report.controller.RequisitionsOverview" xmlns:html="http://www.w3.org/1999/xhtml">
+	<Page title="Title" id="page1">
+		<content>
+			<fb:FilterBar reset="onReset" search="onSearch" showRestoreButton="true" showClearButton="true">
+				<fb:filterItems>
+					<fb:FilterItem name="A" label="labelA">
+						<fb:control>
+							<Input type="Text"/>
+						</fb:control>
+					</fb:FilterItem>
+					<fb:FilterItem name="B" label="labelB" labelTooltip="Tooltip Example" mandatory="true">
+						<fb:control>
+							<Input type="Text"/>
+						</fb:control>
+					</fb:FilterItem>
+				</fb:filterItems>
+				<fb:filterGroupItems>
+					<fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="A" label="labelA" labelTooltip="Tooltip GroupItem Example">
+						<fb:control>
+							<Input type="Text"/>
+						</fb:control>
+					</fb:FilterGroupItem>
+					<fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="B" label="labelB">
+						<fb:control>
+							<Input type="Text"/>
+						</fb:control>
+					</fb:FilterGroupItem>
+					<fb:FilterGroupItem groupName="G2" groupTitle="Group2" name="A2" label="labelA2" labelTooltip="Tooltip GroupItem Example">
+						<fb:control>
+							<Input type="Text"/>
+						</fb:control>
+					</fb:FilterGroupItem>
+					<fb:FilterGroupItem groupName="G2" groupTitle="Group2" name="B2" label="labelB2">
+						<fb:control>
+							<Input type="Text"/>
+						</fb:control>
+					</fb:FilterGroupItem>
+				</fb:filterGroupItems>
+			</fb:FilterBar>
+			<VBox class="sapUiSmallMargin">
+				<Table id="idProductsTable" inset="false" items="{ui>/Requisitions}">
+					<headerToolbar>
+						<Toolbar>
+							<Title text="Job Requisitions" level="H2"/>
+						</Toolbar>
+					</headerToolbar>
+					<columns>
+						<Column width="12em">
+							<Text text="ID"/>
+						</Column>
+						<Column minScreenWidth="Tablet" demandPopin="true">
+							<Text text="NAME"/>
+						</Column>
+						<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Right">
+							<Text text="Account"/>
+						</Column>
+						<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+							<Text text="Subcategory"/>
+						</Column>
+						<Column hAlign="Right">
+							<Text text="Created By"/>
+						</Column>
+						<Column hAlign="Right">
+							<Text text="Date / Time Opened"/>
+						</Column>
+						<Column hAlign="Right">
+							<Text text="Remaining Days"/>
+						</Column>
+						<Column hAlign="Right">
+							<Text text="Status"/>
+						</Column>
+						<Column hAlign="Right">
+							<Text text="Candidates"/>
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem type="Navigation">
+							<cells>
+								<Text text="{ui>ReqId}"/>
+								<Text text="{ui>ReqId}"/>
+								<Text text="{ui>RequisitionName}"/>
+								<Text text="{ui>Account}"/>
+								<Text text="{ui>Subcategory}"/>
+								<Text text="{ui>CreatedBy}"/>
+								<Text text="{ui>DateOpened}"/>
+								<Text text="{ui>DaysRemaining}"/>
+								<ObjectStatus text="{ui>Status}" state="Success"/>
+								<core:Icon src="sap-icon://syringe" color="#031E48"/>
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</VBox>
+		</content>
+		<footer>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<Button text="Accept" type="Accept"/>
+				<Button text="Reject" type="Reject"/>
+				<Button text="Edit"/>
+				<Button text="Delete"/>
+			</Toolbar>
+		</footer>
+	</Page>
+</mvc:View>
