@@ -1,7 +1,8 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:m="sap.m" xmlns:html="http://www.w3.org/1999/xhtml" 
 		  xmlns:semantic="sap.m.semantic" xmlns="sap.uxap" xmlns:layout="sap.ui.layout" xmlns:info="manage_vacancy.SharedBlocks.info"
 		  xmlns:skills="manage_vacancy.SharedBlocks.skills"
-		  controllerName="manage_vacancy.controller.DetailVacancy" id="detail" displayBlock="false">
+		  controllerName="manage_vacancy.controller.DetailVacancy" id="detail" displayBlock="false"
+		  xmlns:candidates="manage_vacancy.SharedBlocks.candidates">
 	<semantic:DetailPage id="detailvac" title="{i18n>title}">
 		<semantic:content>	
 			<layout:VerticalLayout width="100%" id="__layout3"/>	
@@ -55,15 +56,15 @@
 							</ObjectPageSubSection>
 						</subSections>
 					</ObjectPageSection>
-				<!--	<ObjectPageSection id="detCandidates" title="{i18n>candidates}" titleUppercase="false">
+					<ObjectPageSection id="detCandidates" title="{i18n>candidates}" titleUppercase="false">
 						<subSections>
 							<ObjectPageSubSection title="">
 								<blocks>
-									<info:InfoBlock id="cand" columnLayout="2"/>
+									<candidates:Candidates id="cand"/>
 								</blocks>
 							</ObjectPageSubSection>
 						</subSections>
-					</ObjectPageSection> -->
+					</ObjectPageSection>
 				</sections>
 			</ObjectPageLayout>
 		</semantic:content>

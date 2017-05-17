@@ -19,7 +19,6 @@ context tables{
 				LastName		: name;	
 				FirstName		: name;	
 				MiddleName		: name;
-				
 				Age				: Integer;
 				BirthDate		: date;
 				GenderId		: hhSID;
@@ -28,7 +27,6 @@ context tables{
 				BusinessTripId	: hhSID;
 				Salary			: BinaryFloat;
 				SalaryCurr		: currency;	
-				
 				Link			: String(1000);
 				LastChanged		: UTCTimestamp;
 		};
@@ -168,7 +166,7 @@ context tables{
 		type contactTypeId : Integer;
 		
 		entity Candidates{
-			key Id			: candidateId;
+			key CandidateId	: candidateId;
 				LastName	: name;
 				FirstName	: name;
 				MiddleName	: name;
@@ -214,7 +212,7 @@ context tables{
 		type industryTypeId		: Integer;
 	
 		entity Profiles{
-			key Id				: profileId;
+			key ProfileId		: profileId;
 				ExternalId		: String(1000);
 				ProfileTypeId	: profileTypeId;
 				Link			: String(1000);
@@ -303,7 +301,7 @@ context tables{
 		type statusTypeId : Integer;
 		//нужны ли в реквезишене ScheduleTypes EmploymentTypes?
 		entity Requisitions{
-			key Id			: reqId;
+			key ReqId		: reqId;
 				Position	: String(1000);
 				Description	: LargeString;
 				Location	: String(1000);

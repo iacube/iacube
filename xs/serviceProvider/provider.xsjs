@@ -59,7 +59,7 @@ function processService(service,method,byProperty){
 	        }
 		}
 
-        var commitAllowed = responce(dbResult,mainCall);
+        var commitAllowed = responce(dbResult,mainCall,message);
 
 		if(method !== "get" && commitAllowed){
 			//commit changes 

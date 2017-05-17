@@ -29,5 +29,6 @@ sap.ui.define([
 		
 			this.getRouter().initialize();
 		}
+		//test comment
 });
 });

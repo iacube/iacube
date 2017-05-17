@@ -5,9 +5,8 @@ sap.ui.define([
 	"sap/m/TextArea",
 	"sap/m/Input",
 	"sap/ui/core/Item",
-	"sap/m/ComboBox",
-	"manage_vacancy/util/formatter"
-], function(VBox, SimpleForm, Label, TextArea, Input, Item, ComboBox, oFormatter) {
+	"sap/m/ComboBox"
+], function(VBox, SimpleForm, Label, TextArea, Input, Item, ComboBox) {
 	"use strict";
 
 	return VBox.extend("iacube.ui.common.InfoForm", {
@@ -62,30 +61,11 @@ sap.ui.define([
 					
 					new ComboBox("idPrior", {
 						selectedKey: "{requis>Priority}"
-						// selectedKey: { path: "requis>Priority",
-						// 			   formatter: function(sPriority) {
-						// 			   	 return	oFormatter.getPriorityDescr(sPriority);
-						// 			   }
-						// }
 					}).bindAggregation("items", "requis>/AvailablePriorities", new Item({
 							key: "{requis>PriorityCode}",
 							text: "{requis>PriorityCode}"
 						})).setEditable(false),
 					
-					// new Label({
-					// 	text: "{i18n>priority}",
-					// 	labelFor: "idTest"
-					// }),
-						
-					// new Text("idTest", {
-					// 	text: {
-					// 		path: "requis>Priority",
-					// 		formatter: function(prior) { 
-					// 			return oFormatter.getPriorityDescr(prior);
-					// 		}
-					// 	}
-					// }),
-
 					new Label({
 						text: "{i18n>location}",
 						labelFor: "idLocation"
