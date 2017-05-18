@@ -8,11 +8,25 @@ context types {
 	type currency : String(4);
 	type name	  : String(100);
 	type bool	  : hana.TINYINT;
-	type sflag	  :  String(1);
+	type sflag	  : String(1);
+	type datetime : UTCTimestamp;
+	type lang	  : String(2);
+	type creator  : String(100);
 	
 	type hhResumeId : String(1000);
 	type hhSID	    : String(100);
-		
+	
+	type reqId 		  	  : Integer;
+	type statusTypeId 	  : String(10);
+	type statusCodeTypeId : String(10);
+	type priorityId	  	  : String(10);
+	type subcategoryId	  : Integer;
+	type commentTypeId	  : String(10);
+	
+	type profileId 	 	  : Integer;
+	
+	type candidateId   	  : Integer;
+	
 	type error{
 		id		: Integer;
 		details : String(1000);
@@ -65,4 +79,63 @@ context types {
 		ResumeId : hhResumeId;
 		Skill	 : String(1000);
 	};
+	
+//Requisitions
+	type requisitionDetails{
+		"ReqId"			: reqId;
+		"Title"			: String(100);
+		"ProjectId"		: String(100);
+		"PriorityId"	: priorityId;
+		"Location"		: String(1000);
+		"StatusCodeId"	: statusCodeTypeId;
+		"SubcategoryId" : subcategoryId;
+		"SubcategoryName": String(200);
+		"CreatedBy"		: creator;
+        "CreatedAt"		: datetime;
+		"Language"		: lang;
+		"Keywords"		: LargeString;
+		"Description"	: LargeString;
+	};
+	
+	type requisitionSkills{
+		//"ReqId"	  		: reqId;
+		"Skill"	  		: String(1000);
+		"Weight"		: Integer;
+	};
+			
+	type requisitionCandidates{
+		//"ReqId"			: reqId;
+		"CandidateId"	: candidateId;
+		"StatusId"		: statusTypeId;
+		"ChangedAt"		: datetime;
+		"FirstName"		: name;
+		"LastName"		: name;
+		"Experience"	: Integer;
+		"Distance"		: Integer;	
+	};
+	type requisitionProfiles{
+		//"ReqId"			: reqId;
+		"CandidateId"	: Integer;
+		"ProfileId"		: profileId;
+		"ExternalId"	: String(1000);
+		"ProfileTypeId" : Integer;
+		"Link"			: String(1000);
+	};
+	type requisitionComments{
+		//"ReqId"			: reqId;
+		"CommentId"		: Integer;
+		"CommentTypeId"	: commentTypeId;
+		"CreatedAt"		: datetime;
+		"CreatedBy"		: creator;
+		"Title"			: String(200);
+		"Text"			: String(5000);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 };

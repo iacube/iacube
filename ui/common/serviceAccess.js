@@ -7,7 +7,7 @@ sap.ui.define([
 	return {
 		ajax: function(settings) {
 			var token;
-			var path = "iacube";
+			var path = "/iacube";
 			var params = {
 				type: typeof(settings.type) !== "undefined" ? settings.type : "get",
 				dataType: typeof(settings.dataType) !== "undefined" ? settings.dataType : "json",
@@ -28,7 +28,7 @@ sap.ui.define([
 			};
 			if (params.type !== "get" && params.type !== "GET") {
 				$.ajax({
-					url: path + "services/",
+					url: path + "/service/",
 					type: "get",
 					beforeSend: function(xhr) {
 						xhr.setRequestHeader("X-CSRF-Token", "Fetch");

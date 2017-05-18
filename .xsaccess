@@ -10,9 +10,17 @@
 	"source": "/services/", 
 	"target": "/xs/serviceProvider/provider.xsjs" 
 	},
-	{
-	"source": "/service/test", 
-	"target": "/xs/serviceProvider/provider.xsjs?service=test" 
-	}
+		{
+		"source": "manage_vacancy",
+		"target": ""
+		},
+			{
+			"source": "/service/requisitions", 
+			"target": "/xs/serviceProvider/provider.xsjs?service=requisitions" 
+			},
+			{
+			"source": "/service/requisition/(\\d+)", 
+			"target": "/xs/serviceProvider/provider.xsjs?service=requisition&reqId=$1" 
+			}
 ] 
 }

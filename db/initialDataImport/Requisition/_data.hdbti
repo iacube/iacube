@@ -1,5 +1,5 @@
 import = [ 
-	{ 	
+	{ 
 		table  = "iacube.db::tables.Requisition.Candidates";
 		schema = "IACUBE";
 		file   = "iacube.db.initialDataImport.Requisition:Candidates.csv";
@@ -17,6 +17,13 @@ import = [
 		table  = "iacube.db::tables.Requisition.Skills";
 		schema = "IACUBE";
 		file   = "iacube.db.initialDataImport.Requisition:Skills.csv";
+		header = true;
+		delimField = ";";
+	},
+	{ 	
+		table  = "iacube.db::tables.Requisition.Comments";
+		schema = "IACUBE";
+		file   = "iacube.db.initialDataImport.Requisition:Comments.csv";
 		header = true;
 		delimField = ";";
 	}

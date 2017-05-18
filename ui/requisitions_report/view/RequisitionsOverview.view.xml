@@ -39,7 +39,7 @@
 				</fb:filterGroupItems>
 			</fb:FilterBar>
 			<VBox class="sapUiSmallMargin">
-				<Table id="idProductsTable" inset="false" items="{ui>/Requisitions}">
+				<Table id="idProductsTable" inset="false" items="{ui>/requisitions}">
 					<headerToolbar>
 						<Toolbar>
 							<Title text="Job Requisitions" level="H2"/>
@@ -47,10 +47,10 @@
 					</headerToolbar>
 					<columns>
 						<Column width="12em">
-							<Text text="ID"/>
+							<Text text="Id"/>
 						</Column>
 						<Column minScreenWidth="Tablet" demandPopin="true">
-							<Text text="NAME"/>
+							<Text text="Name"/>
 						</Column>
 						<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Right">
 							<Text text="Account"/>
@@ -75,18 +75,17 @@
 						</Column>
 					</columns>
 					<items>
-						<ColumnListItem type="Navigation">
+						<ColumnListItem type="Navigation" press="onRequisitionPress">
 							<cells>
 								<Text text="{ui>ReqId}"/>
-								<Text text="{ui>ReqId}"/>
-								<Text text="{ui>RequisitionName}"/>
-								<Text text="{ui>Account}"/>
-								<Text text="{ui>Subcategory}"/>
+								<Text text="{ui>ReqName}"/>
+								<Text text="{ui>ProjectName}"/>
+								<Text text="{ui>SubcategoryName}"/>
 								<Text text="{ui>CreatedBy}"/>
-								<Text text="{ui>DateOpened}"/>
-								<Text text="{ui>DaysRemaining}"/>
-								<ObjectStatus text="{ui>Status}" state="Success"/>
-								<core:Icon src="sap-icon://syringe" color="#031E48"/>
+								<Text text="{ui>CreatedAt}"/>
+								<Text text="{ui>RemainingDays}"/>
+								<ObjectStatus text="{ui>StatusCode}" state="Success"/>
+								<core:Icon src="sap-icon://employee" color="#031E48"/>
 							</cells>
 						</ColumnListItem>
 					</items>
@@ -96,10 +95,7 @@
 		<footer>
 			<Toolbar>
 				<ToolbarSpacer/>
-				<Button text="Accept" type="Accept"/>
-				<Button text="Reject" type="Reject"/>
-				<Button text="Edit"/>
-				<Button text="Delete"/>
+				<Button text="Show Candidates"/>
 			</Toolbar>
 		</footer>
 	</Page>

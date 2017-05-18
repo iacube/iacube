@@ -1,1 +1,2 @@
-ReqId;Position;Description;Location
+ReqId;Title;ProjectId;PriorityId;Location;StatusCodeId;SubcategoryId;CreatedBy;CreatedAt;Language;Keywords;Description
+7788;SAP ABAP Developer;BURB-SAP;L;London, UK;OPEN;1;Cartman;2017-02-22T00:00:00;EN;keyword1, keyword2;Some Description
