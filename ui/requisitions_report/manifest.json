@@ -64,7 +64,12 @@
 				"settings": {
 					"bundleName": "requisitions_report.i18n.i18n"
 				}
-			}
+			},
+			"ui": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "localService/requisitions.json"
+            }
+			
 		},
 		"routing": {
 			"config": {
