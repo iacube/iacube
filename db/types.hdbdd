@@ -9,6 +9,9 @@ context types {
 	type name	  : String(100);
 	type bool	  : hana.TINYINT;
 	type sflag	  :  String(1);
+	type datetime : UTCTimestamp;
+	type lang	  : String(2);
+	type creator  : String(100);
 	
 	type hhResumeId : String(1000);
 	type hhSID	    : String(100);
@@ -65,4 +68,62 @@ context types {
 		ResumeId : hhResumeId;
 		Skill	 : String(1000);
 	};
+	
+//Requisitions
+	type requisitionDetails{
+		"ReqId"			: Integer;
+		"Title"			: String(100);
+		"ProjectId"		: String(100);
+		"PriorityId"	: Integer;
+		"Location"		: String(1000);
+		"StatusCodeId"	: Integer;
+		"SubcategoryId" : Integer;
+		"CreatedBy"		: String(100);
+        "CreatedAt"		: UTCTimestamp;
+		"Language"		: lang;
+		"Keywords"		: LargeString;
+		"Description"	: LargeString;
+	};
+	
+	type requisitionSkills{
+		"ReqId"	  		: Integer;
+		"Skill"	  		: String(1000);
+		"Weight"		: Integer;
+	};
+			
+	type requisitionCandidates{
+		"ReqId"			: Integer;
+		"CandidateId"	: Integer;
+		"StatusTypeId"	: Integer;
+		"ChangedAt"		: UTCTimestamp;
+		"FirstName"		: String(100);
+		"LastName"		: String(100);
+		"Experience"	: Integer;
+		"Distance"		: Integer;	
+	};
+	type requisitionProfiles{
+		"ReqId"			: Integer;
+		"CandidateId"	: Integer;
+		"ProfileId"		: Integer;
+		"ExternalId"	: String(1000);
+		"ProfileTypeId" : Integer;
+		"Link"			: String(1000);
+	};
+	type requisitionComments{
+		"ReqId"			: Integer;
+		"CommentId"		: Integer;
+		"CommentTypeId"	: Integer;
+		"CreatedAt"		: UTCTimestamp;
+		"CreatedBy"		: String(100);
+		"Title"			: String(200);
+		"Text"			: String(5000);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 };

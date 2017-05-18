@@ -19,5 +19,12 @@ import = [
 		file   = "iacube.db.initialDataImport.Requisition:Skills.csv";
 		header = true;
 		delimField = ";";
+	},
+	{ 	
+		table  = "iacube.db::tables.Requisition.Comments";
+		schema = "IACUBE";
+		file   = "iacube.db.initialDataImport.Requisition:Comments.csv";
+		header = true;
+		delimField = ";";
 	}
 ];

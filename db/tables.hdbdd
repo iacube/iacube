@@ -8,6 +8,8 @@ context tables{
 	type name	  : String(100);
 	type bool	  : hana.TINYINT;
 	type datetime : UTCTimestamp;
+	type lang	  : String(2);
+	type creator  : String(100);
 /*HH.ru tables*/
 	context _HH{
 
@@ -304,38 +306,55 @@ context tables{
 		type statusCodeTypeId : Integer;
 		type priorityId	  	  : Integer;
 		type subcategoryId	  : Integer;
-		//нужны ли в реквезишене ScheduleTypes EmploymentTypes?
+		type commentTypeId	  : Integer;
+//нужны ли в реквезишене ScheduleTypes EmploymentTypes?
 		entity Requisitions{
 			key ReqId			: reqId;
 				Title			: String(100); 
 				ProjectId		: String(100);
 				PriorityId		: priorityId;
-				Location		: String(1001);
+				Location		: String(1000);
 				StatusCodeId	: statusCodeTypeId; 
 				SubcategoryId 	: subcategoryId;
-				CreatedBy		: String(100);
+				CreatedBy		: creator;
             	CreatedAt		: datetime;
-				
-				Description	: LargeString;
-				Position	: String(1000);
+				Language		: lang;
+				Keywords		: LargeString;
+				Description		: LargeString;
+		};
+		
+		entity Skills{
+			key ReqId	  : reqId;
+			key Skill	  : String(1000);
+				IsPrimary : bool;
+				Weight	  : Integer;
 		};
 		
 		entity Candidates{
 			key ReqId		 : reqId;
 			key CandidateId	 : tables.Candidate.candidateId;
 				StatusTypeId : statusTypeId;
-				Comment		 : String(5000);
-		};
-
-		entity Skills{
-			key ReqId	  : reqId;
-			key Skill	  : String(1001);
-				IsPrimary : bool;
-				Weight	  : BinaryFloat;
+				ChangedBy	 : creator;
+				ChangedAt	 : datetime;
 		};
 		
+		entity Comments{
+			key ReqId		  : reqId;
+			key CommentId	  : Integer;
+				CommentTypeId : commentTypeId;
+				CreatedAt	  : datetime;
+				CreatedBy	  : creator;
+			 	Title		  : String(200);
+			 	Text		  : String(5000);	
+		};
+
 		context _dictionary{
 			
+			entity CommentTypes{
+				key Id	 : commentTypeId;
+					Name : String(50);
+			};
+
 			entity StatusCodeTypes{
 				key Id	 : statusCodeTypeId;
 					Name : String(50);

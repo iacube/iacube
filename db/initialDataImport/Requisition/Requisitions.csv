@@ -1,2 +1,2 @@
-ReqId;Title;ProjectId;PriorityId;Location;StatusCodeId;SubcategoryName;CreatedBy;CreatedAt;Description;Position
-7788;SAP ABAP Developer;BURB-SAP;1;London, UK;1;1;I am Master;2017-02-22T00:00:00;Some Description;Jedi
+ReqId;Title;ProjectId;PriorityId;Location;StatusCodeId;SubcategoryId;CreatedBy;CreatedAt;Language;Keywords;Description
+7788;SAP ABAP Developer;BURB-SAP;1;London, UK;1;1;Cartman;2017-02-22T00:00:00;EN;keyword1, keyword2;Some Description

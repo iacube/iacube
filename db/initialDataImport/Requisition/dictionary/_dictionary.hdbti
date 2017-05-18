@@ -26,5 +26,12 @@ import = [
 		file   = "iacube.db.initialDataImport.Requisition.dictionary:SubcategoryTypes.csv";
 		header = true;
 		delimField = ";";
+	},
+	{ 	
+		table  = "iacube.db::tables.Requisition._dictionary.CommentTypes";
+		schema = "IACUBE";
+		file   = "iacube.db.initialDataImport.Requisition.dictionary:CommentTypes.csv";
+		header = true;
+		delimField = ";";
 	}
 ];
