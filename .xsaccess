@@ -17,6 +17,10 @@
 			{
 			"source": "/service/requisitions", 
 			"target": "/xs/serviceProvider/provider.xsjs?service=requisitions" 
+			},
+			{
+			"source": "/service/requisition/(\\d+)", 
+			"target": "/xs/serviceProvider/provider.xsjs?service=requisition&reqId=$1" 
 			}
 ] 
 }

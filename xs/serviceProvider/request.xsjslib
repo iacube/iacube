@@ -166,7 +166,7 @@ function prepareRequest(params){
 		prepared = [{
 			statement : params.call.statement,
 			procedure : params.call.procedure,
-			parameters: params.callparameters ? prepareDbParameters(params.call.parameters,params.method) : []
+			parameters: params.call.parameters ? prepareDbParameters(params.call.parameters,params.method) : []
 		}];
 	}else{
 		prepared = prepareByProperty(params);

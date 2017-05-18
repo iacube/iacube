@@ -1,5 +1,5 @@
 Id;Name
-1;Proposed
-2;Assigned
-3;Approved
-4;Rejected
+PROPOSED;Proposed
+ASSIGNED;Assigned
+APPROVED;Approved
+REJECTED;Rejected

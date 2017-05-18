@@ -1,5 +1,6 @@
 Id;Name
-1;Open
-2;Closed
-3;Canceled
-4;On Hold
+OPEN;Open
+CLOSED;Closed
+CANCEL;Canceled
+HOLD;On Hold
+REJECT;Rejected

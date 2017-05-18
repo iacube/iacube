@@ -1,5 +1,5 @@
 Id;Name
-1;Call
-2;Note
-3;Email
-4;Pigeon Mail
+CALL;Call
+NOTE;Note
+EMAIL;Email
+OTHER;Pigeon Mail

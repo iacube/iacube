@@ -1,5 +1,5 @@
 import = [ 
-	{ 	
+	{ 
 		table  = "iacube.db::tables.Requisition.Candidates";
 		schema = "IACUBE";
 		file   = "iacube.db.initialDataImport.Requisition:Candidates.csv";

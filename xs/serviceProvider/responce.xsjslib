@@ -45,10 +45,10 @@ function prepareResponce(dbResult,call,message){
 	if(typeof call.result === "function"){
 		body = call.result(dbResult);
 	}else if(typeof call.result === "object"){
-		body = JSON.stringify(convertToResult(dbResult,call.result,message));
+		body = convertToResult(dbResult,call.result,message);
 	}else{
 		//don't transform
-		body = JSON.stringify(convertToResult(dbResult,{},message));
+		body = convertToResult(dbResult,{},message);
 	}
 	if(call.noCommitIfErrors){
 		if(dbResult.ERRORS.length !== 0){
@@ -57,7 +57,7 @@ function prepareResponce(dbResult,call,message){
 	}
 	
 	//response
-	$.response.setBody(body);
+	$.response.setBody(typeof body === "string" ? body : JSON.stringify(body));
 	$.response.status = $.net.http.OK;
 	
 	return commitAllowed;

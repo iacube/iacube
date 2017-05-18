@@ -216,7 +216,7 @@ context tables{
 	
 		entity Profiles{
 			key ProfileId		: profileId;
-				ExternalId		: String(1000);
+				ExternalId		: String(1001);
 				ProfileTypeId	: profileTypeId;
 				Link			: String(1000);
 				Headline		: LargeString;
@@ -302,11 +302,11 @@ context tables{
 	context Requisition{
 		
 		type reqId 		  	  : Integer;
-		type statusTypeId 	  : Integer;
-		type statusCodeTypeId : Integer;
-		type priorityId	  	  : Integer;
+		type statusTypeId 	  : String(10);
+		type statusCodeTypeId : String(10);
+		type priorityId	  	  : String(10);
 		type subcategoryId	  : Integer;
-		type commentTypeId	  : Integer;
+		type commentTypeId	  : String(10);
 //нужны ли в реквезишене ScheduleTypes EmploymentTypes?
 		entity Requisitions{
 			key ReqId			: reqId;
@@ -333,7 +333,7 @@ context tables{
 		entity Candidates{
 			key ReqId		 : reqId;
 			key CandidateId	 : tables.Candidate.candidateId;
-				StatusTypeId : statusTypeId;
+				StatusId 	 : statusTypeId;
 				ChangedBy	 : creator;
 				ChangedAt	 : datetime;
 		};
@@ -382,7 +382,7 @@ context tables{
 
 		entity Distances{
 			ReqId			: tables.Requisition.reqId;
-			CandidateId  	: tables.Candidate.candidateId;
+			ProfileId  		: tables.Profile.profileId;
 			DistanceTypeId	: distanceTypeId;
 			Distance 	 	: BinaryFloat;
 		};
