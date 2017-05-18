@@ -1,1 +1,2 @@
-Id;LastName;FirstName;MiddleName;BirthDate;GenderId;City;ProfArea
+CandidateId;LastName;FirstName;MiddleName;BirthDate;GenderId;City;ProfArea
+777;James;Bond;San Hose Maria Idalgo De Lopes;2012-12-12;1;Paris;Диванный эксперт

@@ -7,6 +7,7 @@ context tables{
 	type currency : String(4);
 	type name	  : String(100);
 	type bool	  : hana.TINYINT;
+	type datetime : UTCTimestamp;
 /*HH.ru tables*/
 	context _HH{
 
@@ -28,7 +29,7 @@ context tables{
 				Salary			: BinaryFloat;
 				SalaryCurr		: currency;	
 				Link			: String(1000);
-				LastChanged		: UTCTimestamp;
+				LastChanged		: datetime;
 		};
 
 		entity Contacts{
@@ -127,7 +128,7 @@ context tables{
 			ZIPcode		: String(100);
 			Summary		: LargeString;
 			Link		: String(1000);
-			LastChanged	: UTCTimestamp;
+			LastChanged	: datetime;
 		};
 		
 		entity Experience{
@@ -172,7 +173,7 @@ context tables{
 				MiddleName	: name;
 				BirthDate	: date;
 				GenderId	: genderTypeId;
-				City		: String(100);
+				City		: String(101);
 				ProfArea	: String(1000);
 		};
 		
@@ -220,12 +221,6 @@ context tables{
 				Summary			: LargeString;
 		};
 		
-		entity ProfileTypes{
-			key Id			: profileTypeId;
-				Description	: String(100);
-				IsResume	: bool;
-		};
-		
 		entity ProfileDetails{//was resumeDetails
 			ProfileId		: profileId;
 			DesiredPosition	: String(1000);
@@ -267,6 +262,13 @@ context tables{
 		
 
 		context _dictionary{
+		
+			entity ProfileTypes{
+				key Id			: profileTypeId;
+					Description	: String(100);
+					IsResume	: bool;
+			};
+		
 			entity EmploymentTypes{
 				key Id	 : employmentTypeId;
 					Name : String(50);
@@ -297,14 +299,25 @@ context tables{
 
 	context Requisition{
 		
-		type reqId 		  : Integer;
-		type statusTypeId : Integer;
+		type reqId 		  	  : Integer;
+		type statusTypeId 	  : Integer;
+		type statusCodeTypeId : Integer;
+		type priorityId	  	  : Integer;
+		type subcategoryId	  : Integer;
 		//нужны ли в реквезишене ScheduleTypes EmploymentTypes?
 		entity Requisitions{
-			key ReqId		: reqId;
-				Position	: String(1000);
+			key ReqId			: reqId;
+				Title			: String(100); 
+				ProjectId		: String(100);
+				PriorityId		: priorityId;
+				Location		: String(1001);
+				StatusCodeId	: statusCodeTypeId; 
+				SubcategoryId 	: subcategoryId;
+				CreatedBy		: String(100);
+            	CreatedAt		: datetime;
+				
 				Description	: LargeString;
-				Location	: String(1000);
+				Position	: String(1000);
 		};
 		
 		entity Candidates{
@@ -316,12 +329,27 @@ context tables{
 
 		entity Skills{
 			key ReqId	  : reqId;
-			key Skill	  : String(1000);
+			key Skill	  : String(1001);
 				IsPrimary : bool;
-				Weight	  : Integer;
+				Weight	  : BinaryFloat;
 		};
 		
 		context _dictionary{
+			
+			entity StatusCodeTypes{
+				key Id	 : statusCodeTypeId;
+					Name : String(50);
+			};
+			
+			entity SubcategoryTypes{
+				key Id	 : subcategoryId;
+					Name : String(50);
+			};
+			
+			entity PriorityTypes{
+				key Id	 : priorityId;
+					Name : String(50);
+			};
 			entity StatusTypes{
 				key Id	 : statusTypeId;
 					Name : String(50);
