@@ -1,0 +1,47 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:html="http://www.w3.org/1999/xhtml"
+xmlns:formatter="manage_vacancy.util.formatter" controllerName="manage_vacancy.SharedBlocks.candidates.CandidatesContr">
+	<Table id="idCandidates" items="{requis>RequisCandidatesCollection}">
+		<columns>
+			<Column hAlign="Center"></Column>
+			<Column hAlign="Left">
+				<Text text="{i18n>firstName}"/>
+			</Column>
+			<Column hAlign="Left">
+				<Text text="{i18n>secondName}"/>
+			</Column>
+			<Column hAlign="Left">
+				<Text text="{i18n>experience}"/>
+			</Column>
+			<Column hAlign="Left">
+				<Text text="{i18n>link}"/>
+			</Column>
+			<Column hAlign="Left">
+				<Text text="{i18n>overDist}"/>
+			</Column>
+			<Column hAlign="Left">
+				<Text text="{i18n>lastChanges}"/>
+			</Column>
+			<Column hAlign="Left">
+				<Text text="{i18n>status}"/>
+			</Column>
+		</columns>
+		<items>
+			<ColumnListItem type="Navigation">
+				<cells>
+					<Image src="{requis>Image}"/>
+					<Text text="{requis>FirstName}"/>
+					<Text text="{requis>SecondName}"/>
+					<Text text="{ parts [ {path: 'requis>StartYear', 
+										  {path: 'requis>EndYear' } ], 
+								  formatter:  'formatter.getExperience'}
+								  }"/>
+					<core:Icon src="sap-icon://globe"
+							   color="#6495ED"
+							   press="handleIconPress"/>
+						<Slider min="0" max="100" value="{requis>Weight}"/>
+						<ObjectNumber number="{requis>Weight}" unit="%"/>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+	</mvc:View>

@@ -23,7 +23,15 @@ sap.ui.define(function() {
 				priorFormatted = "{i18n>priorL}";
 			}
 			return priorFormatted;
+		},
+		
+		getExperience: function(startDate, endDate) {
+			return startDate - endDate;
 		}
+		
+		// getCandidateLinksTitle: function(sFirstName, sSecondName) {
+		// 	return sFirstName + " " + sSecondName + "Profiles";
+		// }
 	};
  
 	return formatter;

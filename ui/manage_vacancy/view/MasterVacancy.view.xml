@@ -29,7 +29,8 @@
 							icon="sap-icon://product"
 							title="{requis>Position}">
 						<attributes>
-			    			<ObjectAttribute text = "{requis>Location}"/>		      
+			    			<ObjectAttribute text = "{requis>Location}"/>
+			    			<ObjectAttribute text = "{requis>Project}"/>
 			    		</attributes>
 			    		<firstStatus>
 			    			<ObjectStatus 

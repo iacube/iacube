@@ -26,7 +26,8 @@ sap.ui.define([
 		types: [],
 		interfaces: [],
 		controls: [
-			"iacube.ui.common.InfoForm"
+			"iacube.ui.common.InfoForm",
+			"iacube.ui.common.SkillsTable"
 		],
 		elements: []
 	});
