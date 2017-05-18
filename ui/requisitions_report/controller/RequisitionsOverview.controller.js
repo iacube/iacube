@@ -1,7 +1,8 @@
 sap.ui.define([
 	"requisitions_report/controller/BaseController",
-	"iacube/ui/common/dataHelper"
-], function(Controller, DataHelper) {
+	"iacube/ui/common/dataHelper",
+	"iacube/ui/common/mapper"
+], function(Controller, DataHelper, Mapper) {
 	"use strict";
 
 	return Controller.extend("requisitions_report.controller.RequisitionsOverview", {
@@ -35,13 +36,13 @@ sap.ui.define([
 		 * @memberOf manage_vacancy.ui.requisitions_report.view.view.RequisitionsOverview
 		 */
 			onAfterRendering: function() {
-				//this.loadRequisitions();
+				this.loadRequisitions();
 			},
 		
 		loadRequisitions: function(){
 			var oModel = this.getModel("ui");
 			DataHelper.getRequisitions(this).then(function(aRequisitions){
-				oModel.setProperty("/requisitions", DataHelper.composeRequisitions(aRequisitions));
+				oModel.setProperty("/requisitions", Mapper.mapRequisitions(aRequisitions));
 			});
 		}
 
