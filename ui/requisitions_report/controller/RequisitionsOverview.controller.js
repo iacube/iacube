@@ -23,7 +23,7 @@ sap.ui.define([
 		 * @public
 		 */
 		onRequisitionPress: function(oEvent){
-			var sPath 	= oEvent.getSource().getBindingContext("ui").getPath();
+			var sPath = oEvent.getSource().getBindingContext("ui").getPath();
 			var iIndex	= sPath.split("/")[2];
 			this.getRouter().navTo("requisition", {
 				index: parseInt(iIndex)
@@ -35,9 +35,9 @@ sap.ui.define([
 		 * This hook is the same one that SAPUI5 controls get after being rendered.
 		 * @memberOf manage_vacancy.ui.requisitions_report.view.view.RequisitionsOverview
 		 */
-			onAfterRendering: function() {
-				this.loadRequisitions();
-			},
+		onAfterRendering: function() {
+			this.loadRequisitions();
+		},
 		
 		loadRequisitions: function(){
 			var oModel = this.getModel("ui");

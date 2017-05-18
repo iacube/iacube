@@ -21,6 +21,24 @@ sap.ui.define([
 						showCandidatesIcon: r.Candidates > 0 ? true : false
 					}
 				})
+			},
+			
+			mapRequisition: function(r) {
+				return {
+					ReqId: r.ReqId,
+					Title: r.Title,
+					ProjectId: r.ProjectId,
+					PriorityId: r.PriorityId,
+					Location: r.Location,
+					StatusCodeId: r.StatusCodeId,
+					SubcategoryId: r.SubcategoryId,
+					SubcategoryName: r.SubcategoryName,
+					CreatedBy: r.CreatedBy,
+					CreatedAt: new Date(r.CreatedAt),
+					Language: r.Language,
+					Keywords: r.Keywords,
+					Description: r.Description
+				}
 			}
 
 		};
