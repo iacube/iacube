@@ -10,12 +10,6 @@ sap.ui.define([
 	"use strict";
 
 	return VBox.extend("iacube.ui.common.InfoForm", {
-
-		metadata : {
-			properties : {
-				modelName : {type : "string", group : "Misc", defaultValue : "requis"},
-			}
-		},
 		
 		init: function() {
 			VBox.prototype.init.apply(this, arguments);
@@ -23,7 +17,6 @@ sap.ui.define([
 		},
 
 		createSimpleFormContent: function() {
-			var sModel = this.getModelName();
 			var oForm = new SimpleForm("infoForm", {
 				minWidth: 1024,
 				maxContainerCols: 2,
@@ -42,7 +35,7 @@ sap.ui.define([
 						labelFor: "idPos"
 					}),
 					new Input("idPos", {
-						value: "{"+sModel+">Position}"
+						value: "{ui>Title}"
 					}).setEditable(false),
 
 					new Label({
@@ -50,7 +43,7 @@ sap.ui.define([
 						labelFor: "idProj"
 					}),
 					new Input("idProj", {
-						value: "{ui>Project}",
+						value: "{ui>ProjectId}",
 						showSuggestion: true,
 						showValueHelp: true,
 						events: [{
@@ -67,7 +60,7 @@ sap.ui.define([
 					}),
 					
 					new ComboBox("idPrior", {
-						selectedKey: "{ui>Priority}"
+						selectedKey: "{ui>PriorityId}"
 					}).bindAggregation("items", "ui>/AvailablePriorities", new Item({
 							key: "{ui>PriorityCode}",
 							text: "{ui>PriorityCode}"
@@ -99,7 +92,7 @@ sap.ui.define([
 					new TextArea("idKeyW", {
 						growing: true,
 						growingMaxLines: 5,
-						value: ""
+						value: "{ui>Keywords}"
 					}).setEditable(false),
 					new Label({
 						text: "{i18n>descr}",
