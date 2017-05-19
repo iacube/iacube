@@ -65,11 +65,12 @@
 					"bundleName": "requisitions_report.i18n.i18n"
 				}
 			},
-			"ui": {
-                "type": "sap.ui.model.json.JSONModel",
-                "uri": "localService/requisitions.json"
-            }
-			
+			"i18nCom": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "iacube.ui.common.messagebundle"
+				}
+			}			
 		},
 		"routing": {
 			"config": {
