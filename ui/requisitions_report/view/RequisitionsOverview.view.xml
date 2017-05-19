@@ -1,91 +1,94 @@
-<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:fb="sap.ui.comp.filterbar"
-	controllerName="requisitions_report.controller.RequisitionsOverview" xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page title="Title" id="page1">
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m" xmlns:fb="sap.ui.comp.filterbar"
+	controllerName="requisitions_report.controller.RequisitionsOverview"
+	xmlns:html="http://www.w3.org/1999/xhtml">
+	<Page title="Job Requisitions Report" id="page1">
 		<content>
-			<fb:FilterBar reset="onReset" search="onSearch" showRestoreButton="true" showClearButton="true">
+			<fb:FilterBar reset="onReset" search="onSearch"
+				showRestoreButton="true" showClearButton="true" useToolbar="true"
+				id="req_fb">
+
 				<fb:filterItems>
-					<fb:FilterItem name="A" label="labelA">
+					<fb:FilterItem name="req_id" label="{i18n>req.table.id}">
 						<fb:control>
-							<Input type="Text"/>
+							<Input type="Text" />
 						</fb:control>
 					</fb:FilterItem>
-					<fb:FilterItem name="B" label="labelB" labelTooltip="Tooltip Example" mandatory="true">
+					<fb:FilterItem name="req_name" label="{i18n>req.table.name}">
 						<fb:control>
-							<Input type="Text"/>
+							<Input type="Text" />
+						</fb:control>
+					</fb:FilterItem>
+					<fb:FilterItem name="req_account" label="{i18n>req.table.account}">
+						<fb:control>
+							<Input type="Text" />
+						</fb:control>
+					</fb:FilterItem>
+					<fb:FilterItem name="req_subcategory" label="{i18n>req.table.subcategory}">
+						<fb:control>
+							<Input type="Text" />
+						</fb:control>
+					</fb:FilterItem>
+					<fb:FilterItem name="req_status" label="{i18n>req.table.status}">
+						<fb:control>
+							<Input type="Text" />
 						</fb:control>
 					</fb:FilterItem>
 				</fb:filterItems>
-				<fb:filterGroupItems>
-					<fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="A" label="labelA" labelTooltip="Tooltip GroupItem Example">
-						<fb:control>
-							<Input type="Text"/>
-						</fb:control>
-					</fb:FilterGroupItem>
-					<fb:FilterGroupItem groupName="G1" groupTitle="Group1" name="B" label="labelB">
-						<fb:control>
-							<Input type="Text"/>
-						</fb:control>
-					</fb:FilterGroupItem>
-					<fb:FilterGroupItem groupName="G2" groupTitle="Group2" name="A2" label="labelA2" labelTooltip="Tooltip GroupItem Example">
-						<fb:control>
-							<Input type="Text"/>
-						</fb:control>
-					</fb:FilterGroupItem>
-					<fb:FilterGroupItem groupName="G2" groupTitle="Group2" name="B2" label="labelB2">
-						<fb:control>
-							<Input type="Text"/>
-						</fb:control>
-					</fb:FilterGroupItem>
-				</fb:filterGroupItems>
+
 			</fb:FilterBar>
 			<VBox class="sapUiSmallMargin">
 				<Table id="idProductsTable" inset="false" items="{ui>/requisitions}">
 					<headerToolbar>
 						<Toolbar>
-							<Title text="Job Requisitions" level="H2"/>
+							<Title text="Job Requisitions" level="H2" />
 						</Toolbar>
 					</headerToolbar>
 					<columns>
-						<Column width="12em">
-							<Text text="Id"/>
+						<Column width="8%">
+							<Text text="Id" />
 						</Column>
-						<Column minScreenWidth="Tablet" demandPopin="true">
-							<Text text="Name"/>
+						<Column demandPopin="true">
+							<Text text="Name" />
 						</Column>
-						<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Right">
-							<Text text="Account"/>
+						<Column demandPopin="true" hAlign="Right">
+							<Text text="Account" />
 						</Column>
 						<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
-							<Text text="Subcategory"/>
+							<Text text="Subcategory" />
 						</Column>
-						<Column hAlign="Right">
-							<Text text="Created By"/>
+						<Column>
+							<Text text="Created By" />
 						</Column>
-						<Column hAlign="Right">
-							<Text text="Date / Time Opened"/>
+						<Column>
+							<Text text="Date / Time Opened" />
 						</Column>
-						<Column hAlign="Right">
-							<Text text="Remaining Days"/>
+						<Column width="8%">
+							<Text text="Remaining Days" />
 						</Column>
-						<Column hAlign="Right">
-							<Text text="Status"/>
+						<Column>
+							<Text text="Status" />
 						</Column>
-						<Column hAlign="Right">
-							<Text text="Candidates"/>
+						<Column>
+							<Text text="Candidates" />
 						</Column>
 					</columns>
 					<items>
 						<ColumnListItem type="Navigation" press="onRequisitionPress">
 							<cells>
-								<Text text="{ui>ReqId}"/>
-								<Text text="{ui>ReqName}"/>
-								<Text text="{ui>ProjectName}"/>
-								<Text text="{ui>SubcategoryName}"/>
-								<Text text="{ui>CreatedBy}"/>
-								<Text text="{ui>CreatedAt}"/>
-								<Text text="{ui>RemainingDays}"/>
-								<ObjectStatus text="{ui>StatusCode}" state="Success"/>
-								<core:Icon src="sap-icon://employee" color="#031E48"/>
+								<Text text="{ui>ReqId}" />
+								<Text text="{ui>Title}" />
+								<Text text="{ui>ProjectId}" />
+								<Text text="{ui>SubcategoryName}" />
+								<Text text="{ui>CreatedBy}" />
+								<!-- <Text text="{ui>CreatedAt}"/> -->
+								<!-- <DatePicker value="{ui>CreatedAt}" displayFormat="short" editable="false"/> -->
+								<Text
+									text="{model: 'ui', path: 'CreatedAt', type:'sap.ui.model.type.DateTime', formatOptions: {style:'medium'}}" />
+								<Text text="{ui>RemainingDays}" />
+								<ObjectStatus text="{ui>StatusCodeId}" state="Success" />
+								<core:Icon visible="{showCandidatesIcon}" src="sap-icon://employee"
+									color="#031E48" />
 							</cells>
 						</ColumnListItem>
 					</items>
@@ -94,8 +97,8 @@
 		</content>
 		<footer>
 			<Toolbar>
-				<ToolbarSpacer/>
-				<Button text="Show Candidates"/>
+				<ToolbarSpacer />
+				<Button text="Show Candidates" />
 			</Toolbar>
 		</footer>
 	</Page>

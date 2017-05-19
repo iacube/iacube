@@ -10,7 +10,7 @@ sap.ui.define([
 	"use strict";
 
 	return VBox.extend("iacube.ui.common.InfoForm", {
-
+		
 		init: function() {
 			VBox.prototype.init.apply(this, arguments);
 			this.createSimpleFormContent();
@@ -31,75 +31,75 @@ sap.ui.define([
 
 				content: [
 					new Label({
-						text: "{i18n>requisName}",
+						text: "{i18nCom>requisName}",
 						labelFor: "idPos"
 					}),
 					new Input("idPos", {
-						value: "{requis>Position}"
+						value: "{ui>Title}"
 					}).setEditable(false),
 
 					new Label({
-						text: "{i18n>Project}",
+						text: "{i18nCom>Project}",
 						labelFor: "idProj"
 					}),
 					new Input("idProj", {
-						value: "{requis>Project}",
+						value: "{ui>ProjectId}",
 						showSuggestion: true,
 						showValueHelp: true,
 						events: [{
 							valueHelpRequest: "this._handleProjValueHelp"
 						}]
-					}).setEditable(false).bindAggregation("suggestionItems", "requis>/JobRequisCollection",
+					}).setEditable(false).bindAggregation("suggestionItems", "ui>/JobRequisCollection",
 						new Item({
-							text: "{requis>Project}"
+							text: "{ui>Project}"
 						})),
 						
 					new Label({
-						text: "{i18n>priority}",
+						text: "{i18nCom>priority}",
 						labelFor: "idPrior"
 					}),
 					
 					new ComboBox("idPrior", {
-						selectedKey: "{requis>Priority}"
-					}).bindAggregation("items", "requis>/AvailablePriorities", new Item({
-							key: "{requis>PriorityCode}",
-							text: "{requis>PriorityCode}"
+						selectedKey: "{ui>PriorityId}"
+					}).bindAggregation("items", "ui>/AvailablePriorities", new Item({
+							key: "{ui>PriorityCode}",
+							text: "{ui>PriorityCode}"
 						})).setEditable(false),
 					
 					new Label({
-						text: "{i18n>location}",
+						text: "{i18nCom>location}",
 						labelFor: "idLocation"
 					}),
 					new Input("idLocation", {
-						value: "{requis>Location}"
+						value: "{ui>Location}"
 					}).setEditable(false),
 
 					new Label({
-						text: "{i18n>language}",
+						text: "{i18nCom>language}",
 						labelFor: "idLangu"
 					}),
 					new ComboBox("idLangu", {
-						selectedKey: "{requis>Language}"
-					}).bindAggregation("items", "requis>/AvailableLanguages", new Item({
-							key: "{requis>SlsLang}",
-							text: "{requis>SlsLang}"
+						selectedKey: "{ui>Language}"
+					}).bindAggregation("items", "ui>/AvailableLanguages", new Item({
+							key: "{ui>SlsLang}",
+							text: "{ui>SlsLang}"
 						})).setEditable(false),
 						
 					new Label({
-						text: "{i18n>keyWords}",
+						text: "{i18nCom>keyWords}",
 						labelFor: "idKeyW"
 					}),
 					new TextArea("idKeyW", {
 						growing: true,
 						growingMaxLines: 5,
-						value: ""
+						value: "{ui>Keywords}"
 					}).setEditable(false),
 					new Label({
-						text: "{i18n>descr}",
+						text: "{i18nCom>descr}",
 						labelFor: "idDescr"
 					}),
 					new TextArea("idDescr", {
-						value: "{requis>Description}",
+						value: "{ui>Description}",
 						rows: 7
 					}).setEditable(false)
 				]

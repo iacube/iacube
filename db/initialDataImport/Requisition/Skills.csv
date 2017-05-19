@@ -1,3 +1,4 @@
 ReqId;Skill;IsPrimary;Weight
-7788;Cooking;1;1
-7788;Fill the power;0;100
+7788;Power Industry;1;48
+7788;Teamwork;0;85
+7788;Unicorn management;0;4
