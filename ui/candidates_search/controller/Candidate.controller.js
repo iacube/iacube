@@ -4,7 +4,7 @@ sap.ui.define([
 ], function(Controller, DataHelper) {
 	"use strict";
 
-	return Controller.extend("requisitions_report.controller.Requisition", {
+	return Controller.extend("candidates_search.controller.Requisition", {
 
 		/**
 		 * Called when a controller is instantiated and its View controls (if available) are already created.
@@ -24,7 +24,7 @@ sap.ui.define([
 		onRouteMatched: function(oEvent){		
 			if(oEvent.getParameter("name") === "config") {
 				var iIndex = oEvent.getParameter("arguments").index;				
-				var sPath = "/requisitions/" + iIndex;				
+				var sPath = "/candidates/" + iIndex;				
 				this.getView().bindElement("ui>" + sPath);
 			}			
 		}

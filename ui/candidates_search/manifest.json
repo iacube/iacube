@@ -1,7 +1,7 @@
 {
 	"_version": "1.5.0",
 	"sap.app": {
-		"id": "requisitions_report",
+		"id": "candidates_search",
 		"type": "application",
 		"i18n": "i18n/i18n.properties",
 		"applicationVersion": {
@@ -39,7 +39,7 @@
 
 	"sap.ui5": {
 		"rootView": {
-			"viewName": "requisitions_report.view.Main",
+			"viewName": "candidates_search.view.Main",
 			"type": "XML"
 		},
 		"dependencies": {
@@ -62,7 +62,7 @@
 			"i18n": {
 				"type": "sap.ui.model.resource.ResourceModel",
 				"settings": {
-					"bundleName": "requisitions_report.i18n.i18n"
+					"bundleName": "candidates_search.i18n.i18n"
 				}
 			},
 			"ui": {
@@ -75,7 +75,7 @@
 			"config": {
 				"routerClass": "sap.m.routing.Router",
 				"viewType": "XML",
-				"viewPath": "requisitions_report.view",
+				"viewPath": "candidates_search.view",
 				"controlId": "app",
 				"controlAggregation": "pages",
 				"async": true,
@@ -93,33 +93,20 @@
 				"target": "home"				
 			},
 			{
-				"pattern"	: "requisition/{index}",
-	  			"name"		: "requisition",
-	  			"target"	: "requisition"
-			},
-			{
-				"pattern"	: "requisition/{index}/candidates",
-	  			"name"		: "candidates",
-	  			"target"	: "candidatesOverview"
-			},
-			{
-				"pattern"	: "requisition/{index}/candidates/{index2}",
+				"pattern"	: "candidate/{index}",
 	  			"name"		: "candidate",
 	  			"target"	: "candidate"
-			}],
+			}
+			],
 			"targets": {
 				"home": {
-					"viewName": "RequisitionsOverview"
-				},
-				"requisition": {
-					"viewName": "Requisition"
-				},
-				"candidatesOverview": {
 					"viewName": "CandidatesOverview"
-				},				
+				},
 				"candidate": {
 					"viewName": "Candidate"
 				}
+								
+				
 			}
 		},
 		"resources": {

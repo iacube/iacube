@@ -334,7 +334,7 @@ context tables{
 			key ReqId		 : reqId;
 			key CandidateId	 : tables.Candidate.candidateId;
 				StatusId 	 : statusTypeId;
-				ChangedBy	 : String(101);
+				ChangedBy	 : creator;
 				ChangedAt	 : datetime;
 		};
 		

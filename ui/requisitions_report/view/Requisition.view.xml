@@ -40,7 +40,11 @@
 						<uxap:subSections>
 							<uxap:ObjectPageSubSection title="">
 								<uxap:blocks>
+<<<<<<< HEAD
 									<common:InfoForm />
+=======
+									<common:InfoForm/>
+>>>>>>> branch 'dev' of https://github.com/iacube/iacube.git
 								</uxap:blocks>
 							</uxap:ObjectPageSubSection>
 						</uxap:subSections>
@@ -50,7 +54,11 @@
 						<uxap:subSections>
 							<uxap:ObjectPageSubSection title="{i18n>req.detail.skills}">
 								<uxap:blocks>
+<<<<<<< HEAD
 									<common:SkillsTable />
+=======
+									<common:SkillsTable/>
+>>>>>>> branch 'dev' of https://github.com/iacube/iacube.git
 								</uxap:blocks>
 							</uxap:ObjectPageSubSection>
 						</uxap:subSections>

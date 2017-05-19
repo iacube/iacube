@@ -35,7 +35,7 @@ sap.ui.define([
 						labelFor: "idPos"
 					}),
 					new Input("idPos", {
-						value: "{ui>Title}"
+						value: "{ui>Position}"
 					}).setEditable(false),
 
 					new Label({
@@ -43,7 +43,7 @@ sap.ui.define([
 						labelFor: "idProj"
 					}),
 					new Input("idProj", {
-						value: "{ui>ProjectId}",
+						value: "{ui>Project}",
 						showSuggestion: true,
 						showValueHelp: true,
 						events: [{
@@ -60,7 +60,7 @@ sap.ui.define([
 					}),
 					
 					new ComboBox("idPrior", {
-						selectedKey: "{ui>PriorityId}"
+						selectedKey: "{ui>Priority}"
 					}).bindAggregation("items", "ui>/AvailablePriorities", new Item({
 							key: "{ui>PriorityCode}",
 							text: "{ui>PriorityCode}"
@@ -92,7 +92,7 @@ sap.ui.define([
 					new TextArea("idKeyW", {
 						growing: true,
 						growingMaxLines: 5,
-						value: "{ui>Keywords}"
+						value: ""
 					}).setEditable(false),
 					new Label({
 						text: "{i18n>descr}",

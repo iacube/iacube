@@ -1,5 +1,5 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:fb="sap.ui.comp.filterbar"
-	controllerName="requisitions_report.controller.RequisitionsOverview" xmlns:html="http://www.w3.org/1999/xhtml">
+	controllerName="candidates_search.controller.CandidatesOverview" xmlns:html="http://www.w3.org/1999/xhtml">
 	<Page title="Title" id="page1">
 		<content>
 			<fb:FilterBar reset="onReset" search="onSearch" showRestoreButton="true" showClearButton="true">
