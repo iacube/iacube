@@ -1,0 +1,125 @@
+PROCEDURE "IACUBE"."iacube.db.procedures.candidate::getCandidate"(
+	IN 	candidateId  INTEGER,
+	OUT candidate	 "IACUBE"."iacube.db::types.candidate"				DEFAULT EMPTY,
+	OUT contacts	 "IACUBE"."iacube.db::types.candidateContacts"		DEFAULT EMPTY,
+	OUT languages	 "IACUBE"."iacube.db::types.candidateLanguages"		DEFAULT EMPTY,
+	
+	OUT profiles	 "IACUBE"."iacube.db::types.candidateProfiles"		DEFAULT EMPTY,
+	OUT employments	 "IACUBE"."iacube.db::types.candidateEmployments"	DEFAULT EMPTY,
+	OUT experience	 "IACUBE"."iacube.db::types.candidateExperience"	DEFAULT EMPTY,
+	OUT schedules	 "IACUBE"."iacube.db::types.candidateSchedules"		DEFAULT EMPTY,
+	OUT skills		 "IACUBE"."iacube.db::types.candidateSkills"		DEFAULT EMPTY,
+	OUT requisitions "IACUBE"."iacube.db::types.candidateRequisitions"	DEFAULT EMPTY
+) 
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER 
+	DEFAULT SCHEMA IACUBE
+	READS SQL DATA AS
+BEGIN
+
+	candidate =
+		SELECT
+				"CandidateId",
+				"LastName",
+				"FirstName",
+				"MiddleName",
+				"BirthDate",
+				"GenderId",
+				"Location",
+				"ProfArea"
+			FROM "iacube.db::tables.Candidate.Candidates"
+			WHERE "CandidateId" = :candidateId
+	;
+	
+	contacts = 
+		SELECT
+				"CandidateId",
+				"ContactTypeId",
+				"Value"
+			FROM "iacube.db::tables.Candidate.Contacts"
+			WHERE  "CandidateId" = :candidateId
+	;
+	languages =
+		SELECT
+				"CandidateId",
+				"LanguageId",
+				"LevelId"
+			FROM "iacube.db::tables.Candidate.Languages"
+			WHERE "CandidateId" = :candidateId
+	;
+	
+	profiles = 
+		SELECT
+				a."CandidateId",
+				a."ProfileId",
+				b."ExternalId",
+				b."ProfileTypeId",
+				b."Link",
+				b."Headline",
+				b."Summary",
+				c."DesiredPosition",
+				c."Salary",
+				c."SalaryCurr",
+				c."RelocationId",
+				c."BusinessTripId"
+			FROM "iacube.db::tables.Candidate.Profiles" AS a
+			LEFT JOIN "iacube.db::tables.Profile.Profiles" AS b
+				ON a."ProfileId" = b."ProfileId"
+			LEFT JOIN "iacube.db::tables.Profile.ProfileDetails" AS c
+				ON a."ProfileId" = c."ProfileId"
+			WHERE a."CandidateId" = :candidateId
+	;
+	
+	employments = 
+		SELECT 
+				a."ProfileId",
+				a."EmploymentId"
+			FROM "iacube.db::tables.Profile.Employments" AS a
+			INNER JOIN :profiles As b
+				ON a."ProfileId" = b."ProfileId"
+	;
+	
+	experience = 
+		SELECT
+				a."ProfileId",
+				a."Company",
+				a."Position",
+				a."Description",
+				a."StartDate",
+				a."EndDate"
+			FROM "iacube.db::tables.Profile.Experience" As a
+			INNER JOIN :profiles As b
+				ON a."ProfileId" = b."ProfileId"
+	;
+	schedules = 
+		SELECT 
+				a."ProfileId",
+				a."ScheduleId"
+			FROM "iacube.db::tables.Profile.Schedules" AS a
+			INNER JOIN :profiles As b
+				ON a."ProfileId" = b."ProfileId"
+	;
+	skills = 
+		SELECT
+				a."ProfileId",
+				a."Skill"
+			FROM "iacube.db::tables.Profile.Skills" AS a
+			INNER JOIN :profiles As b
+				ON a."ProfileId" = b."ProfileId"
+	;
+			
+	requisitions = 
+		SELECT 
+				a."CandidateId",
+				a."ReqId",
+				c."Title",
+				a."StatusId",
+				a."AssignedBy",
+				a."AssignedAt"
+			FROM "iacube.db::tables.Requisition.Candidates" AS a
+			LEFT JOIN "iacube.db::tables.Requisition.Requisitions" AS c
+				ON a."ReqId" = c."ReqId"
+			WHERE a."CandidateId" = :candidateId
+	;
+
+END;

@@ -23,10 +23,20 @@ context types {
 	type subcategoryId	  : Integer;
 	type commentTypeId	  : String(10);
 	
-	type profileId 	 	  : Integer;
-	
-	type candidateId   	  : Integer;
-	
+	type profileId 	 	    : Integer;
+	type profileTypeId    	: Integer;
+	type relocationTypeId 	: String(10);
+	type businessTripTypeId	: String(10);
+	type employmentTypeId	: String(10);
+	type scheduleTypeId		: String(10);
+		
+	type candidateId   	 : Integer;
+	type genderTypeId  	 : String(1);
+	type languageLevelId : String(10);
+	type languageId 	 : String(10);
+	type contactTypeId 	 : String(10);
+			
+		
 	type error{
 		id		: Integer;
 		details : String(1000);
@@ -142,12 +152,112 @@ context types {
 		"Text"			: String(5000);
 	}
 //Candidates
+	type searchCandidatesCandidates{
+		CandidateId	: candidateId;
+		LastName	: name;
+		FirstName	: name;
+		Location	: String(1000);
+		ProfArea	: String(1000);
+	};
+	type searchCandidatesProfiles{
+		CandidateId	: candidateId;
+		ProfileId		: profileId;
+		ExternalId		: String(1001);
+		ProfileTypeId	: profileTypeId;
+		Link			: String(1000);
+	};
+	type searchCandidatesSalary{
+		CandidateId	: candidateId;
+		ProfileId		: profileId;
+		Salary			: BinaryFloat;
+		SalaryCurr		: currency;
+	};
+	type searchCandidatesContacts{
+		CandidateId   : candidateId;
+		ContactTypeId : contactTypeId;
+		Value		  : String(1000);
+	};
+	type searchCandidatesLanguages{
+		CandidateId : candidateId;
+		LanguageId 	: languageId;
+		LevelId		: languageLevelId;
+	};
+	type searchCandidatesRequisitions{
+		CandidateId	 : candidateId;
+		ReqId		 : reqId;
+		Title		 : String(100); 
+		StatusId 	 : statusTypeId;
+		AssignedBy	 : creator;
+		AssignedAt	 : datetime;
+	};
+
+	type candidate{
+		CandidateId : candidateId;
+		LastName	: name;
+		FirstName	: name;
+		MiddleName	: name;
+		BirthDate	: date;
+		GenderId	: genderTypeId;
+		Location	: String(1000);
+		ProfArea	: String(1000);
+	};
+	type candidateContacts{
+		CandidateId   : candidateId;
+		ContactTypeId : contactTypeId;
+		Value		  : String(1000);
+	};
 	
+	type candidateLanguages{
+		CandidateId : candidateId;
+		LanguageId 	: languageId;
+		LevelId		: languageLevelId;
+	};
 	
+	type candidateProfiles{
+		CandidateId 	: candidateId;
+		ProfileId		: profileId;
+		ExternalId		: String(1001);
+		ProfileTypeId	: profileTypeId;
+		Link			: String(1000);
+		Headline		: LargeString;
+		Summary			: LargeString;
+		DesiredPosition	: String(1000);
+		Salary			: BinaryFloat;
+		SalaryCurr		: currency;
+		RelocationId	: relocationTypeId;
+		BusinessTripId	: businessTripTypeId;
+	};
 	
+	type candidateEmployments{
+		ProfileId	 : profileId;
+		EmploymentId : employmentTypeId;
+	};
 	
+	type candidateSchedules{
+		ProfileId	: profileId;
+		ScheduleId	: scheduleTypeId;
+	};
 	
+	type candidateExperience{
+		ProfileId	: profileId;
+		Company		: String(100);
+		Position	: String(100);
+		Description	: LargeString;
+		StartDate	: date;
+		EndDate		: date;
+	};
 	
+	type candidateSkills{
+		ProfileId : profileId;
+		Skill	  : String(100);
+	};
 	
-	
+	type candidateRequisitions{
+		CandidateId	 : candidateId;
+		ReqId		 : reqId;
+		Title		 : String(100); 
+		StatusId 	 : statusTypeId;
+		AssignedBy	 : creator;
+		AssignedAt	 : datetime;
+	};
 };

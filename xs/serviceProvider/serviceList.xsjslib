@@ -6,7 +6,7 @@ var service = {
 		requisitions : constants.requisitionPath + "/requisitions",
 		requisition  : constants.requisitionPath + "/requisition",
 		
-		searchCandidates: constants.candidatesPath + "/searchCandidates",
+		searchCandidates: constants.candidatePath + "/searchCandidates",
 	};
 	
 	return "/" + service[serviceName].replace(/\./g,"/") + constants.lib;

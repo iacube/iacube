@@ -26,6 +26,7 @@ delete from "IACUBE"."iacube.db::tables._HH.Experience";
 delete from "IACUBE"."iacube.db::tables._HH.Resumes";
 delete from "IACUBE"."iacube.db::tables._HH.Schedules";
 delete from "IACUBE"."iacube.db::tables._HH.Skills";
+delete from "IACUBE"."iacube.db::tables._HH.Language";
 delete from "IACUBE"."iacube.db::tables._HH._mapping.BusinessTrip";
 delete from "IACUBE"."iacube.db::tables._HH._mapping.Contact";
 delete from "IACUBE"."iacube.db::tables._HH._mapping.Employment";

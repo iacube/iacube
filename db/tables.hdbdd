@@ -228,11 +228,11 @@ context tables{
 	
 		type profileId 	 		: Integer;
 	 	type profileTypeId    	: Integer;
-		type relocationTypeId 	: Integer;
-		type businessTripTypeId	: Integer;
-		type employmentTypeId	: Integer;
-		type scheduleTypeId		: Integer;
-		type industryTypeId		: Integer;
+		type relocationTypeId 	: String(10);
+		type businessTripTypeId	: String(10);
+		type employmentTypeId	: String(10);
+		type scheduleTypeId		: String(10);
+		//type industryTypeId		: Integer;
 	
 		entity Profiles{
 			key ProfileId		: profileId;
@@ -244,13 +244,13 @@ context tables{
 		};
 		
 		entity ProfileDetails{//was resumeDetails
-			ProfileId		: profileId;
-			DesiredPosition	: String(1000);
-			CareerStarter	: bool;//?????change to experience
-			Salary			: BinaryFloat;
-			SalaryCurr		: currency;
-			RelocationId	: relocationTypeId;
-			BusinessTripId	: businessTripTypeId;
+			key ProfileId		: profileId;
+				DesiredPosition	: String(1000);
+				CareerStarter	: bool;//?????change to experience
+				Salary			: BinaryFloat;
+				SalaryCurr		: currency;
+				RelocationId	: relocationTypeId;
+				BusinessTripId	: businessTripTypeId;
 		};
 		
 		entity Employments{

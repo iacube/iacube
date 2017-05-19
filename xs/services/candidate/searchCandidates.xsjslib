@@ -1,39 +1,18 @@
 var call = {
 	get:{
-		procedure:
-			'SELECT ' +
-					'a."ReqId",' +
-		            'a."Title",' +
-		            'a."ProjectId",' +
-		            'a."PriorityId",' +
-		            'a."Location",' +
-		            'a."StatusCodeId",' +
-		            'b."Name" AS "SubcategoryName",' +
-		            'a."CreatedBy",' +
-		            'a."CreatedAt",' +
-		            'TO_INTEGER(COUNT(c."CandidateId")) AS "Candidates"' +
-				' FROM {schema}."{dbPath}::tables.Requisition.Requisitions" AS a' +
-		        ' LEFT JOIN {schema}."{dbPath}::tables.Requisition._dictionary.SubcategoryTypes" AS b' + 
-		        	' ON a."SubcategoryId" = b."Id"' +
-		        ' LEFT JOIN {schema}."{dbPath}::tables.Requisition.Candidates" AS c' +
-		        	' ON a."ReqId" = c."ReqId"' +
-		        ' GROUP BY ' +
-		        	'a."ReqId",' +
-		        	'a."Title",' +
-		            'a."ProjectId",' +
-		            'a."PriorityId",' +
-		            'a."Location",' +
-		            'a."StatusCodeId",' +
-		            'b."Name",' +
-		            'a."CreatedBy",' +
-		        	'a."CreatedAt"',
+		procedure:"iacube.db.procedures.candidate::searchCandidates",
 		parameters:{
-			top:{
+			/*top:{
 				type:"integer"
 			},
 			skip:{
 				type:"integer"
 			},
+			*/
+			searchTerm:{
+				type:"string"
+			},
+			/*
 			filter:{
 				type:"array",
 				columns:{
@@ -44,7 +23,40 @@ var call = {
 						type:"string"
 					}
 				}
+			}*/
+		},
+		result: function(responce){
+			
+			var i,j;
+			var candidate = {};
+			var result = [];
+			
+			for(i = 0; i < responce.CANDIDATES; i++){
+				
+				candidate = {
+					CandidateId:responce.CANDIDATES[i].CandidateId,
+					LastName:responce.CANDIDATES[i].LastName,
+					FirstName:responce.CANDIDATES[i].FirstName,
+					Location:responce.CANDIDATES[i].Location,
+					ProfArea:responce.CANDIDATES[i].ProfArea
+				};
+				
+				["PROFILES","SALARY","CONTACTS","LANGUAGES","REQUISITIONS"].forEach(function(entity){
+					
+					var newEntity = entity.toLowerCase();
+					
+					candidate[newEntity] = [];
+					
+					for(j = 0; j < responce[entity].length; i++){
+						if(responce.CANDIDATES[i].CandidateId === responce[entity][j].CandidateId)
+							candidate[newEntity].push(responce[entity][j]);
+					}
+				});
+				
+				result.push(candidate);
 			}
+			
+			return requisition;
 		}
 	}	
 };

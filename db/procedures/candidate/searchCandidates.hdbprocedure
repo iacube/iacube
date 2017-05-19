@@ -1,9 +1,14 @@
 PROCEDURE "IACUBE"."iacube.db.procedures.candidate::searchCandidates"(
-	IN 	startFrom	INTEGER,
-	IN 	endWith		INTEGER,
-	IN 	searchterm	NVARCHAR(1000),
-	IN 	filter		"IACUBE"."iacube.db::types.nameValue"  DEFAULT EMPTY,
-	OUT candidates	"IACUBE"."iacube.db::types.candidates" DEFAULT EMPTY
+	--IN 	pageStart	 INTEGER,
+	--IN 	pageEnd		 INTEGER,
+	IN 	searchTerm	 NVARCHAR(1000),
+	--IN 	filter		 "IACUBE"."iacube.db::types.nameValue"					  DEFAULT EMPTY,
+	OUT candidates	 "IACUBE"."iacube.db::types.searchCandidatesCandidates"	  DEFAULT EMPTY,
+	OUT profiles	 "IACUBE"."iacube.db::types.searchCandidatesProfiles"	  DEFAULT EMPTY,
+	OUT salary		 "IACUBE"."iacube.db::types.searchCandidatesSalary"		  DEFAULT EMPTY,
+	OUT contacts	 "IACUBE"."iacube.db::types.searchCandidatesContacts"	  DEFAULT EMPTY,
+	OUT languages	 "IACUBE"."iacube.db::types.searchCandidatesLanguages"	  DEFAULT EMPTY,
+	OUT requisitions "IACUBE"."iacube.db::types.searchCandidatesRequisitions" DEFAULT EMPTY
 )
 	LANGUAGE SQLSCRIPT
 	SQL SECURITY INVOKER 
@@ -11,127 +16,26 @@ PROCEDURE "IACUBE"."iacube.db.procedures.candidate::searchCandidates"(
 	READS SQL DATA AS
 BEGIN
 
-
-	details = 
-		SELECT
-				a."ReqId",
-				a."Title",
-				a."ProjectId",
-				a."PriorityId",
-				a."Location",
-				a."StatusCodeId",
-				a."SubcategoryId",
-				b."Name" AS "SubcategoryName",
-				a."CreatedBy",
-		        a."CreatedAt",
-				a."Language",
-				a."Keywords",
-				a."Description"
-			FROM "iacube.db::tables.Requisition.Requisitions" AS a
-			LEFT JOIN "iacube.db::tables.Requisition._dictionary.SubcategoryTypes" As b
-				ON a."SubcategoryId" = b."Id"
-			WHERE a."ReqId" = :reqId
-	;
-	skills =
-		SELECT 
-				--"ReqId",
-				"Skill",
-				"Weight"
-			FROM "iacube.db::tables.Requisition.Skills"
-			WHERE "ReqId" = :reqId
-	;
 	candidates = 
 		SELECT
-				--a."ReqId",
 				a."CandidateId",
-				a."StatusId",
-				a."ChangedAt",
-				b."FirstName",
-				b."LastName",
-				null AS "Experience",
-				null AS "Distance"
-			FROM "iacube.db::tables.Requisition.Candidates"	AS a
-			INNER JOIN "iacube.db::tables.Candidate.Candidates" AS b
-				ON a."CandidateId"  = b."CandidateId"
-			WHERE a."ReqId" = :reqId
-	;
-	profiles = 
-		SELECT 
-				--a."ReqId",
-				a."CandidateId",
-				b."ProfileId",
-				c."ExternalId",
-				c."ProfileTypeId",
-				c."Link"
-			FROM :candidates AS a
-			INNER JOIN "iacube.db::tables.Candidate.Profiles" AS b
-				ON a."CandidateId" = b."CandidateId"
-			INNER JOIN "iacube.db::tables.Profile.Profiles" AS c
-				ON b."ProfileId" = c."ProfileId"
-			
-	;
-	
-	experience = 
-		SELECT 
-				a."ProfileId",
-				SUM(YEARS_BETWEEN (a."StartDate",a."EndDate")) AS "Experience"
-			FROM "iacube.db::tables.Profile.Experience" AS a
-			INNER JOIN :profiles As b
-				ON a."ProfileId" = b."ProfileId"
-			GROUP BY 
-				a."ProfileId"
-	;
-	
-	distance = 
-		SELECT 
-				--a."ReqId",
-				b."CandidateId",
-				MAX(a."Distance") AS "Distance"
-			FROM "iacube.db::tables.Distance.Distances" AS a
-			INNER JOIN :profiles AS b
-				ON  a."ProfileId" = b."ProfileId"
-				--AND a."ReqId" 	  = b."ReqId" 
-				AND a."ReqId" 	  = :reqId
-			GROUP BY 
-				--a."ReqId",
-				b."CandidateId"
-	;
-			
-	candidates = 
-		SELECT 	
-				--a."ReqId",
-				a."CandidateId",
-				a."StatusId",
-				a."ChangedAt",
-				a."FirstName",
 				a."LastName",
-				d."Experience",
-				b."Distance"	
-			FROM :candidates AS a
-			LEFT JOIN :distance AS b
-				ON  a."CandidateId" = b."CandidateId"
-				--AND a."ReqId" 		= b."ReqId"
-			LEFT JOIN "iacube.db::tables.Distance.Distances" AS c
-				ON  b."Distance" = c."Distance" 
-				--AND a."ReqId" 	 = c."ReqId"
-				AND c."ReqId" 	 = :reqId
-			LEFT JOIN :experience AS d
-				ON  c."ProfileId" = d."ProfileId" 
-	;	
-	comments = 
-		SELECT 
-				--"ReqId",
-				"CommentId",
-				"CommentTypeId",
-				"CreatedAt",
-				"CreatedBy",
-				"Title",
-				"Text"
-			FROM "iacube.db::tables.Requisition.Comments"
-			WHERE "ReqId" = :reqId
+				a."FirstName",
+				a."Location",
+				a."ProfArea"
+			FROM "iacube.db::tables.Candidate.Candidates" AS a
+			WHERE CONTAINS (*,:searchTerm, FUZZY(0.8))
 	;
 	
-	
+	/*IF :pageStart IS NOT NULL and :pageEnd IS NOT NULL THEN
+		candidates = 
+			SELECT *
+				FROM :candidates
+				LIMIT  :pageStart
+				OFFSET :pageEnd
+		;
+	END IF;*/
+
 	profiles = 
 		SELECT 
 				a."CandidateId",
@@ -147,7 +51,19 @@ BEGIN
 			
 	;
 	
-	--sala
+	salary = 
+		SELECT 
+				a."CandidateId",
+				b."ProfileId",
+				c."Salary",
+				c."SalaryCurr"
+			FROM :candidates AS a
+			INNER JOIN "iacube.db::tables.Candidate.Profiles" AS b
+				ON a."CandidateId" = b."CandidateId"
+			INNER JOIN "iacube.db::tables.Profile.ProfileDetails" AS c
+				ON b."ProfileId" = c."ProfileId"
+			ORDER BY c."Salary"
+	;
 	
 	contacts =
 		SELECT 
@@ -161,10 +77,10 @@ BEGIN
 	
 	languages = 
 		SELECT
-				"CandidateId",
-				"LanguageId",
-				"LevelId"
-			FROM "iacube.db::tables.Candidate.Languages"
+				a."CandidateId",
+				a."LanguageId",
+				a."LevelId"
+			FROM "iacube.db::tables.Candidate.Languages" AS a
 			INNER JOIN :candidates AS b
 				ON a."CandidateId" = b."CandidateId"
 	;

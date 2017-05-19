@@ -23,6 +23,15 @@
 			"target": "/xs/serviceProvider/provider.xsjs?service=requisition&reqId=$1" 
 			},
 		{
+		"source": "manage_vacancy",
+		"target": ""
+		},
+			{
+			"source": "/service/searchCandidates", 
+			"target": "/xs/serviceProvider/provider.xsjs?service=searchCandidates" 
+			},
+		
+		{
 		"source": "data uploader",
 		"target": ""
 		},

@@ -19,5 +19,12 @@ import = [
 		file   = "iacube.db.initialDataImport.Candidate:Profiles.csv";
 		header = true;
 		delimField = ";";
+	},
+	{ 	
+		table  = "iacube.db::tables.Candidate.Languages";
+		schema = "IACUBE";
+		file   = "iacube.db.initialDataImport.Candidate:Languages.csv";
+		header = true;
+		delimField = ";";
 	}
 ];
