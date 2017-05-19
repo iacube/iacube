@@ -10,7 +10,7 @@ sap.ui.define([
 	"use strict";
 
 	return VBox.extend("iacube.ui.common.InfoForm", {
-		
+
 		init: function() {
 			VBox.prototype.init.apply(this, arguments);
 			this.createSimpleFormContent();
@@ -35,7 +35,7 @@ sap.ui.define([
 						labelFor: "idPos"
 					}),
 					new Input("idPos", {
-						value: "{ui>Position}"
+						value: "{requis>Position}"
 					}).setEditable(false),
 
 					new Label({
@@ -43,15 +43,15 @@ sap.ui.define([
 						labelFor: "idProj"
 					}),
 					new Input("idProj", {
-						value: "{ui>Project}",
+						value: "{requis>Project}",
 						showSuggestion: true,
 						showValueHelp: true,
 						events: [{
 							valueHelpRequest: "this._handleProjValueHelp"
 						}]
-					}).setEditable(false).bindAggregation("suggestionItems", "ui>/JobRequisCollection",
+					}).setEditable(false).bindAggregation("suggestionItems", "requis>/JobRequisCollection",
 						new Item({
-							text: "{ui>Project}"
+							text: "{requis>Project}"
 						})),
 						
 					new Label({
@@ -60,10 +60,10 @@ sap.ui.define([
 					}),
 					
 					new ComboBox("idPrior", {
-						selectedKey: "{ui>Priority}"
-					}).bindAggregation("items", "ui>/AvailablePriorities", new Item({
-							key: "{ui>PriorityCode}",
-							text: "{ui>PriorityCode}"
+						selectedKey: "{requis>Priority}"
+					}).bindAggregation("items", "requis>/AvailablePriorities", new Item({
+							key: "{requis>PriorityCode}",
+							text: "{requis>PriorityCode}"
 						})).setEditable(false),
 					
 					new Label({
@@ -71,7 +71,7 @@ sap.ui.define([
 						labelFor: "idLocation"
 					}),
 					new Input("idLocation", {
-						value: "{ui>Location}"
+						value: "{requis>Location}"
 					}).setEditable(false),
 
 					new Label({
@@ -79,10 +79,10 @@ sap.ui.define([
 						labelFor: "idLangu"
 					}),
 					new ComboBox("idLangu", {
-						selectedKey: "{ui>Language}"
-					}).bindAggregation("items", "ui>/AvailableLanguages", new Item({
-							key: "{ui>SlsLang}",
-							text: "{ui>SlsLang}"
+						selectedKey: "{requis>Language}"
+					}).bindAggregation("items", "requis>/AvailableLanguages", new Item({
+							key: "{requis>SlsLang}",
+							text: "{requis>SlsLang}"
 						})).setEditable(false),
 						
 					new Label({
@@ -99,7 +99,7 @@ sap.ui.define([
 						labelFor: "idDescr"
 					}),
 					new TextArea("idDescr", {
-						value: "{ui>Description}",
+						value: "{requis>Description}",
 						rows: 7
 					}).setEditable(false)
 				]

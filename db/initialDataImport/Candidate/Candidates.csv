@@ -1,2 +1,3 @@
-CandidateId;LastName;FirstName;MiddleName;BirthDate;GenderId;City;ProfArea
-777;James;Bond;San Hose Maria Idalgo De Lopes;2012-12-12;1;Paris;Диванный эксперт
+CandidateId;LastName;FirstName;MiddleName;BirthDate;GenderId;Location;ProfArea
+777;James;Bond;San Hose Maria Idalgo De Lopes;2012-12-12;M;Paris;Диванный эксперт
+888;Jhon;Pond;Don martines dela rosa;2012-12-12;M;Магадан;Специалист

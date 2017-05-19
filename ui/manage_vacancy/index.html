@@ -8,23 +8,29 @@
 		<title>vacancymngt</title>
 
 		<script id="sap-ui-bootstrap"
-			src="https://sapui5.hana.ondemand.com/1.38.14/resources/sap-ui-core.js"
+			src="/sap/ui5/1/resources/sap-ui-core.js"
 			data-sap-ui-libs="sap.m,iacube.ui.common"
 			data-sap-ui-theme="sap_belize"
 			data-sap-ui-compatVersion="edge"
-			data-sap-ui-resourceroots='{"manage_vacancy": "./", "iacube.ui.common":"../common"}'
+			data-sap-ui-resourceroots='{"manage_vacancy": "./", "iacube": "/iacube/"}'
 			data-sap-ui-xx-bindingSyntax="complex">
 		</script>
 
 		<link rel="stylesheet" type="text/css" href="css/style.css">
 
 		<script>
-		sap.ui.getCore().attachInitEvent(function () {
-				iacube.ui.common.initHTML("manage_vacancy", 1000);
-	        });
+			sap.ui.getCore().attachInit(function() {
+				new sap.m.Shell({
+					app: new sap.ui.core.ComponentContainer({
+						height : "100%",
+						name : "manage_vacancy"
+					})
+				}).placeAt("content");
+			});
 		</script>
 	</head>
 
 	<body class="sapUiBody" id="content">
 	</body>
 
+</html>

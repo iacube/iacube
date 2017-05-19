@@ -43,10 +43,12 @@ var template = {
 		},
 		relocation: {
 			type: {
-				id: {
-					column:"RelocationId",
-					type:"string"
-				}
+			    reduce:{
+			        id: {
+    					type:"string"
+    				}
+			    },
+			    column:"RelocationId"
 			}
 		},
 		business_trip_readiness:{
@@ -65,6 +67,20 @@ var template = {
 				type:"string"
 			}
 		},
+		language:{
+			level:{
+			    reduce:{
+			        id:{
+    					type:"string"
+    				}
+			    },
+				column:"LevelId"
+			},
+			id:{
+				column:"LanguageId",
+				type:"string"
+			}
+		},
 		url:{
 			column:"Link",
 			type:"string"
@@ -75,10 +91,12 @@ var template = {
 		},
 		contact: {
             type: {
-                id: {
-                	column:"ContactId",
-                	type:"string"
-                }
+                reduce:{
+                    id: {
+                	    type:"string"
+                    }
+                },
+                column:"ContactId"
             },
 			value:{
 				column:"Value",
@@ -91,10 +109,12 @@ var template = {
             	type:"string"
             },
             type: {
-                id: {
-                	column:"ContactId",
-                	type:"string"
-                }
+                reduce:{
+                    id: {
+                    	type:"string"
+                    }
+                },
+                column:"ContactId"
             }
 		},
 		employments: {
@@ -141,8 +161,7 @@ var template = {
 	},
 	getData : function(params,constants){
 		//for test
-		var data = $.import(constants.uploadTemplatesPath,params.connectionId).data;
-		return data.items;
+		return params.items;
 	},
 	transformation: function(data){
 	    
@@ -153,11 +172,12 @@ var template = {
 	        employments : [],
 	        experience  : [],
 	        schedules   : [],
-	        skill_set   : []
+	        skill_set   : [],
+	        language	: []
 	    };
 	    data.forEach(function(item){
 	        
-	        ["contact","site"].forEach(function(entry){
+	        /*["site"].forEach(function(entry){
 	            item[entry].forEach(function(entity){
     	           template.contact.push({
     	               ResumeId : item.ResumeId,
@@ -166,9 +186,9 @@ var template = {
     	           });
 	            });
 	            delete item[entry];
-	        });
+	        });*/
 
-        	["employments","experience","schedules","skill_set"].forEach(function(entry){
+        	["employments","experience","schedules","skill_set","language","contact","site"].forEach(function(entry){
         	    item[entry].forEach(function(entity){
         	        entity.ResumeId = item.ResumeId;
         	        template[entry].push(entity);
@@ -177,10 +197,10 @@ var template = {
     	    });
     	    
     	    item.BusinessTripId = item.business_trip_readiness.BusinessTripId;
-    	    item.RelocationId   = item.relocation.type.RelocationId;
+    	    item.RelocationId   = item.relocation.RelocationId;
     	    item.GenderId       = item.gender.GenderId;
     	    item.City           = item.area.City;
-  
+    	    
             if(!item.salary){
                 item.Salary = null;
                 item.SalaryCurr = null;
@@ -191,6 +211,7 @@ var template = {
     	    delete item.gender;
     	    delete item.area;
     	    delete item.salary;
+    	    delete item.language;
     	    
     	    template.resume.push(item);
 	    });

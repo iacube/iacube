@@ -15,7 +15,7 @@ sap.ui.define([
 			Table.prototype.init.apply(this, arguments);
 			this.bindProperty("headerText", {parts: [
 				 {path: "i18n>skills" },
-                 {path: "ui>skills/length" }
+                 {path: "requis>RequisSkillsCollection/length" }
 				],
 				formatter: function(sName,sCount) {
 					return sName + " (" + sCount + ")";
@@ -55,20 +55,20 @@ sap.ui.define([
 		
 		_bindTable: function() {
 			var oText = new Text({
-				text: "{ui>Skill}"
+				text: "{requis>Skill}"
 			});
 			
 			var oSlider = new Slider({
 				min: 0,
 				max: 100,
-				value: "{ui>Weight}",
+				value: "{requis>Weight}",
 				enabled: false
 			});
 			
 			oSlider.addStyleClass("sapUiSizeCompact");
 			
 			var oPercentage = new ObjectNumber({
-				number: "{ui>Weight}",
+				number: "{requis>Weight}",
 				unit: "%"
 			});
 			
@@ -80,7 +80,7 @@ sap.ui.define([
 			]
 		});
 		
-			this.bindAggregation("items", "ui>skills", this.oTemplate);
+			this.bindAggregation("items", "requis>RequisSkillsCollection", this.oTemplate);
 		},
 
 		renderer: "sap.m.TableRenderer"

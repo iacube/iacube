@@ -50,11 +50,11 @@ context tables{
 			key ScheduleId	: hhSID;
 		};
 		
-		/*entity Language{
+		entity Language{
 			key ResumeId	: hhResumeId;
 			key LanguageId	: hhSID;
-				LavelId		: hhSID;
-		}; + mapping + dictionary*/
+				LevelId		: hhSID;
+		};
 		
 		//edication???
 		
@@ -108,6 +108,12 @@ context tables{
 					hhName	: String(50);
 					iaId	: tables.Profile.scheduleTypeId;
 			};
+			entity LanguageLevel{
+				key hhId	: hhSID;
+					hhName	: String(50);
+					iaId	: tables.Candidate.languageLevelId;
+			};
+			
 			
 			/*entity Industry{
 				key Id	 : hhSID;
@@ -163,10 +169,12 @@ context tables{
 	};
 */	
 	context Candidate{
-	
-		type candidateId   : Integer;
-		type genderTypeId  : Integer;
-		type contactTypeId : Integer;
+
+		type candidateId   	 : Integer;
+		type genderTypeId  	 : String(1);
+		type contactTypeId 	 : String(10);
+		type languageLevelId : String(10);
+		type languageId 	 : String(10);
 		
 		entity Candidates{
 			key CandidateId	: candidateId;
@@ -175,7 +183,7 @@ context tables{
 				MiddleName	: name;
 				BirthDate	: date;
 				GenderId	: genderTypeId;
-				City		: String(101);
+				Location	: String(1000);
 				ProfArea	: String(1000);
 		};
 		
@@ -183,6 +191,12 @@ context tables{
 			key CandidateId   : candidateId;
 			key ContactTypeId : contactTypeId;
 				Value		  : String(1000);
+		};
+		
+		entity Languages{
+			key CandidateId : candidateId;
+			key LanguageId 	: languageId;
+				LevelId		: languageLevelId;
 		};
 
 		entity Profiles{
@@ -201,6 +215,12 @@ context tables{
 				key Id	 : contactTypeId;
 					Name : String(50);
 			};
+			
+			entity LanguageLevelTypes{
+				key Id	 : languageLevelId;
+					Name : String(50);
+			};
+			
 		};
 	};
 
@@ -208,11 +228,11 @@ context tables{
 	
 		type profileId 	 		: Integer;
 	 	type profileTypeId    	: Integer;
-		type relocationTypeId 	: Integer;
-		type businessTripTypeId	: Integer;
-		type employmentTypeId	: Integer;
-		type scheduleTypeId		: Integer;
-		type industryTypeId		: Integer;
+		type relocationTypeId 	: String(10);
+		type businessTripTypeId	: String(10);
+		type employmentTypeId	: String(10);
+		type scheduleTypeId		: String(10);
+		//type industryTypeId		: Integer;
 	
 		entity Profiles{
 			key ProfileId		: profileId;
@@ -224,13 +244,13 @@ context tables{
 		};
 		
 		entity ProfileDetails{//was resumeDetails
-			ProfileId		: profileId;
-			DesiredPosition	: String(1000);
-			CareerStarter	: bool;//?????change to experience
-			Salary			: BinaryFloat;
-			SalaryCurr		: currency;
-			RelocationId	: relocationTypeId;
-			BusinessTripId	: businessTripTypeId;
+			key ProfileId		: profileId;
+				DesiredPosition	: String(1000);
+				CareerStarter	: bool;//?????change to experience
+				Salary			: BinaryFloat;
+				SalaryCurr		: currency;
+				RelocationId	: relocationTypeId;
+				BusinessTripId	: businessTripTypeId;
 		};
 		
 		entity Employments{
@@ -334,8 +354,10 @@ context tables{
 			key ReqId		 : reqId;
 			key CandidateId	 : tables.Candidate.candidateId;
 				StatusId 	 : statusTypeId;
-				ChangedBy	 : creator;
+				ChangedBy	 : String(101);
 				ChangedAt	 : datetime;
+				AssignedBy	 : creator;
+				AssignedAt	 : datetime;
 		};
 		
 		entity Comments{

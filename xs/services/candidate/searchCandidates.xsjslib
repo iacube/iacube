@@ -31,7 +31,7 @@ var call = {
 			var candidate = {};
 			var result = [];
 			
-			for(i = 0; i < responce.CANDIDATES; i++){
+			for(i = 0; i < responce.CANDIDATES.length; i++){
 				
 				candidate = {
 					CandidateId:responce.CANDIDATES[i].CandidateId,
@@ -47,16 +47,18 @@ var call = {
 					
 					candidate[newEntity] = [];
 					
-					for(j = 0; j < responce[entity].length; i++){
-						if(responce.CANDIDATES[i].CandidateId === responce[entity][j].CandidateId)
-							candidate[newEntity].push(responce[entity][j]);
+					for(j = 0; j < responce[entity].length; j++){
+						if(responce.CANDIDATES[i].CandidateId === responce[entity][j].CandidateId){
+						    candidate[newEntity].push(responce[entity][j]);
+						}
+							
 					}
 				});
 				
 				result.push(candidate);
 			}
 			
-			return requisition;
+			return result;
 		}
 	}	
 };
