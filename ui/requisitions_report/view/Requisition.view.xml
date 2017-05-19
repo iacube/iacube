@@ -1,23 +1,32 @@
-<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:uxap="sap.uxap" xmlns="sap.m" controllerName="requisitions_report.controller.Requisition"
-	xmlns:layout="sap.ui.layout" xmlns:common="iacube.ui.common" xmlns:html="http://www.w3.org/1999/xhtml">
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:uxap="sap.uxap" xmlns="sap.m"
+	controllerName="requisitions_report.controller.Requisition"
+	xmlns:layout="sap.ui.layout" xmlns:common="iacube.ui.common"
+	xmlns:html="http://www.w3.org/1999/xhtml">
 	<Page title="Job Requisition">
 		<content>
-			<uxap:ObjectPageLayout id="detObj" showTitleInHeaderContent="false">
+			<uxap:ObjectPageLayout id="detObj"
+				showTitleInHeaderContent="false">
 				<uxap:headerTitle>
-					<uxap:ObjectPageHeader objectImageURI="sap-icon://product" objectTitle="{requis>Position}" objectSubtitle="{requis>ReqId}"
-						objectImageShape="Circle" isObjectIconAlwaysVisible="true"></uxap:ObjectPageHeader>
+					<uxap:ObjectPageHeader objectImageURI="sap-icon://product"
+						objectTitle="{ui>Title} ({ui>ReqId})">
+						<uxap:breadCrumbsLinks>
+							<Link text="Job Requisitions Report: by Status" press="handleLink1Press" />
+						</uxap:breadCrumbsLinks>
+					</uxap:ObjectPageHeader>
 				</uxap:headerTitle>
 				<uxap:headerContent>
 					<layout:VerticalLayout width="5%"></layout:VerticalLayout>
 					<layout:VerticalLayout>
-						<ObjectStatus title="{i18n>location}" text="{requis>Location}"/>
-						<ObjectStatus title="{i18n>project}" text="{requis>Project}"/>
+						<ObjectStatus title="{i18n>req.detail.location}"
+							text="{ui>Location}" />
+						<ObjectStatus title="{i18n>req.detail.project}" text="{ui>ProjectId}" />
 					</layout:VerticalLayout>
 					<layout:VerticalLayout width="40%"></layout:VerticalLayout>
 					<layout:VerticalLayout>
-						<ObjectStatus title="{i18n>created}" text="{requis>CreatedOn}"/>
+						<ObjectStatus title="{i18n>req.detail.created}" text="{ui>CreatedAt}" />
 						<FlexBox alignContent="End" justifyContent="End">
-							<ObjectStatus text="{requis>Status}" state="{path: 'requis>Status'}"/>
+							<ObjectStatus text="{ui>StatusCodeId}" state="Success" />
 						</FlexBox>
 						<layout:VerticalLayout></layout:VerticalLayout>
 						<FlexBox alignContent="End" justifyContent="End">
@@ -26,33 +35,38 @@
 					</layout:VerticalLayout>
 				</uxap:headerContent>
 				<uxap:sections>
-					<uxap:ObjectPageSection id="detInfo" title="{i18n>info}" titleUppercase="false">
+					<uxap:ObjectPageSection id="detInfo"
+						title="{i18n>req.detail.info}" titleUppercase="false">
 						<uxap:subSections>
 							<uxap:ObjectPageSubSection title="">
 								<uxap:blocks>
+<<<<<<< HEAD
+									<common:InfoForm />
+=======
 									<common:InfoForm/>
+>>>>>>> branch 'dev' of https://github.com/iacube/iacube.git
 								</uxap:blocks>
 							</uxap:ObjectPageSubSection>
 						</uxap:subSections>
 					</uxap:ObjectPageSection>
-					<uxap:ObjectPageSection id="detSkills" title="{i18n>skills}" titleUppercase="false">
+					<uxap:ObjectPageSection id="detSkills"
+						title="{i18n>req.detail.skills}" titleUppercase="false">
 						<uxap:subSections>
-							<uxap:ObjectPageSubSection title="{i18n>skills}">
+							<uxap:ObjectPageSubSection title="{i18n>req.detail.skills}">
 								<uxap:blocks>
+<<<<<<< HEAD
+									<common:SkillsTable />
+=======
 									<common:SkillsTable/>
+>>>>>>> branch 'dev' of https://github.com/iacube/iacube.git
 								</uxap:blocks>
 							</uxap:ObjectPageSubSection>
 						</uxap:subSections>
 					</uxap:ObjectPageSection>
-					<!--	<ObjectPageSection id="detCandidates" title="{i18n>candidates}" titleUppercase="false">
-						<subSections>
-							<ObjectPageSubSection title="">
-								<blocks>
-									<info:InfoBlock id="cand" columnLayout="2"/>
-								</blocks>
-							</ObjectPageSubSection>
-						</subSections>
-					</ObjectPageSection> -->
+					<!-- <ObjectPageSection id="detCandidates" title="{i18n>candidates}" 
+						titleUppercase="false"> <subSections> <ObjectPageSubSection title=""> <blocks> 
+						<info:InfoBlock id="cand" columnLayout="2"/> </blocks> </ObjectPageSubSection> 
+						</subSections> </ObjectPageSection> -->
 				</uxap:sections>
 			</uxap:ObjectPageLayout>
 		</content>

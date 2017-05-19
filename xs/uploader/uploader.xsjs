@@ -13,32 +13,15 @@ function transformForDb(requestData,transformation){
 	if(requestData && typeof requestData === "object"){
 	//if data has complex type
 		if(requestData.length === undefined){
-		    //if it is an object 
-		    var key = "";
-		    	
-		    if(transformation.reduce){
-		        
-		        convertObject = [];
-		        
-		        for(key in transformation.reduce){
-    				if (transformation.reduce.hasOwnProperty(key)){
-    				    convertObject.push(transformForDb(requestData[key] !== undefined ? requestData[key] : "",transformation.reduce[key]));
-    				}
-    			}
-		        
-		        if(convertObject.length === 1){
-    		        convertObject = convertObject[0];
-    		    }
-		    }else{
-		        
-    			convertObject = {};
-	
-    			for(key in transformation){
-    				if (transformation.hasOwnProperty(key)){
-    				    convertObject[transformation[key].column || key] = transformForDb(requestData[key] !== undefined ? requestData[key] : "",transformation[key]);
-    				}
-    			}
-		    }
+			//if it is an object 
+			convertObject = {};
+			var key = "";
+
+			for(key in transformation){
+				if (transformation.hasOwnProperty(key)){
+					convertObject[transformation[key].column || key] = transformForDb(requestData[key] !== undefined ? requestData[key] : "",transformation[key]);
+				}
+			}
 		}else{
 			//if it is an array
 			var i;

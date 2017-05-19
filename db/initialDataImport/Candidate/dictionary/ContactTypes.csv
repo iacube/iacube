@@ -1,12 +1,11 @@
 Id;Name
-OTER;Другой сайт
-MOI_CRUG;Мой круг
-LIVEJ;LiveJournal
-LINKEDIN;LinkedIn
-FREELANCE;Free-lance
-FACEBOOK;Facebook
-SKYPE;Skype
-ICQ;ICQ
-CELL;Мобильный телефон
-PHONE;Домашний телефон
-EMAIL;Эл. почта
+1;Другой сайт
+2;Мой круг
+3;LiveJournal
+4;LinkedIn
+5;Free-lance
+6;Facebook
+7;Skype
+8;ICQ
+9;Мобильный телефон
+10;Эл. почта

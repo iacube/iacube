@@ -4,9 +4,7 @@ function getServicePath(serviceName){
 //Services
 var service = {
 		requisitions : constants.requisitionPath + "/requisitions",
-		requisition  : constants.requisitionPath + "/requisition",
-		
-		searchCandidates: constants.candidatePath + "/searchCandidates",
+		requisition  : constants.requisitionPath + "/requisition"
 	};
 	
 	return "/" + service[serviceName].replace(/\./g,"/") + constants.lib;

@@ -1,0 +1,30 @@
+{
+    "requisitions": [
+        {
+            "ReqId": "60003578",
+            "ReqName": "SAP ABAP Developer",
+            "ProjectName": "BURB-SAP",
+            "Priority": "L",
+            "Location": "London, UK",
+            "StatusCode": "STATUS_OPEN",
+            "SubcategoryName": "SAP Cloud",
+            "CreatedBy": "SYSTEM",
+            "CreatedAt": "2017-02-22T00:00:00",
+            "RemainingDays": "7",
+            "Candidates": 14
+        },
+        {
+            "ReqId": "60003579",
+            "ReqName": "SAP BI Developer",
+            "ProjectName": "BASF-SAP",
+            "Priority": "L",
+            "Location": "Berlin",
+            "StatusCode": "STATUS_OPEN",
+            "SubcategoryName": "SAP Fiori",
+            "CreatedBy": "SYSTEM",
+            "CreatedAt": "2017-02-22T00:00:00",
+            "RemainingDays": "11",
+            "Candidates": 2
+        }
+    ]
+}
