@@ -1,6 +1,6 @@
 Id;Name;
-1;Full Time
-2;Part Time
-3;Project
-4;Volunteer
-5;Probation
+FULL;Full Time
+PART;Part Time
+PRJ;Project
+VOL;Volunteer
+PROB;Probation

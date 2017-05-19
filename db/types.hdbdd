@@ -202,19 +202,19 @@ context types {
 		ProfArea	: String(1000);
 	};
 	type candidateContacts{
-		CandidateId   : candidateId;
+		//CandidateId   : candidateId;
 		ContactTypeId : contactTypeId;
 		Value		  : String(1000);
 	};
 	
 	type candidateLanguages{
-		CandidateId : candidateId;
+		//CandidateId : candidateId;
 		LanguageId 	: languageId;
 		LevelId		: languageLevelId;
 	};
 	
 	type candidateProfiles{
-		CandidateId 	: candidateId;
+		//CandidateId 	: candidateId;
 		ProfileId		: profileId;
 		ExternalId		: String(1001);
 		ProfileTypeId	: profileTypeId;
@@ -253,7 +253,7 @@ context types {
 	};
 	
 	type candidateRequisitions{
-		CandidateId	 : candidateId;
+		//CandidateId	 : candidateId;
 		ReqId		 : reqId;
 		Title		 : String(100); 
 		StatusId 	 : statusTypeId;

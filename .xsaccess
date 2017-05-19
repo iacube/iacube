@@ -30,7 +30,10 @@
 			"source": "/service/searchCandidates", 
 			"target": "/xs/serviceProvider/provider.xsjs?service=searchCandidates" 
 			},
-		
+			{
+			"source": "/service/candidate/(\\d+)", 
+			"target": "/xs/serviceProvider/provider.xsjs?service=candidate&candidateId=$1" 
+			},
 		{
 		"source": "data uploader",
 		"target": ""

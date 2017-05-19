@@ -1,6 +1,6 @@
 Id;Name
-1;Full Day
-2;Shift
-3;Flexible
-4;Remote
-5;Fly In Fly Out
+FULL;Full Day
+SHIFT;Shift
+FLEX;Flexible
+REMOTE;Remote
+FLYIFLYO;Fly In Fly Out

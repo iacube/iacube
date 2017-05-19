@@ -1,4 +1,4 @@
 Id;Name
-1;Ready
-2;Sometimes
-3;Never
+READY;Ready
+SOMETIMES;Sometimes
+NEVER;Never
