@@ -65,7 +65,7 @@
 					"bundleName": "requisitions_report.i18n.i18n"
 				}
 			},
-			"uim": {
+			"ui": {
                 "type": "sap.ui.model.json.JSONModel",
                 "uri": "localService/requisitions.json"
             }

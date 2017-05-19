@@ -32,6 +32,11 @@ context types {
 		details : String(1000);
 	};
 	
+	type nameValue{
+		name : String(100);
+		value: String(1000);
+	};
+	
 	type update_HHResume{
 		ResumeId		: hhResumeId;
 		Title			: String(1000);
@@ -78,6 +83,12 @@ context types {
 	type update_HHSkills{
 		ResumeId : hhResumeId;
 		Skill	 : String(1000);
+	};
+	
+	type update_HHLanguages{
+		ResumeId 	: hhResumeId;
+		LanguageId	: hhSID;
+		LevelId		: hhSID;
 	};
 	
 //Requisitions
@@ -130,6 +141,7 @@ context types {
 		"Title"			: String(200);
 		"Text"			: String(5000);
 	}
+//Candidates
 	
 	
 	

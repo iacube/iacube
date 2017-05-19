@@ -1,0 +1,187 @@
+PROCEDURE "IACUBE"."iacube.db.procedures.candidate::searchCandidates"(
+	IN 	startFrom	INTEGER,
+	IN 	endWith		INTEGER,
+	IN 	searchterm	NVARCHAR(1000),
+	IN 	filter		"IACUBE"."iacube.db::types.nameValue"  DEFAULT EMPTY,
+	OUT candidates	"IACUBE"."iacube.db::types.candidates" DEFAULT EMPTY
+)
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER 
+	DEFAULT SCHEMA IACUBE
+	READS SQL DATA AS
+BEGIN
+
+
+	details = 
+		SELECT
+				a."ReqId",
+				a."Title",
+				a."ProjectId",
+				a."PriorityId",
+				a."Location",
+				a."StatusCodeId",
+				a."SubcategoryId",
+				b."Name" AS "SubcategoryName",
+				a."CreatedBy",
+		        a."CreatedAt",
+				a."Language",
+				a."Keywords",
+				a."Description"
+			FROM "iacube.db::tables.Requisition.Requisitions" AS a
+			LEFT JOIN "iacube.db::tables.Requisition._dictionary.SubcategoryTypes" As b
+				ON a."SubcategoryId" = b."Id"
+			WHERE a."ReqId" = :reqId
+	;
+	skills =
+		SELECT 
+				--"ReqId",
+				"Skill",
+				"Weight"
+			FROM "iacube.db::tables.Requisition.Skills"
+			WHERE "ReqId" = :reqId
+	;
+	candidates = 
+		SELECT
+				--a."ReqId",
+				a."CandidateId",
+				a."StatusId",
+				a."ChangedAt",
+				b."FirstName",
+				b."LastName",
+				null AS "Experience",
+				null AS "Distance"
+			FROM "iacube.db::tables.Requisition.Candidates"	AS a
+			INNER JOIN "iacube.db::tables.Candidate.Candidates" AS b
+				ON a."CandidateId"  = b."CandidateId"
+			WHERE a."ReqId" = :reqId
+	;
+	profiles = 
+		SELECT 
+				--a."ReqId",
+				a."CandidateId",
+				b."ProfileId",
+				c."ExternalId",
+				c."ProfileTypeId",
+				c."Link"
+			FROM :candidates AS a
+			INNER JOIN "iacube.db::tables.Candidate.Profiles" AS b
+				ON a."CandidateId" = b."CandidateId"
+			INNER JOIN "iacube.db::tables.Profile.Profiles" AS c
+				ON b."ProfileId" = c."ProfileId"
+			
+	;
+	
+	experience = 
+		SELECT 
+				a."ProfileId",
+				SUM(YEARS_BETWEEN (a."StartDate",a."EndDate")) AS "Experience"
+			FROM "iacube.db::tables.Profile.Experience" AS a
+			INNER JOIN :profiles As b
+				ON a."ProfileId" = b."ProfileId"
+			GROUP BY 
+				a."ProfileId"
+	;
+	
+	distance = 
+		SELECT 
+				--a."ReqId",
+				b."CandidateId",
+				MAX(a."Distance") AS "Distance"
+			FROM "iacube.db::tables.Distance.Distances" AS a
+			INNER JOIN :profiles AS b
+				ON  a."ProfileId" = b."ProfileId"
+				--AND a."ReqId" 	  = b."ReqId" 
+				AND a."ReqId" 	  = :reqId
+			GROUP BY 
+				--a."ReqId",
+				b."CandidateId"
+	;
+			
+	candidates = 
+		SELECT 	
+				--a."ReqId",
+				a."CandidateId",
+				a."StatusId",
+				a."ChangedAt",
+				a."FirstName",
+				a."LastName",
+				d."Experience",
+				b."Distance"	
+			FROM :candidates AS a
+			LEFT JOIN :distance AS b
+				ON  a."CandidateId" = b."CandidateId"
+				--AND a."ReqId" 		= b."ReqId"
+			LEFT JOIN "iacube.db::tables.Distance.Distances" AS c
+				ON  b."Distance" = c."Distance" 
+				--AND a."ReqId" 	 = c."ReqId"
+				AND c."ReqId" 	 = :reqId
+			LEFT JOIN :experience AS d
+				ON  c."ProfileId" = d."ProfileId" 
+	;	
+	comments = 
+		SELECT 
+				--"ReqId",
+				"CommentId",
+				"CommentTypeId",
+				"CreatedAt",
+				"CreatedBy",
+				"Title",
+				"Text"
+			FROM "iacube.db::tables.Requisition.Comments"
+			WHERE "ReqId" = :reqId
+	;
+	
+	
+	profiles = 
+		SELECT 
+				a."CandidateId",
+				b."ProfileId",
+				c."ExternalId",
+				c."ProfileTypeId",
+				c."Link"
+			FROM :candidates AS a
+			INNER JOIN "iacube.db::tables.Candidate.Profiles" AS b
+				ON a."CandidateId" = b."CandidateId"
+			INNER JOIN "iacube.db::tables.Profile.Profiles" AS c
+				ON b."ProfileId" = c."ProfileId"
+			
+	;
+	
+	--sala
+	
+	contacts =
+		SELECT 
+				a."CandidateId",
+				a."ContactTypeId",
+				a."Value"
+			FROM "iacube.db::tables.Candidate.Contacts" AS a
+			INNER JOIN :candidates AS b
+				ON a."CandidateId" = b."CandidateId"
+	;
+	
+	languages = 
+		SELECT
+				"CandidateId",
+				"LanguageId",
+				"LevelId"
+			FROM "iacube.db::tables.Candidate.Languages"
+			INNER JOIN :candidates AS b
+				ON a."CandidateId" = b."CandidateId"
+	;
+	
+	requisitions = 
+		SELECT 
+				a."CandidateId",
+				a."ReqId",
+				c."Title",
+				a."StatusId",
+				a."AssignedBy",
+				a."AssignedAt"
+			FROM "iacube.db::tables.Requisition.Candidates" AS a
+			INNER JOIN :candidates AS b
+				ON a."CandidateId" = b."CandidateId"
+			LEFT JOIN "iacube.db::tables.Requisition.Requisitions" AS c
+				ON a."ReqId" = c."ReqId"
+	;
+
+END;

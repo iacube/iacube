@@ -1,6 +1,6 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:fb="sap.ui.comp.filterbar"
 	controllerName="requisitions_report.controller.RequisitionsOverview" xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page title="Job Requisitions Report" id="page1">
+	<Page title="Title" id="page1">
 		<content>
 			<fb:FilterBar reset="onReset" search="onSearch" showRestoreButton="true" showClearButton="true">
 				<fb:filterItems>
@@ -46,31 +46,31 @@
 						</Toolbar>
 					</headerToolbar>
 					<columns>
-						<Column width="8%">
+						<Column width="12em">
 							<Text text="Id"/>
 						</Column>
-						<Column demandPopin="true">
+						<Column minScreenWidth="Tablet" demandPopin="true">
 							<Text text="Name"/>
 						</Column>
-						<Column demandPopin="true" hAlign="Right">
+						<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Right">
 							<Text text="Account"/>
 						</Column>
 						<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
 							<Text text="Subcategory"/>
 						</Column>
-						<Column>
+						<Column hAlign="Right">
 							<Text text="Created By"/>
 						</Column>
-						<Column>
+						<Column hAlign="Right">
 							<Text text="Date / Time Opened"/>
 						</Column>
-						<Column width="8%">
+						<Column hAlign="Right">
 							<Text text="Remaining Days"/>
 						</Column>
-						<Column>
+						<Column hAlign="Right">
 							<Text text="Status"/>
 						</Column>
-						<Column>
+						<Column hAlign="Right">
 							<Text text="Candidates"/>
 						</Column>
 					</columns>
@@ -78,16 +78,14 @@
 						<ColumnListItem type="Navigation" press="onRequisitionPress">
 							<cells>
 								<Text text="{ui>ReqId}"/>
-								<Text text="{ui>Title}"/>
-								<Text text="{ui>ProjectId}"/>
+								<Text text="{ui>ReqName}"/>
+								<Text text="{ui>ProjectName}"/>
 								<Text text="{ui>SubcategoryName}"/>
 								<Text text="{ui>CreatedBy}"/>
-<!-- 								<Text text="{ui>CreatedAt}"/> -->
-								<!-- <DatePicker value="{ui>CreatedAt}"	displayFormat="short" editable="false"/> -->
- 								<Text text="{model: 'ui', path: 'CreatedAt', type:'sap.ui.model.type.DateTime', formatOptions: {style:'medium'}}"/> 
+								<Text text="{ui>CreatedAt}"/>
 								<Text text="{ui>RemainingDays}"/>
-								<ObjectStatus text="{ui>StatusCodeId}" state="Success"/>
-								<core:Icon visible="{showCandidatesIcon}" src="sap-icon://employee" color="#031E48"/>
+								<ObjectStatus text="{ui>StatusCode}" state="Success"/>
+								<core:Icon src="sap-icon://employee" color="#031E48"/>
 							</cells>
 						</ColumnListItem>
 					</items>

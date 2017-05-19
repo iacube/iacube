@@ -30,7 +30,7 @@
 						<uxap:subSections>
 							<uxap:ObjectPageSubSection title="">
 								<uxap:blocks>
-									<common:InfoForm modelName="ui"/>
+									<common:InfoForm/>
 								</uxap:blocks>
 							</uxap:ObjectPageSubSection>
 						</uxap:subSections>
@@ -39,7 +39,7 @@
 						<uxap:subSections>
 							<uxap:ObjectPageSubSection title="{i18n>skills}">
 								<uxap:blocks>
-									<common:SkillsTable modelName="ui"/>
+									<common:SkillsTable/>
 								</uxap:blocks>
 							</uxap:ObjectPageSubSection>
 						</uxap:subSections>

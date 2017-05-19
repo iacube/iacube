@@ -1,8 +1,7 @@
 sap.ui.define([
 	"requisitions_report/controller/BaseController",
-	"iacube/ui/common/dataHelper",
-	"iacube/ui/common/mapper"
-], function(Controller, DataHelper, Mapper) {
+	"iacube/ui/common/dataHelper"
+], function(Controller, DataHelper) {
 	"use strict";
 
 	return Controller.extend("requisitions_report.controller.Requisition", {
@@ -23,23 +22,11 @@ sap.ui.define([
 		 * @public
 		 */
 		onRouteMatched: function(oEvent){		
-			if(oEvent.getParameter("name") === "requisition") {
+			if(oEvent.getParameter("name") === "config") {
 				var iIndex = oEvent.getParameter("arguments").index;				
 				var sPath = "/requisitions/" + iIndex;				
 				this.getView().bindElement("ui>" + sPath);
-				
-				var ReqId = this.getModel("ui").getProperty(sPath).ReqId;
-				this.loadRequisition(ReqId, sPath);
-			}
-			
-		},
-		
-		loadRequisition: function(ReqId, sPath){
-			var oModel = this.getModel("ui");
-			DataHelper.getRequisition(ReqId).then(function(oData){
-				var oRequisition = oModel.getProperty(sPath);
-				oModel.setProperty(sPath, jQuery.extend(true, oRequisition, Mapper.mapRequisition(oData)));
-			});
+			}			
 		}
 
 		/**

@@ -14,25 +14,9 @@ sap.ui.define([
 			 * @returns {Promise} Standard Promise
 			 * @public
 			 */
-			getRequisitions: function() {
+			getRequisitions: function(oComp, aContents) {
 				return new Promise(function(resolve, reject) {
-					var sPath = "/iacube/service/requisitions";
-					ServiceAccess.ajax({
-						url: sPath,
-						success: function(data) {
-							resolve(data);
-						},
-						error: function() {
-							MessageToast.show("Data retrieval error");
-							reject();
-						}
-					});
-				});
-			},
-			
-			getRequisition: function(ReqId) {
-				return new Promise(function(resolve, reject) {
-					var sPath = "/iacube/service/requisition/"+ReqId;
+					var sPath = "/requisitions";
 					ServiceAccess.ajax({
 						url: sPath,
 						success: function(data) {

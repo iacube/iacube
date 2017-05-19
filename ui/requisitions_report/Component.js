@@ -21,7 +21,7 @@ sap.ui.define([
 			UIComponent.prototype.init.apply(this, arguments);
 
 			this.setModel(models.createDeviceModel(), "device");
-			this.setModel(models.createUiModel(), "ui");
+			//this.setModel(models.createUiModel(), "ui");
 			
 			this.getRouter().initialize();
 		}
