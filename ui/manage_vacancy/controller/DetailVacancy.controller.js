@@ -34,7 +34,7 @@ sap.ui.define([
 				var oModel = this.getModel("ui");
 				DataHelper.getRequisition(ReqId).then(function(oData){
 					var oRequisition = oModel.getProperty(sPath);
-					oModel.setProperty(sPath, jQuery.extend(true, oRequisition, Mapper.mapRequisition(oData)));
+					oModel.setProperty(sPath, jQuery.extend(true, oRequisition, Mapper.mapRequisition(oData.data)));
 				});
 			}
 		/**
