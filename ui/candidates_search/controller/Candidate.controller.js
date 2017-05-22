@@ -4,7 +4,7 @@ sap.ui.define([
 ], function(Controller, DataHelper) {
 	"use strict";
 
-	return Controller.extend("candidates_search.controller.Requisition", {
+	return Controller.extend("candidates_search.controller.Candidate", {
 
 		/**
 		 * Called when a controller is instantiated and its View controls (if available) are already created.
