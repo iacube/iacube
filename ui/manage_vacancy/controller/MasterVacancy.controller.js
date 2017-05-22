@@ -1,7 +1,9 @@
 sap.ui.define([
 	"manage_vacancy/controller/BaseController",
-	"manage_vacancy/util/formatter"
-], function(BaseController, formatter) {
+	"manage_vacancy/util/formatter",
+	"iacube/ui/common/dataHelper",
+	"iacube/ui/common/mapper"
+], function(BaseController, formatter, DataHelper, Mapper) {
 	"use strict";
 
 	return BaseController.extend("manage_vacancy.controller.MasterVacancy", {
@@ -28,9 +30,16 @@ sap.ui.define([
 		 * This hook is the same one that SAPUI5 controls get after being rendered.
 		 * @memberOf vacancymngt.view.MasterVacancy
 		 */
-		//	onAfterRendering: function() {
-		//
-		//	},
+		onAfterRendering: function() {
+			this.loadRequisitions();
+		},
+		
+		loadRequisitions: function(){
+			var oModel = this.getModel("ui");
+			DataHelper.getRequisitions(this).then(function(aRequisitions){
+				oModel.setProperty("/JobRequisCollection", Mapper.mapRequisitions(aRequisitions));
+			});
+		},
 
 		/**
 		 * Called when the Controller is destroyed. Use this one to free resources and finalize activities.
@@ -40,9 +49,9 @@ sap.ui.define([
 		//
 		//	}
 		onReqSelected: function(oEvent){
-			var context = oEvent.getParameter("listItem").getBindingContext("requis");	  
+			var context = oEvent.getParameter("listItem").getBindingContext("ui");	  
 			var selPath = context.getPath();
-			this.getRouter().navTo("detail", {from: "master", ReqId: selPath.substr(("/JobRequisCollection/").length)}, false);
+			this.getRouter().navTo("detail", {from: "master", index: selPath.substr(("/JobRequisCollection/").length)}, false);
 		}
 	});
 

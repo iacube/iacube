@@ -15,6 +15,7 @@ sap.ui.define([
 			Table.prototype.init.apply(this, arguments);
 			this.bindProperty("headerText", {parts: [
 				 {path: "i18nCom>skills" },
+				 {path: "i18n>skills" },
                  {path: "ui>skills/length" }
 				],
 				formatter: function(sName,sCount) {

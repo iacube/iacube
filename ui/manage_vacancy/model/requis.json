@@ -15,14 +15,18 @@
 	}],
 	"JobRequisCollection": [{
 		"ReqId": "1000001",
-		"Position": "SAP ABAP Developer",
-		"Description": "tratata",
-		"Location": "London, UK",
-		"Status": "Open",
-		"CreatedOn": "12.05.2017",
-		"Language": "en_EN",
-		"Project": "BURB-SAP",
+		"ReqName": "SAP ABAP Developer",
+		"ProjectName": "BURB-SAP",
 		"Priority": "L",
+		"Location": "London, UK",
+		"StatusCode": "STATUS_OPEN",
+		"SubcategoryName": "SAP Cloud",
+		"CreatedBy": "SYSTEM",
+        "CreatedAt": "2017-02-22T00:00:00",
+        "RemainingDays": "7",
+        "Candidates": 14,
+		"Language": "en_EN",
+		"Description": "tratata",
 		"RequisSkillsCollection": [{
 			"ReqId": "1000001",
 			"Skill": "Power Industry",
@@ -42,7 +46,7 @@
 		"RequisCandidatesCollection": [{
 			"ReqId": "1000001",
 			"CandId": "2000001",
-			"Status": "Proposed",
+			"CandStatus": "Proposed",
 			"Candidate": {
 				"CandId": "2000001",
 				"FirstName": "Elena",
@@ -76,7 +80,7 @@
 		{
 			"ReqId": "1000001",
 			"CandId": "2000002",
-			"Status": "Proposed",
+			"CandStatus": "Proposed",
 			"Candidate": {
 				"CandId": "2000002",
 				"FirstName": "Julie",
@@ -111,14 +115,18 @@
 		
 	 {
 		"ReqId": "1000002",
-		"Position": "SAP Plant Maintenance Functional Consultant",
-		"Description": "Provide clients with full life-cycle project implementation consulting expertise including assessments, blueprinting.Prepare and facilitate assessment/blueprint workshops to analyze clients’ business requirements. Consultant must be able to explain business reasons for utilizing functionalities and transform them into business SAP best business practice.Write detailed functional mapping to SAP applications, functional gap analysis, detailed blueprint design and process documentation and detailed functional specifications for any custom development.",
-		"Location": "London, UK",
-		"Status": "Open",
-		"CreatedOn": "11.05.2017",
-		"Language": "ru_RU",
-		"Project": "EPAM-TSAP",
+		"ReqName": "SAP Plant Maintenance Functional Consultant",
+		"ProjectName": "EPAM-TSAP",
 		"Priority": "H",
+		"Location": "London, UK",
+		"StatusCode": "STATUS_OPEN",
+		"SubcategoryName": "SAP Cloud",
+		"CreatedBy": "SYSTEM",
+        "CreatedAt": "2017-05-11T00:00:00",
+        "RemainingDays": "5",
+        "Candidates": 14,
+		"Language": "ru_RU",
+		"Description": "Provide clients with full life-cycle project implementation consulting expertise including assessments, blueprinting.Prepare and facilitate assessment/blueprint workshops to analyze clients’ business requirements. Consultant must be able to explain business reasons for utilizing functionalities and transform them into business SAP best business practice.Write detailed functional mapping to SAP applications, functional gap analysis, detailed blueprint design and process documentation and detailed functional specifications for any custom development.",
 		"RequisSkillsCollection": [{
 			"ReqId": "1000002",
 			"Skill": "Work Clearance Management",
@@ -138,7 +146,7 @@
 		"RequisCandidatesCollection": [{
 			"ReqId": "1000002",
 			"CandId": "2000003",
-			"Status": "Proposed",
+			"CandStatus": "Proposed",
 			"Candidate": {
 				"CandId": "2000003",
 				"FirstName": "Anna",
@@ -172,7 +180,7 @@
 		{
 			"ReqId": "1000002",
 			"CandId": "2000004",
-			"Status": "Proposed",
+			"CandStatus": "Proposed",
 			"Candidate": {
 				"CandId": "2000004",
 				"FirstName": "Jone",

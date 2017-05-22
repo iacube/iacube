@@ -11,7 +11,7 @@
 		"description": "{{appDescription}}",
 		"sourceTemplate": {
 			"id": "ui5template.basicSAPUI5ApplicationProject",
-			"version": "1.40.12"
+			"version": "1.44.12"
 		},
 		"dataSources": {
 			"requis": {
@@ -35,7 +35,10 @@
 			"tablet": true,
 			"phone": true
 		},
-		"supportedThemes": ["sap_hcb", "sap_belize"]
+		"supportedThemes": [
+			"sap_hcb",
+			"sap_belize"
+		]
 	},
 	"sap.ui5": {
 		"rootView": {
@@ -43,14 +46,14 @@
 			"type": "XML"
 		},
 		"dependencies": {
-			"minUI5Version": "1.44.0",
+			"minUI5Version": "1.30.0",
 			"libs": {
-				"sap.ui.core": {},
+				"sap.collaboration": {},
 				"sap.m": {},
+				"sap.ui.comp": {},
+				"sap.ui.core": {},
 				"sap.ui.layout": {},
 				"sap.ushell": {},
-				"sap.collaboration": {},
-				"sap.ui.comp": {},
 				"sap.uxap": {}
 			}
 		},
@@ -72,9 +75,11 @@
 			}
 		},
 		"resources": {
-			"css": [{
-				"uri": "css/style.css"
-			}]
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			]
 		},
 		"routing": {
 			"config": {
@@ -84,19 +89,28 @@
 				"clearAggregation": false,
 				"controlId": "splitvac"
 			},
-			"routes": [{
-				"name": "master",
-				"pattern": "",
-				"titleTarget": "",
-				"greedy": false,
-				"target": ["detail", "master"]
-			}, {
-				"name": "detail",
-				"pattern": "JobRequisCollection/{ReqId}",
-				"titleTarget": "",
-				"greedy": false,
-				"target": ["master", "detail"]
-			}],
+			"routes": [
+				{
+					"name": "master",
+					"pattern": "",
+					"titleTarget": "",
+					"greedy": false,
+					"target": [
+						"detail",
+						"master"
+					]
+				},
+				{
+					"name": "detail",
+					"pattern": "JobRequisCollection/{index}",
+					"titleTarget": "",
+					"greedy": false,
+					"target": [
+						"master",
+						"detail"
+					]
+				}
+			],
 			"targets": {
 				"master": {
 					"viewType": "XML",

@@ -1,7 +1,9 @@
 sap.ui.define([
 	"manage_vacancy/controller/BaseController",
-	"manage_vacancy/util/formatter"
-], function(BaseController) {
+	"manage_vacancy/util/formatter",
+	"iacube/ui/common/dataHelper",
+	"iacube/ui/common/mapper"
+], function(BaseController, oFormatter, DataHelper, Mapper) {
 	"use strict";
 
 	return BaseController.extend("manage_vacancy.controller.DetailVacancy", {
@@ -16,8 +18,24 @@ sap.ui.define([
 			},
 			
 			_onPatternMatched : function(oEvent) {
-				var reqId = oEvent.getParameter("arguments").ReqId;
-				this.getView().bindElement("requis>/JobRequisCollection/" + reqId);
+
+			if(oEvent.getParameter("name") === "detail") {
+
+				var iIndex = oEvent.getParameter("arguments").index;
+				var sPath = "/JobRequisCollection/" + iIndex;	
+				this.getView().bindElement("ui>" + sPath);
+				var oModel = this.getModel("ui");
+				var ReqId = oModel.getProperty(sPath).ReqId;
+				this.loadRequisition(ReqId, sPath);
+				}		
+			},
+			
+			loadRequisition: function(ReqId, sPath){
+				var oModel = this.getModel("ui");
+				DataHelper.getRequisition(ReqId).then(function(oData){
+					var oRequisition = oModel.getProperty(sPath);
+					oModel.setProperty(sPath, jQuery.extend(true, oRequisition, Mapper.mapRequisition(oData)));
+				});
 			}
 		/**
 		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
@@ -33,9 +51,9 @@ sap.ui.define([
 		 * This hook is the same one that SAPUI5 controls get after being rendered.
 		 * @memberOf vacancymngt.view.DetailVacancy
 		 */
-		//	onAfterRendering: function() {
-		//
-		//	},
+//			onAfterRendering: function() {
+//		
+//			},
 
 		/**
 		 * Called when the Controller is destroyed. Use this one to free resources and finalize activities.

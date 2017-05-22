@@ -3,14 +3,13 @@
 		  xmlns:skills="manage_vacancy.SharedBlocks.skills"
 		  controllerName="manage_vacancy.controller.DetailVacancy" id="detail" displayBlock="false"
 		  xmlns:candidates="manage_vacancy.SharedBlocks.candidates">
-	<semantic:DetailPage id="detailvac" title="{i18n>title}">
-		<semantic:content>	
-			<layout:VerticalLayout width="100%" id="__layout3"/>	
+	<semantic:DetailPage id="detailvac" title="{i18n>title}" enableScrolling="false">
+		<semantic:content >	
 			<ObjectPageLayout id="detObj" showTitleInHeaderContent="false">
 				<headerTitle>
 					<ObjectPageHeader objectImageURI="sap-icon://product" 
-									  objectTitle="{requis>Position}" 
-									  objectSubtitle="{requis>ReqId}" 
+									  objectTitle="{ui>Title}" 
+									  objectSubtitle="{ui>ReqId}" 
 									  objectImageShape="Circle"
 									  isObjectIconAlwaysVisible="true">
 					</ObjectPageHeader>
@@ -19,20 +18,21 @@
 					<layout:VerticalLayout width="5%">
 					</layout:VerticalLayout>
 					<layout:VerticalLayout>
-						<m:ObjectStatus title="{i18n>location}" text="{requis>Location}"/>
-						<m:ObjectStatus title="{i18n>project}" text="{requis>Project}"/>
+						<m:ObjectStatus title="{i18n>location}" text="{ui>Location}"/>
+						<m:ObjectStatus title="{i18n>project}" text="{ui>ProjectId}"/>
 					</layout:VerticalLayout>
 					<layout:VerticalLayout width="40%">
 					</layout:VerticalLayout>
 					<layout:VerticalLayout>
-						<m:ObjectStatus title="{i18n>created}" text="{requis>CreatedOn}"/>
+						<m:ObjectStatus title="{i18n>created}" text="{ path: 'ui>CreatedAt',
+																	   formatter: 'manage_vacancy.util.formatter.formatDate'
+																	}"/>
 						<m:FlexBox alignContent="End" justifyContent="End">
-							<m:ObjectStatus text="{requis>Status}" state="{path: 'requis>Status', formatter: 'manage_vacancy.util.formatter.formatReqStatus'}"/>
+							<m:ObjectStatus text="{ui>StatusCodeId}" state="{path: 'ui>StatusCodeId', formatter: 'manage_vacancy.util.formatter.formatReqStatus'}"/>
 					    </m:FlexBox>
-					    <layout:VerticalLayout>
-						</layout:VerticalLayout>
-					    <m:FlexBox alignContent="End" justifyContent="End">
-					    	<m:Select>
+					    
+					    <m:FlexBox alignContent="End" justifyContent="End" class="languageCSS">
+					    	<m:Select >
 							</m:Select>	
 						</m:FlexBox>
 					</layout:VerticalLayout> 

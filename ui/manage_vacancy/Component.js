@@ -24,8 +24,10 @@ sap.ui.define([
 			// set the device model
 			this.setModel(models.createDeviceModel(), "device");
 			
-			var oModel = new JSONModel("requis");
-			this.setModel(oModel);
+// 			var oLocalModel = new JSONModel("requis");
+// 			this.setModel(oLocalModel);
+			
+			this.setModel(models.createUiModel(), "ui");
 		
 			this.getRouter().initialize();
 		}

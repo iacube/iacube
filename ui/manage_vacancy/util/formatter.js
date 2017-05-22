@@ -1,16 +1,34 @@
-sap.ui.define(function() {
+sap.ui.define([
+	"sap/ui/core/format/DateFormat"
+	],
+	function(DateFormat) {
 	"use strict";
  
 	var formatter = {
+		
+		formatDate: function(sDate) {
+			var oDateFormat = DateFormat.getDateTimeInstance({pattern: "dd.MM.YYYY"});
+			return oDateFormat.format(new Date(sDate));
+		},
  
 		formatReqStatus :  function (sStatus) {
-				if (sStatus === "Open" || sStatus === "New") {
+				if (sStatus === "OPEN" || sStatus === "NEW") {
 					return "Success";
-				} else if (sStatus === "Close"){
+				} else if (sStatus === "CLOSE"){
 					return "Error";
 				} else {
 					return "None";
 				}
+		},
+		
+		formatCandStatus :  function (sStatus) {
+			if (sStatus === "APPROVED") {
+				return "Success";
+			} else if (sStatus === "PROPOSED"){
+				return "Error";
+			} else {
+				return "None";
+			}
 		},
 		
 		getPriorityDescr: function(sPriority) {

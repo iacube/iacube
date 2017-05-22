@@ -2,7 +2,7 @@
 	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:semantic="sap.m.semantic" id="master">
 	<semantic:MasterPage
 			id="mastervac"
-			title="{i18n>title} ({requis>/JobRequisCollection/length})">
+			title="{i18n>title} ({ui>/JobRequisCollection/length})">
 		<semantic:subHeader>
 			<Bar id="headerBar">
 				<contentLeft>
@@ -19,7 +19,7 @@
 			<!-- For client side filtering add this to the items attribute:  parameters: {operationMode: 'Client'}}" -->
 			<List
 					id="reqlist"
-					items="{requis>/JobRequisCollection}"
+					items="{ui>/JobRequisCollection}"
 					mode="SingleSelectMaster"
 					updateFinished="onUpdateFinished"
 					selectionChange="onReqSelected">
@@ -27,19 +27,19 @@
 					<ObjectListItem
 							press="onSelectionChange"
 							icon="sap-icon://product"
-							title="{requis>Position}">
+							title="{ui>Title}">
 						<attributes>
-			    			<ObjectAttribute text = "{requis>Location}"/>
-			    			<ObjectAttribute text = "{requis>Project}"/>
+			    			<ObjectAttribute text = "{ui>Location}"/>
+			    			<ObjectAttribute text = "{ui>ProjectId}"/>
 			    		</attributes>
 			    		<firstStatus>
 			    			<ObjectStatus 
-			        			text = "{requis>ReqId}"
+			        			text = "{ui>ReqId}"
 			        			state = "{None}"/>
 			    		</firstStatus>
 			    		<secondStatus>
-			    			<ObjectStatus text = "{requis>Status}"
-			    						  state = "{path: 'requis>Status',
+			    			<ObjectStatus text = "{ui>StatusCodeId}"
+			    						  state = "{path: 'ui>StatusCodeId',
 													formatter: 'manage_vacancy.util.formatter.formatReqStatus'}"/>
 			    		</secondStatus>
 					</ObjectListItem>

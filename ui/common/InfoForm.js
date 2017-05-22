@@ -51,7 +51,7 @@ sap.ui.define([
 						}]
 					}).setEditable(false).bindAggregation("suggestionItems", "ui>/JobRequisCollection",
 						new Item({
-							text: "{ui>Project}"
+							text: "{ui>ProjectId}"
 						})),
 						
 					new Label({

@@ -42,29 +42,23 @@ sap.ui.define([
 		//	}
 		
 		handleIconPress: function (oEvent) {
- 
 			// create popover
 			if (!this._oPopover) {
 				this._oPopover = sap.ui.xmlfragment("manage_vacancy.view.fragments.CandidateLinks", this);
 				this.getView().addDependent(this._oPopover);
-				this._oPopover.bindElement("requis>RequisCandidatesCollection/");
 			}
-			else {
-				this._oPopover.close();
-			}
- 
-			// delay because addDependent will do a async rerendering and the actionSheet will immediately close without it.
-			var oIcon= oEvent.getSource();
-			jQuery.sap.delayedCall(0, this, function () {
+			
+				var oIcon= oEvent.getSource();
+				var oContext = oIcon.getBindingContext("requis");
+				this._oPopover.setBindingContext(oContext, "requis");
+				jQuery.sap.delayedCall(0, this, function () {
 				this._oPopover.openBy(oIcon);
-				this._oPopover.closeBy(oIcon);
 			});
+		},
+		
+		handleCandidatePress: function(oEvent) {
 		}
- 
-		// handleEmailPress: function (oEvent) {
-		// 	this._oPopover.close();
-		// 	MessageToast.show("E-Mail has been sent");
-		// }
+	
 	});
  
 
