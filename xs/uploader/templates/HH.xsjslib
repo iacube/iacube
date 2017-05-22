@@ -68,14 +68,12 @@ var template = {
 			}
 		},
 		resume_locale: {
-			type:{
-				reduce:{
-					id:{
-						type:"string"
-					}
-				},
-				column:"Language",
-			}
+		    reduce:{
+    			id:{
+    				type:"string"
+    			}
+		    },
+			column:"Language"
 		},
 		language:{
 			level:{

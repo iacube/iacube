@@ -267,8 +267,8 @@ context tables{
 		
 		entity Experience{
 			ProfileId	: profileId;
-			Company		: String(100);
-			Position	: String(100);
+			Company		: String(1000);
+			Position	: String(1000);
 			Description	: LargeString;
 			StartDate	: date;
 			EndDate		: date;

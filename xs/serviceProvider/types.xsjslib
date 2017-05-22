@@ -7,14 +7,12 @@ var types = {
 	},
 	filter:{
 		defaultValue: "",
-		get: function(requestData,template){
+		get: function(requestData,transformation){
 			
 			var convertObject;
-			var defaultValue = transformation.defaultValue !== undefined ? transformation.defaultValue : types.table.defaultValue;
+			var defaultValue = transformation.defaultValue !== undefined ? transformation.defaultValue : types.filter.defaultValue;
 			var fields = [];
-			
-			transformation = transformation.columns;
-			
+
 			if(requestData){
 				if(typeof requestData === "object"){
 					
@@ -22,10 +20,12 @@ var types = {
 					var value;
 					var operator;
 					
+					transformation = transformation.columns;
+					
 					for(key in requestData){
 						if(requestData.hasOwnProperty(key) && transformation[key]){
 							
-							value = types[transformation.type].get(requestData[key],transformation[key]);
+							value = types[transformation[key].type || "other"].get(requestData[key],transformation[key]);
 							switch(transformation[key].type){
 								case "string":
 									operator = " like ";
@@ -36,18 +36,19 @@ var types = {
 								operator = " = ";
 							}
 							
-							fields.push("\"" + key + "\"" + operator + transformation[key].type === "string" ? ("'" + value + "'") : value);
+							fields.push("\"" + key + "\"" + operator + (transformation[key].type === "string" ? ("'" + value + "'") : value));
 						}
 					} 
+					convertObject = fields.join(" and ");
 				}else{
-					types[transformation.type].get(JSON.parse(requestData),transformation);
+					convertObject = types[transformation.type].get(JSON.parse(requestData),transformation);
 				}
 				
 			}else{
 				convertObject = defaultValue; 
 			}
 
-			return fields.join(" and ");
+			return convertObject;
 		}
 	},
 	table:{
