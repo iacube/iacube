@@ -1,20 +1,26 @@
-truncate table "IACUBE"."CANDIDATES";
+truncate table "IACUBE"."iacube.db::tables.Candidate.Candidates";
 
-insert into "IACUBE"."CANDIDATES"(id,first_name,second_name,gender)
-select id,first_name,second_name,gender_name from "SDI_USER"."X2_candidate"
+insert into "IACUBE"."iacube.db::tables.Candidate.Candidates"("CandidateId","FirstName","LastName","GenderId")
+select id,first_name,second_name,gender from "IACUBE"."CANDIDATES"
 
-truncate table "IACUBE"."CANDIDATES_PROFILES";
-insert into "IACUBE"."CANDIDATES_PROFILES"(candidate_id,profile_id)
-select candidate_id,profile_id from "SDI_USER"."X2_candidates_profiles"
+truncate table "IACUBE"."iacube.db::tables.Candidate.Profiles"
+insert into "IACUBE"."iacube.db::tables.Candidate.Profiles"("CandidateId","ProfileId") 
+select candidate_id,profile_id from "IACUBE"."CANDIDATES_PROFILES";
 
-truncate table "IACUBE"."EXPERIENCE";
-insert into "IACUBE"."EXPERIENCE"(	"PROFILE_ID",	"COMPANY",	"POSITION",	"DESCRIPTION",	"START_YEAR",	"START_MONTH",	"END_YEAR",	"END_MONTH")
-select "PROFILE_ID",	"COMPANY",	"POSITION",	"DESCRIPTION",	"START_YEAR",	"START_MONTH",	"END_YEAR",	"END_MONTH" from "SDI_USER"."X2_experience"
+truncate table "IACUBE"."iacube.db::tables.Profile.Experience";
 
-truncate table "IACUBE"."PROFILES";
-insert into "IACUBE"."PROFILES"("ID",	"EXTERNAL_ID",	"PROFILE_TYPE",	"LINK",	"LANGUAGE",	"HEADLINE",	"SUMMARY")
-select "ID",	"EXTERNAL_ID",	"PROFILE_TYPE",	"LINK",	"LANGUAGE",	"HEADLINE",	"SUMMARY" from "SDI_USER"."X2_profiles"
+insert into "IACUBE"."iacube.db::tables.Profile.Experience"("ProfileId","Company","Position","Description","StartDate","EndDate")
 
-truncate table "IACUBE"."SKILLS";
-insert into "IACUBE"."SKILLS"("PROFILE_ID",	"SKILL")
-select "PROFILE_ID",	"SKILL" from "SDI_USER"."X2_skills"
+select "PROFILE_ID",	"COMPANY",	"POSITION",	"DESCRIPTION",	TO_DATE(TO_VARCHAR("START_YEAR")||'-'||TO_VARCHAR("START_MONTH")||'-01'),
+       TO_DATE(TO_VARCHAR("END_YEAR")||'-'||TO_VARCHAR("END_MONTH")||'-01') from "IACUBE"."EXPERIENCE"
+
+truncate table "IACUBE"."iacube.db::tables.Profile.Profiles";
+
+insert into "IACUBE"."iacube.db::tables.Profile.Profiles"("ProfileId","ExternalId","ProfileTypeId","Link","Headline","Summary")
+select "ID",	"EXTERNAL_ID",0,"LINK","HEADLINE","SUMMARY" from "IACUBE"."PROFILES"
+
+truncate table "IACUBE"."iacube.db::tables.Profile.Skills";
+
+insert into "IACUBE"."iacube.db::tables.Profile.Skills"("ProfileId","Skill")
+
+select "PROFILE_ID","SKILL" from "IACUBE"."SKILLS"
