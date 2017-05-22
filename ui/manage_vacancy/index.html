@@ -5,11 +5,9 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta charset="UTF-8">
 
-		<title>vacancymngt</title>
+		<title>Vacancy Management</title>
 
 		<script id="sap-ui-bootstrap"
-			src="/sap/ui5/1/resources/sap-ui-core.js"
-			
 			src="https://sapui5.hana.ondemand.com/1.38.15/resources/sap-ui-core.js"
 
 			data-sap-ui-libs="sap.m,iacube.ui.common"
@@ -22,14 +20,9 @@
 		<link rel="stylesheet" type="text/css" href="css/style.css">
 
 		<script>
-			sap.ui.getCore().attachInit(function() {
-				new sap.m.Shell({
-					app: new sap.ui.core.ComponentContainer({
-						height : "100%",
-						name : "manage_vacancy"
-					})
-				}).placeAt("content");
-			});
+			sap.ui.getCore().attachInitEvent(function () {
+				iacube.ui.common.initHTML("manage_vacancy", 1000);
+        	});
 		</script>
 	</head>
 

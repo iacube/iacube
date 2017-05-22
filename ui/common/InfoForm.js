@@ -5,8 +5,9 @@ sap.ui.define([
 	"sap/m/TextArea",
 	"sap/m/Input",
 	"sap/ui/core/Item",
-	"sap/m/ComboBox"
-], function(VBox, SimpleForm, Label, TextArea, Input, Item, ComboBox) {
+	"sap/m/ComboBox",
+	"iacube/ui/common/formatterCom"
+], function(VBox, SimpleForm, Label, TextArea, Input, Item, ComboBox, oFormatterCom) {
 	"use strict";
 
 	return VBox.extend("iacube.ui.common.InfoForm", {
@@ -63,7 +64,15 @@ sap.ui.define([
 						selectedKey: "{ui>PriorityId}"
 					}).bindAggregation("items", "ui>/AvailablePriorities", new Item({
 							key: "{ui>PriorityCode}",
-							text: "{ui>PriorityCode}"
+							text: { parts: [{path: 'ui>PriorityCode'},
+							                {path: 'i18nCom>priorLow'},
+							                {path: 'i18nCom>priorMedium'},
+							                {path: 'i18nCom>priorHigh'}],
+									formatter: function(sPriorCode, sProirLow, sPriorMedium, sPriorHigh) {
+										return oFormatterCom.getPriorDescr(sPriorCode, sProirLow, sPriorMedium, sPriorHigh);
+								}}
+									
+									
 						})).setEditable(false),
 					
 					new Label({
@@ -78,12 +87,6 @@ sap.ui.define([
 						text: "{i18nCom>language}",
 						labelFor: "idLangu"
 					}),
-					new ComboBox("idLangu", {
-						selectedKey: "{ui>Language}"
-					}).bindAggregation("items", "ui>/AvailableLanguages", new Item({
-							key: "{ui>SlsLang}",
-							text: "{ui>SlsLang}"
-						})).setEditable(false),
 						
 					new Label({
 						text: "{i18nCom>keyWords}",

@@ -49,8 +49,8 @@ sap.ui.define([
 			}
 			
 				var oIcon= oEvent.getSource();
-				var oContext = oIcon.getBindingContext("requis");
-				this._oPopover.setBindingContext(oContext, "requis");
+				var oContext = oIcon.getBindingContext("ui");
+				this._oPopover.setBindingContext(oContext, "ui");
 				jQuery.sap.delayedCall(0, this, function () {
 				this._oPopover.openBy(oIcon);
 			});

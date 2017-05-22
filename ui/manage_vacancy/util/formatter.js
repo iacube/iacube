@@ -31,25 +31,16 @@ sap.ui.define([
 			}
 		},
 		
-		getPriorityDescr: function(sPriority) {
-			var priorFormatted;
-			if (sPriority === "H") {
-				priorFormatted = "{i18n>priorH}";
-			} else if (sPriority === "M") {
-				priorFormatted = "{i18n>priorM}";
-			} else {
-				priorFormatted = "{i18n>priorL}";
+		
+		getLanguageText: function(sLanguCode) {
+			if(sLanguCode === "EN" || sLanguCode === "en_EN") {
+				return "English";
 			}
-			return priorFormatted;
-		},
-		
-		getExperience: function(startDate, endDate) {
-			return startDate - endDate;
+			else if(sLanguCode === "RU" || sLanguCode === "ru_RU"){
+				return "Русский";
+			}
 		}
-		
-		// getCandidateLinksTitle: function(sFirstName, sSecondName) {
-		// 	return sFirstName + " " + sSecondName + "Profiles";
-		// }
+
 	};
  
 	return formatter;

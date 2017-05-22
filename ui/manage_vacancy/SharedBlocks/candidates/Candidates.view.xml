@@ -1,6 +1,7 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:html="http://www.w3.org/1999/xhtml"
 	xmlns:formatter="manage_vacancy.util.formatter" controllerName="manage_vacancy.SharedBlocks.candidates.CandidatesContr">
-	<Table id="idCandidates" items="{ui>candidates}">
+	<Table id="idCandidates" items="{ui>candidates}"
+		   headerText="{i18n>candidates} ({ui>candidates/length})">
 		<columns>
 			<Column hAlign="Center"></Column>
 			<Column hAlign="Left">

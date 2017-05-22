@@ -20,11 +20,9 @@ sap.ui.define([ "sap/ui/model/json/JSONModel", "sap/ui/Device" ], function(
 					"PriorityCode" : "L"
 				} ],
 				"AvailableLanguages" : [ {
-					"SlsLang" : "en_EN",
-					"LangDescr" : "English"
+					"SlsLang" : "EN"
 				}, {
-					"SlsLang" : "ru_RU",
-					"LangDescr" : "Russian"
+					"SlsLang" : "RU"
 				} ],
 			});
 			oModel.setDefaultBindingMode("TwoWay");
