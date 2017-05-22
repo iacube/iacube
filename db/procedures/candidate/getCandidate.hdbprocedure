@@ -33,7 +33,6 @@ BEGIN
 	
 	contacts = 
 		SELECT
-				--"CandidateId",
 				"ContactTypeId",
 				"Value"
 			FROM "iacube.db::tables.Candidate.Contacts"
@@ -41,7 +40,6 @@ BEGIN
 	;
 	languages =
 		SELECT
-				--"CandidateId",
 				"LanguageId",
 				"LevelId"
 			FROM "iacube.db::tables.Candidate.Languages"
@@ -50,7 +48,6 @@ BEGIN
 	
 	profiles = 
 		SELECT
-				--a."CandidateId",
 				a."ProfileId",
 				b."ExternalId",
 				b."ProfileTypeId",
@@ -110,7 +107,6 @@ BEGIN
 			
 	requisitions = 
 		SELECT 
-				--a."CandidateId",
 				a."ReqId",
 				c."Title",
 				a."StatusId",

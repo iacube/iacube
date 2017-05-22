@@ -67,6 +67,16 @@ var template = {
 				type:"string"
 			}
 		},
+		resume_locale: {
+			type:{
+				reduce:{
+					id:{
+						type:"string"
+					}
+				},
+				column:"Language",
+			}
+		},
 		language:{
 			level:{
 			    reduce:{
@@ -81,7 +91,7 @@ var template = {
 				type:"string"
 			}
 		},
-		url:{
+		alternate_url:{
 			column:"Link",
 			type:"string"
 		},

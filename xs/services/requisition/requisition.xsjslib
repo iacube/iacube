@@ -9,8 +9,30 @@ var call = {
 		result: function(responce){
 			
 			var requisition = {};
+			var dictionary = {
+					
+			};
 			var key;
 			var i,j;
+			
+			function addTo(what,where){
+				
+				what.forEach(function(entity){
+					
+					var newEntity = entity.toLowerCase();
+
+					where[newEntity] = [];
+					
+					for(i = 0; i < responce[entity].length; i++){
+						where[newEntity].push({});
+						for(key in responce[entity][i]){
+							if(responce[entity][i].hasOwnProperty(key)){
+								where[newEntity][where[newEntity].length - 1][key] = responce[entity][i][key];
+							}
+						}
+					}
+				});
+			}
 			
 			if(responce.DETAILS[0]){
 				
@@ -18,29 +40,29 @@ var call = {
 					requisition[key] = responce.DETAILS[0][key];
 				}
 
-				["SKILLS","COMMENTS","CANDIDATES"].forEach(function(entity){
-					
-					var newEntity = entity.toLowerCase();
-					
-					requisition[newEntity] = [];
-					
-					for(i = 0; i < responce[entity].length; i++){
-						requisition[newEntity].push(responce[entity][i]);
-					}
-				});
+				addTo(["SKILLS","COMMENTS","CANDIDATES"],requisition);
 				
 				for(i = 0; i < requisition.candidates.length; i++){
 					requisition.candidates[i].profiles = [];
 					for(j = 0; j < responce.PROFILES.length; j++){
 						if(responce.candidates[i].CandidateId === responce.PROFILES[j].CandidateId){
-							requisition.candidates[i].profiles.push(responce.PROFILES[j]);
+							requisition.candidates[i].profiles.push({
+								ProfileId	  : responce.PROFILES[j].ProfileId,
+								ExternalId	  : responce.PROFILES[j].ExternalId,
+								ProfileTypeId : responce.PROFILES[j].ProfileTypeId,
+								Link		  : responce.PROFILES[j].Link
+							});
 						}
 					}
-					
 				}	
 			}
 			
-			return requisition;
+			addTo(["COMMENTTYPES","PRIORITYTYPES","STATUSCODETYPES","STATUSTYPES","SUBCATEGORYTYPES"],dictionary);
+
+			return {
+				data 		: requisition,
+				dictionary	: dictionary
+			}
 		}
 	}	
 };

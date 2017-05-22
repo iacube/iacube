@@ -12,10 +12,10 @@ var template = {
 		client.request(req, dest);
 		var response = client.getResponse();
 		
-        var body = undefined;
+        /*var body;
         if (response.body) {
-            var body = response.body.asString();
-        }
+            body = response.body.asString();
+        }*/
 		return [];
 	},
 	transformation: function(data){

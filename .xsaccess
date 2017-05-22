@@ -23,12 +23,12 @@
 			"target": "/xs/serviceProvider/provider.xsjs?service=requisition&reqId=$1" 
 			},
 		{
-		"source": "manage_vacancy",
+		"source": "candidates",
 		"target": ""
 		},
 			{
-			"source": "/service/searchCandidates", 
-			"target": "/xs/serviceProvider/provider.xsjs?service=searchCandidates" 
+			"source": "/service/candidates", 
+			"target": "/xs/serviceProvider/provider.xsjs?service=candidates" 
 			},
 			{
 			"source": "/service/candidate/(\\d+)", 

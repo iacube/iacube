@@ -18,7 +18,7 @@ context tables{
 
 		entity Resumes{
 			key	ResumeId		: hhResumeId;
-				Title			: String(1000);	
+				Title			: String(1001);	
 				LastName		: name;	
 				FirstName		: name;	
 				MiddleName		: name;
@@ -32,6 +32,7 @@ context tables{
 				SalaryCurr		: currency;	
 				Link			: String(1000);
 				LastChanged		: datetime;
+				Language		: lang;
 		};
 
 		entity Contacts{
@@ -227,7 +228,7 @@ context tables{
 	context Profile{
 	
 		type profileId 	 		: Integer;
-	 	type profileTypeId    	: Integer;
+	 	type profileTypeId    	: String(10);
 		type relocationTypeId 	: String(10);
 		type businessTripTypeId	: String(10);
 		type employmentTypeId	: String(10);
@@ -241,6 +242,7 @@ context tables{
 				Link			: String(1000);
 				Headline		: LargeString;
 				Summary			: LargeString;
+				Language		: lang;
 		};
 		
 		entity ProfileDetails{//was resumeDetails
@@ -337,10 +339,12 @@ context tables{
 				StatusCodeId	: statusCodeTypeId; 
 				SubcategoryId 	: subcategoryId;
 				CreatedBy		: creator;
-            	CreatedAt		: datetime;
+				CreatedAt		: datetime;
 				Language		: lang;
 				Keywords		: LargeString;
 				Description		: LargeString;
+				OpenedBy		: creator;
+				OpenedAt		: datetime;
 		};
 		
 		entity Skills{

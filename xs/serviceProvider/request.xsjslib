@@ -1,66 +1,35 @@
-function transformForDb(requestData,transformation){
+var constants = $.import("iacube.xs.resources","constants").constants;
+var types 	  = $.import(constants.serviceProviderPath,"types").types;
 
-	var convertObject;
+function transformForDb(requestData,transformation,isDefault){
 
-	if(requestData && typeof requestData === "object"){
-	//if data has complex type
-		if(requestData.length === undefined){
-			//if it is an object 
-			convertObject = {};
-			var key = "";
-
-			for(key in transformation){
-				if (transformation.hasOwnProperty(key)){
-					convertObject[transformation[key].name || key] = transformForDb(requestData[key] !== undefined ? requestData[key] : "",transformation[key]);
-				}
-			}
-		}else{
-			//if it is an array
-			var i;
-			convertObject = [];
-			//split data between D,I,U properties in object or put them into array 
-			for(i = 0; i < requestData.length; i++){
-				convertObject.push(transformForDb(requestData[i],transformation));
-			}
-		}
+	var result;
+	
+	if(isDefault){
+	    
+	    var defaultValue = (types[transformation.type] &&  types[transformation.type].defaultValue !== undefined)  ? types[transformation.type].defaultValue : types.other.defaultValue;
+	    
+		result = transformation.defaultValue !== undefined ? transformation.defaultValue : defaultValue;
 	}else{
-		//simple type
-		switch(transformation.type){
-			case "string":
-				convertObject = requestData ? requestData.toString() : null;
-				break;
-			case "integer":
-				convertObject = (requestData !== '' && requestData !== undefined && requestData !== null) ? parseInt(requestData, 10) : null;
-				break;
-			case "double":
-				convertObject = (requestData !== '' && requestData !== undefined && requestData !== null) ? parseFloat(requestData) : null;
-				break;
-			case "array":
-				convertObject = JSON.parse(requestData);
-				break;
-			//TODO: add time and date
-			default:
-				convertObject = requestData;
-		}
+		result = transformation.type ? types[transformation.type].get(requestData,transformation) : types.other.get(requestData);
 	}
-	return convertObject;
+	return result;
 }
 //function processes header or body parameters and convert them to object for DB call
 function prepareDbParameters(serviceParameters,method){
 
 	var parametersArray = [];
 	var key;
-
+	var parameter;
+	
 	if(method === "get"){
 		//parameters from header for method "get"
-		var i;
-		var name = "";
 		var parameters = $.request.parameters;
 		
-		for(i = 0; i < parameters.length; i++){
-			name = parameters[i].name;
-			if( name !== "service" && serviceParameters[name]){
-				parametersArray.push(transformForDb(parameters[i].value, serviceParameters[name]));
+		for(key in serviceParameters){
+			if(serviceParameters.hasOwnProperty(key)){
+				parameter = parameters.get(key);
+				parametersArray.push(transformForDb(parameter, serviceParameters[key], parameter ? false : true));
 			}
 		}
 	}else{
@@ -81,21 +50,21 @@ function prepareDbParameters(serviceParameters,method){
 		}
 		//find parameters according to service definition
 		for(key in serviceParameters){
-			if(serviceParameters.hasOwnProperty(key) && bodyParameters[key] !== undefined){
-				parametersArray.push(key === "flag" ? flag : transformForDb(bodyParameters[key], serviceParameters[key]));
+			if(serviceParameters.hasOwnProperty(key)){
+				parameter = key === "flag" ? flag : bodyParameters[key];
+				parametersArray.push(transformForDb(bodyParameters[key], serviceParameters[key],bodyParameters[key] !== undefined ? false : true));
 			}
 		}
 	}
-    
 	return parametersArray;
 }
 
-function prepareByProperty(call,method){
+/*function prepareByProperty(call,method){
 	
 	var serviceParameters = call.parameters;
 	var parametersArray = [];
 	var key;
-	var bodyParameters 
+	var bodyParameters; 
 	
 	function transform(){
 		//find parameters according to service definition
@@ -156,7 +125,7 @@ function prepareByProperty(call,method){
 	});
 			
 	return parametersArray;
-}
+}*/
 
 function prepareRequest(params){
 	
@@ -168,8 +137,8 @@ function prepareRequest(params){
 			procedure : params.call.procedure,
 			parameters: params.call.parameters ? prepareDbParameters(params.call.parameters,params.method) : []
 		}];
-	}else{
-		prepared = prepareByProperty(params);
+//	}else{
+//		prepared = prepareByProperty(params);
 	}
 	
 	return prepared;

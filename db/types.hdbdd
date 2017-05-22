@@ -24,7 +24,7 @@ context types {
 	type commentTypeId	  : String(10);
 	
 	type profileId 	 	    : Integer;
-	type profileTypeId    	: Integer;
+	type profileTypeId    	: String(10);
 	type relocationTypeId 	: String(10);
 	type businessTripTypeId	: String(10);
 	type employmentTypeId	: String(10);
@@ -43,8 +43,18 @@ context types {
 	};
 	
 	type nameValue{
-		name : String(100);
-		value: String(1000);
+		name  : String(100);
+		value : String(1000);
+	};
+	
+	type idName{
+		id   : String(100);
+		name : String(1000);
+	};
+	
+	type paging{
+		t : Integer;
+		s : Integer;
 	};
 	
 	type update_HHResume{
@@ -63,6 +73,7 @@ context types {
 		SalaryCurr		: currency;
 		Link			: String(1000);
 		LastChanged		: UTCTimestamp;
+		Language		: lang;
 	};
 	
 	type update_HHContacts{
@@ -102,55 +113,83 @@ context types {
 	};
 	
 //Requisitions
+	type searchRequisitions{
+		ReqId			: reqId;
+		Title			: String(100);
+		ProjectId		: String(100);
+		PriorityId		: priorityId;
+		Location		: String(1000);
+		StatusCodeId	: statusCodeTypeId;
+		SubcategoryId 	: subcategoryId;
+		SubcategoryName	: String(200);
+		CreatedBy		: creator;
+		CreatedAt		: datetime;
+		OpenedBy		: creator;
+		OpenedAt		: datetime;
+	};
+//	|___
+		type searchRequisitionsCandidates{
+			ReqId		: reqId;
+			CandidateId	: candidateId;
+			StatusId	: statusTypeId;
+			FirstName	: name;
+			LastName	: name;
+			AssignedBy	: creator;
+			AssignedAt	: datetime;
+		};
+
+
 	type requisitionDetails{
-		"ReqId"			: reqId;
-		"Title"			: String(100);
-		"ProjectId"		: String(100);
-		"PriorityId"	: priorityId;
-		"Location"		: String(1000);
-		"StatusCodeId"	: statusCodeTypeId;
-		"SubcategoryId" : subcategoryId;
-		"SubcategoryName": String(200);
-		"CreatedBy"		: creator;
-        "CreatedAt"		: datetime;
-		"Language"		: lang;
-		"Keywords"		: LargeString;
-		"Description"	: LargeString;
+		ReqId			: reqId;
+		Title			: String(100);
+		ProjectId		: String(100);
+		PriorityId		: priorityId;
+		Location		: String(1000);
+		StatusCodeId	: statusCodeTypeId;
+		SubcategoryId 	: subcategoryId;
+		SubcategoryName	: String(200);
+		CreatedBy		: creator;
+		CreatedAt		: datetime;
+		Language		: lang;
+		Keywords		: LargeString;
+		Description		: LargeString;
+		OpenedBy		: creator;
+		OpenedAt		: datetime;
 	};
-	
+//	|
 	type requisitionSkills{
-		//"ReqId"	  		: reqId;
-		"Skill"	  		: String(1000);
-		"Weight"		: Integer;
+		Skill	  : String(1000);
+		IsPrimary : bool;
+		Weight	  : Integer;
 	};
-			
-	type requisitionCandidates{
-		//"ReqId"			: reqId;
-		"CandidateId"	: candidateId;
-		"StatusId"		: statusTypeId;
-		"ChangedAt"		: datetime;
-		"FirstName"		: name;
-		"LastName"		: name;
-		"Experience"	: Integer;
-		"Distance"		: Integer;	
-	};
-	type requisitionProfiles{
-		//"ReqId"			: reqId;
-		"CandidateId"	: Integer;
-		"ProfileId"		: profileId;
-		"ExternalId"	: String(1000);
-		"ProfileTypeId" : Integer;
-		"Link"			: String(1000);
-	};
+//	|
 	type requisitionComments{
-		//"ReqId"			: reqId;
-		"CommentId"		: Integer;
-		"CommentTypeId"	: commentTypeId;
-		"CreatedAt"		: datetime;
-		"CreatedBy"		: creator;
-		"Title"			: String(200);
-		"Text"			: String(5000);
-	}
+		CommentId		: Integer;
+		CommentTypeId	: commentTypeId;
+		CreatedAt		: datetime;
+		CreatedBy		: creator;
+		Title			: String(200);
+		Text			: String(5000);
+	};
+//	|___
+		type requisitionCandidates{
+			CandidateId	: candidateId;
+			StatusId	: statusTypeId;
+			ChangedAt	: datetime;
+			FirstName	: name;
+			LastName	: name;
+			Experience	: Integer;
+			Distance	: Integer;	
+		};
+//		|___
+			type requisitionProfiles{
+				CandidateId		: candidateId;
+				ProfileId		: profileId;
+				ExternalId		: String(1000);
+				ProfileTypeId	: profileTypeId;
+				Link			: String(1000);
+			};
+	
 //Candidates
 	type searchCandidatesCandidates{
 		CandidateId	: candidateId;

@@ -16,13 +16,13 @@ PROCEDURE "IACUBE"."iacube.db.procedures.HH::update_HH_Resumes" (
 BEGIN
 	
 	UPSERT "iacube.db::tables._HH.Resumes"
-		("ResumeId","Title","LastName","FirstName","MiddleName","Age","BirthDate","GenderId","City","RelocationId","BusinessTripId","Salary","SalaryCurr","Link","LastChanged")
+		("ResumeId","Title","LastName","FirstName","MiddleName","Age","BirthDate","GenderId","City","RelocationId","BusinessTripId","Salary","SalaryCurr","Link","LastChanged","Language")
 		SELECT 
 				"ResumeId",
 				"Title",
-				"LastName",
-				"FirstName",
-				"MiddleName",
+				IFNULL("LastName",'') AS "LastName",
+				IFNULL("FirstName",'') AS "FirstName",
+				IFNULL("MiddleName",'') AS "MiddleName",
 				"Age",
 				"BirthDate",
 				"GenderId",
@@ -32,7 +32,8 @@ BEGIN
 				"Salary",
 				"SalaryCurr",
 				"Link",
-				"LastChanged"
+				"LastChanged",
+				"Language"
 			FROM :Resumes
 	;
 		
@@ -89,5 +90,9 @@ BEGIN
 				"LevelId"
 			FROM :Languages
 	;
-		
+	
+--move data to main tables	
+	CALL "iacube.db.procedures.HH::transform_HH_Resumes"();
+	
+	
 END;

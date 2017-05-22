@@ -6,7 +6,7 @@ var service = {
 		requisitions : constants.requisitionPath + "/requisitions",
 		requisition  : constants.requisitionPath + "/requisition",
 		
-		searchCandidates: constants.candidatePath + "/searchCandidates",
+		candidates: constants.candidatePath + "/candidates",
 		candidate: constants.candidatePath + "/candidate",
 	};
 	

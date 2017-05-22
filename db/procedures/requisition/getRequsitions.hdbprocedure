@@ -1,0 +1,107 @@
+PROCEDURE "IACUBE"."iacube.db.procedures.requisition::getRequsitions"(
+	IN  searchTerm	 NVARCHAR(1000),
+	IN  filter		 NVARCHAR(5000),
+	IN  paging		 "IACUBE"."iacube.db::types.paging"						  DEFAULT EMPTY,
+	
+	OUT requisitions "IACUBE"."iacube.db::types.searchRequisitions"			  DEFAULT EMPTY,
+	OUT candidates	 "IACUBE"."iacube.db::types.searchRequisitionsCandidates" DEFAULT EMPTY,
+	
+	OUT statusCodeTypes	 "IACUBE"."iacube.db::types.idName"					  DEFAULT EMPTY,
+	OUT subcategoryTypes "IACUBE"."iacube.db::types.idName"					  DEFAULT EMPTY
+)
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER 
+	DEFAULT SCHEMA IACUBE
+	READS SQL DATA AS
+BEGIN
+	
+	DECLARE nLimit  INTEGER;
+	DECLARE nOffset INTEGER := 0;
+	
+	prefiltered =
+		SELECT
+			a."ReqId",
+			a."Title",
+			a."ProjectId",
+			a."PriorityId",
+			a."Location",
+			a."StatusCodeId",
+			a."SubcategoryId",
+			b."Name" AS "SubcategoryName",
+			a."CreatedBy",
+			a."CreatedAt",
+			a."OpenedBy",
+			a."OpenedAt"
+		FROM "iacube.db::tables.Requisition.Requisitions" AS a
+		LEFT JOIN "iacube.db::tables.Requisition._dictionary.SubcategoryTypes" AS b
+			ON a."SubcategoryId" = b."Id"
+		WHERE CONTAINS(*,:searchTerm, FUZZY(0.8))
+		GROUP BY
+			a."ReqId",
+			a."Title",
+			a."ProjectId",
+			a."PriorityId",
+			a."Location",
+			a."StatusCodeId",
+			a."SubcategoryId",
+			b."Name",
+			a."CreatedBy",
+			a."CreatedAt",
+			a."OpenedBy",
+			a."OpenedAt"
+	;
+	filtered =
+		APPLY_FILTER (:prefiltered,:filter)
+	;
+	SELECT TOP 1
+			"t","s"
+		INTO nLimit,nOffset
+		FROM :paging
+	;
+	requisitions = 
+		SELECT 
+				"ReqId",
+				"Title",
+				"ProjectId",
+				"PriorityId",
+				"Location",
+				"StatusCodeId",
+				"SubcategoryId",
+				"SubcategoryName",
+				"CreatedBy",
+				"CreatedAt",
+				"OpenedBy",
+				"OpenedAt"
+			FROM :filtered
+			LIMIT :nLimit
+			OFFSET :nOffset
+	;
+	candidates = 
+		SELECT
+				a."ReqId",
+				a."CandidateId",
+				a."StatusId",
+				b."FirstName",
+				b."LastName",
+				a."AssignedBy",
+				a."AssignedAt"
+			FROM "iacube.db::tables.Requisition.Candidates"	AS a
+			INNER JOIN "iacube.db::tables.Candidate.Candidates" AS b
+				ON a."CandidateId"  = b."CandidateId"
+			INNER JOIN  :requisitions AS c
+				ON a."ReqId" = c."ReqId"
+	;
+	statusCodeTypes =
+		SELECT 
+				"Id" AS "id",
+				"Name" AS "name"
+			FROM "iacube.db::tables.Requisition._dictionary.StatusCodeTypes"
+	;
+	subcategoryTypes =
+		SELECT 
+				"Id" AS "id",
+				"Name" AS "name"
+			FROM "iacube.db::tables.Requisition._dictionary.SubcategoryTypes"
+	;
+
+END;

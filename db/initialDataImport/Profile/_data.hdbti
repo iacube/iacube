@@ -1,44 +1,44 @@
 import = [ 
-	{ 	
-		table  = "iacube.db::tables.Profile.Employments";
-		schema = "IACUBE";
-		file   = "iacube.db.initialDataImport.Profile:Employments.csv";
-		header = true;
-		delimField = ";";
-	},
-	{ 	
-		table  = "iacube.db::tables.Profile.Experience";
-		schema = "IACUBE";
-		file   = "iacube.db.initialDataImport.Profile:Experience.csv";
-		header = true;
-		delimField = ";";
-	},
-	{ 	
-		table  = "iacube.db::tables.Profile.ProfileDetails";
-		schema = "IACUBE";
-		file   = "iacube.db.initialDataImport.Profile:ProfileDetails.csv";
-		header = true;
-		delimField = ";";
-	},
-	{ 	
-		table  = "iacube.db::tables.Profile.Profiles";
-		schema = "IACUBE";
-		file   = "iacube.db.initialDataImport.Profile:Profiles.csv";
-		header = true;
-		delimField = ";";
-	},
-	{ 	
-		table  = "iacube.db::tables.Profile.Schedules";
-		schema = "IACUBE";
-		file   = "iacube.db.initialDataImport.Profile:Schedules.csv";
-		header = true;
-		delimField = ";";
-	},
-	{ 	
-		table  = "iacube.db::tables.Profile.Skills";
-		schema = "IACUBE";
-		file   = "iacube.db.initialDataImport.Profile:Skills.csv";
-		header = true;
-		delimField = ";";
-	}
+//	{ 	
+//		table  = "iacube.db::tables.Profile.Employments";
+//		schema = "IACUBE";
+//		file   = "iacube.db.initialDataImport.Profile:Employments.csv";
+//		header = true;
+//		delimField = ";";
+//	},
+//	{ 	
+//		table  = "iacube.db::tables.Profile.Experience";
+//		schema = "IACUBE";
+//		file   = "iacube.db.initialDataImport.Profile:Experience.csv";
+//		header = true;
+//		delimField = ";";
+//	},
+//	{ 	
+//		table  = "iacube.db::tables.Profile.ProfileDetails";
+//		schema = "IACUBE";
+//		file   = "iacube.db.initialDataImport.Profile:ProfileDetails.csv";
+//		header = true;
+//		delimField = ";";
+//	},
+//	{ 	
+//		table  = "iacube.db::tables.Profile.Profiles";
+//		schema = "IACUBE";
+//		file   = "iacube.db.initialDataImport.Profile:Profiles.csv";
+//		header = true;
+//		delimField = ";";
+//	},
+//	{ 	
+//		table  = "iacube.db::tables.Profile.Schedules";
+//		schema = "IACUBE";
+//		file   = "iacube.db.initialDataImport.Profile:Schedules.csv";
+//		header = true;
+//		delimField = ";";
+//	},
+//	{ 	
+//		table  = "iacube.db::tables.Profile.Skills";
+//		schema = "IACUBE";
+//		file   = "iacube.db.initialDataImport.Profile:Skills.csv";
+//		header = true;
+//		delimField = ";";
+//	}
 ];

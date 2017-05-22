@@ -1,0 +1,203 @@
+PROCEDURE "IACUBE"."iacube.db.procedures.HH::transform_HH_Resumes"() 
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER 
+	DEFAULT SCHEMA IACUBE
+	AS
+BEGIN
+
+	candidates =
+		SELECT 
+				IFNULL(c."CandidateId","iacube.db.sequences::candidateId".nextval) AS "CandidateId",
+				a."LastName",
+				a."FirstName",
+				a."MiddleName",
+				a."BirthDate",
+				b."iaId" AS "GenderId",
+				a."City" AS "Location",
+				null AS "ProfArea",
+				a."ResumeId"
+			FROM "iacube.db::tables._HH.Resumes" AS a
+			LEFT JOIN "iacube.db::tables._HH._mapping.Gender" AS b
+				ON a."GenderId" = b."hhId"
+			LEFT JOIN "iacube.db::tables.Candidate.Candidates" AS c
+				ON  a."LastName"   = c."LastName"
+				AND a."FirstName"  = c."FirstName"
+				AND a."MiddleName" = c."MiddleName"
+				AND a."BirthDate"  = c."BirthDate"
+				AND b."iaId"  	   = c."GenderId"
+	;
+	languages =
+		SELECT DISTINCT
+				c."CandidateId",
+				a."LanguageId",
+				b."iaId" 			AS "LevelId"
+			FROM "iacube.db::tables._HH.Language" AS a
+			LEFT JOIN "iacube.db::tables._HH._mapping.LanguageLevel" AS b
+				ON a."LevelId" = b."hhId"
+			INNER JOIN :candidates AS c
+				ON a."ResumeId" = c."ResumeId"
+	;
+	contacts = 
+		SELECT 
+				c."CandidateId",
+				b."iaId" AS "ContactTypeId",
+				a."Value"
+			FROM "iacube.db::tables._HH.Contacts" AS a
+			LEFT JOIN "iacube.db::tables._HH._mapping.Contact" AS b
+				ON a."ContactId" = b."hhId"
+			INNER JOIN :candidates AS c
+				ON a."ResumeId" = c."ResumeId"
+	;
+	UPSERT "iacube.db::tables.Candidate.Candidates"
+		("CandidateId","LastName","FirstName","MiddleName","BirthDate","GenderId","Location","ProfArea")
+		SELECT DISTINCT
+				"CandidateId",
+				"LastName",
+				"FirstName",
+				"MiddleName",
+				"BirthDate",
+				"GenderId",
+				"Location",
+				"ProfArea"
+			FROM :candidates
+	;
+	UPSERT "iacube.db::tables.Candidate.Languages"
+		("CandidateId","LanguageId","LevelId")
+		SELECT DISTINCT
+				"CandidateId",
+				"LanguageId",
+				"LevelId"
+			FROM :languages
+	;
+	UPSERT "iacube.db::tables.Candidate.Contacts"
+		("CandidateId","ContactTypeId","Value")
+		SELECT DISTINCT
+				"CandidateId",
+				"ContactTypeId",
+				"Value"
+			FROM :contacts
+	;
+	
+	profiles =
+		SELECT 
+				IFNULL(d."ProfileId","iacube.db.sequences::profileId".nextval) AS "ProfileId",
+				a."ResumeId" AS "ExternalId",
+				'HH' AS "ProfileTypeId",
+				a."Link",
+				a."Title" AS "Headline",
+				null AS "Summary",
+				null AS "DesiredPosition",
+				null AS "CareerStarter",
+				a."Salary",
+				a."SalaryCurr",
+				b."iaId" AS "RelocationId",
+				c."iaId" As "BusinessTripId",
+				a."ResumeId",
+				a."Language"
+			FROM "iacube.db::tables._HH.Resumes" AS a
+			LEFT JOIN "iacube.db::tables._HH._mapping.Relocation" AS b
+				ON a."RelocationId" = b."hhId"
+			LEFT JOIN "iacube.db::tables._HH._mapping.BusinessTrip" AS c
+				ON a."BusinessTripId" = c."hhId"
+			LEFT JOIN "iacube.db::tables.Profile.Profiles" AS d
+				ON a."ResumeId" = d."ExternalId"
+	;
+	employments = 
+		SELECT 
+				c."ProfileId",
+				b."iaId" AS "EmploymentId"
+			FROM "iacube.db::tables._HH.Employments" AS a
+			LEFT JOIN "iacube.db::tables._HH._mapping.Employment" AS b
+				ON a."EmploymentId" = b."hhId"
+			INNER JOIN :profiles AS c
+				ON a."ResumeId" = c."ResumeId"
+	;
+	experience = 
+		SELECT 
+				c."ProfileId",
+				a."Organization" AS "Company",
+				a."Position",
+				a."Description",
+				a."StartDate",
+				a."EndDate"
+			FROM "iacube.db::tables._HH.Experience" AS a
+			INNER JOIN :profiles AS c
+				ON a."ResumeId" = c."ResumeId"
+	;
+	schedules = 
+		SELECT 
+				c."ProfileId",
+				b."iaId" AS "ScheduleId"
+			FROM "iacube.db::tables._HH.Schedules" AS a
+			LEFT JOIN "iacube.db::tables._HH._mapping.Schedule" AS b
+				ON a."ScheduleId" = b."hhId"
+			INNER JOIN :profiles AS c
+				ON a."ResumeId" = c."ResumeId"
+	;
+	skills = 
+		SELECT 
+				c."ProfileId",
+				"Skill"
+			FROM "iacube.db::tables._HH.Skills" AS a
+			INNER JOIN :profiles AS c
+				ON a."ResumeId" = c."ResumeId"
+	;
+	UPSERT "iacube.db::tables.Profile.Profiles"
+		("ProfileId","ExternalId","ProfileTypeId","Link","Headline","Summary","Language")
+		SELECT DISTINCT
+				"ProfileId",
+				"ExternalId",
+				"ProfileTypeId",
+				"Link",
+				"Headline",
+				"Summary",
+				"Language"
+			FROM :profiles
+	;
+	UPSERT "iacube.db::tables.Profile.ProfileDetails"
+		("ProfileId","DesiredPosition","CareerStarter","Salary","SalaryCurr","RelocationId","BusinessTripId")
+		SELECT DISTINCT
+				"ProfileId",
+				"DesiredPosition",
+				"CareerStarter",
+				"Salary",
+				"SalaryCurr",
+				"RelocationId",
+				"BusinessTripId"
+			FROM :profiles
+	;
+	UPSERT "iacube.db::tables.Profile.Experience"
+		("ProfileId","Company","Position","Description","StartDate","EndDate")
+		SELECT
+				"ProfileId",
+				"Company",
+				"Position",
+				"Description",
+				"StartDate",
+				"EndDate"
+			FROM :experience
+	;
+	UPSERT "iacube.db::tables.Profile.Schedules"
+		("ProfileId","ScheduleId")
+		SELECT DISTINCT
+				"ProfileId",
+				"ScheduleId"
+			FROM :schedules
+	;
+	UPSERT "iacube.db::tables.Profile.Skills"
+		("ProfileId","Skill")
+		SELECT DISTINCT
+				"ProfileId",
+				"Skill"
+			FROM :skills
+	;
+	UPSERT "iacube.db::tables.Candidate.Profiles"
+		("CandidateId","ProfileId")
+		SELECT DISTINCT
+				a."CandidateId",
+				b."ProfileId"
+			FROM :candidates AS a
+			LEFT JOIN :profiles AS b
+				ON a."ResumeId" = b."ResumeId"
+	;
+END;
