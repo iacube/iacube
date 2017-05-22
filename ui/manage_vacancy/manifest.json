@@ -72,6 +72,12 @@
 				"type": "sap.ui.model.json.JSONModel",
 				"dataSource": "requis",
 				"preload": true
+			},
+			"i18nCom": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "iacube.ui.common.messagebundle"
+				}
 			}
 		},
 		"resources": {

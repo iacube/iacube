@@ -48,7 +48,7 @@ sap.ui.define([
 						return {
 							CommentId: comm.CommentId,
 							CommentTypeId: comm.CommentTypeId,
-							CommCreatedAt: comm.CreatedAt,
+							CommCreatedAt: new Date(comm.CreatedAt),
 							CommCreatedBy: comm.CreatedBy,
 							CommTitle: comm.Title,
 							Text: comm.Text

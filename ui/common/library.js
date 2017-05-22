@@ -27,7 +27,8 @@ sap.ui.define([
 		interfaces: [],
 		controls: [
 			"iacube.ui.common.InfoForm",
-			"iacube.ui.common.SkillsTable"
+			"iacube.ui.common.SkillsTable",
+			"iacube.ui.common.Comments"
 		],
 		elements: []
 	});
