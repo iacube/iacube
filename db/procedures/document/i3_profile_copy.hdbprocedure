@@ -1,0 +1,119 @@
+PROCEDURE "IACUBE"."dev::I3_PROFILE_COPY" ( )
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY DEFINER
+   AS
+BEGIN
+
+   DECLARE CURSOR lc_req FOR SELECT "ID","LANGUAGE" FROM "IACUBE"."REQUISITIONS" AS "A" WHERE EXISTS(SELECT NULL FROM "IACUBE"."REQUISITION_SKILLS" AS "B"
+                                                                                          WHERE "A"."ID"="B"."REQ_ID");
+   DECLARE CURSOR lc_req_skill(p_req_id SMALLINT) FOR SELECT "WEIGHT","SKILL" FROM "IACUBE"."REQUISITION_SKILLS" WHERE req_id=:p_req_id;                                                                      
+   DECLARE CURSOR lc_prof FOR SELECT "ID","LANGUAGE" FROM "IACUBE"."PROFILES" AS "A" WHERE EXISTS(SELECT NULL FROM "IACUBE"."SKILLS" AS "B"
+                                                                                                  WHERE "A"."ID"="B"."PROFILE_ID");
+   DECLARE CURSOR lc_prof_skill(p_prof_id SMALLINT) FOR SELECT "SKILL" FROM "IACUBE"."SKILLS" WHERE profile_id=:p_prof_id;                                                                      
+   DECLARE CURSOR lc_prof_exp(p_prof_id SMALLINT) FOR SELECT "END_YEAR","DESCRIPTION" FROM "IACUBE"."EXPERIENCE" WHERE profile_id=:p_prof_id;                                                                      
+
+   DECLARE lv_skillSet NVARCHAR(5000);
+   DECLARE lv_weight SMALLINT;
+   DECLARE lv_i SMALLINT;
+
+   TRUNCATE TABLE "IACUBE"."DOCUMENTS";
+   TRUNCATE TABLE "IACUBE"."DOCUMENT_SKILLS";
+   
+-- Keys D
+   lt_keyD= SELECT "ID",'R' AS "EXT_TYPE", 'A' AS "CLASS" FROM "IACUBE"."REQUISITIONS" UNION ALL
+            SELECT "ID",'P' AS "EXT_TYPE", 'A' AS "CLASS" FROM "IACUBE"."PROFILES";
+
+-- Documents
+   INSERT INTO "IACUBE"."DOCUMENTS"("EXT_ID","EXT_TYPE","ID")
+   SELECT "ID","EXT_TYPE",row_number() OVER(PARTITION BY "CLASS") FROM :lt_keyD;
+
+-- Requisitions   
+   UPDATE "IACUBE"."DOCUMENTS" AS A
+   SET "CONTENT"= (SELECT "DESCRIPTION" FROM "IACUBE"."REQUISITIONS" AS B
+                   WHERE A.ext_id=B.id AND A.ext_type='R'),
+       "LANGUAGE"= (SELECT "LANGUAGE" FROM "IACUBE"."REQUISITIONS" AS B
+                    WHERE A.ext_id=B.id AND A.ext_type='R')
+   WHERE A."EXT_TYPE"='R';                    
+                    
+-- Profiles
+   UPDATE "IACUBE"."DOCUMENTS" AS A
+   SET "LANGUAGE"= (SELECT "LANGUAGE" FROM "IACUBE"."PROFILES" AS B
+                    WHERE A."EXT_ID"=B."ID" AND A."EXT_TYPE"='P'),
+        "CONTENT"=(SELECT "SUMMARY" FROM "IACUBE"."PROFILES" AS B
+                   WHERE A."EXT_ID"=B."ID" AND A."EXT_TYPE"='P')
+   WHERE A."EXT_TYPE"='P';                    
+
+   INSERT INTO "IACUBE"."DOCUMENT_SKILLS"("EXT_ID","EXT_TYPE","ID")
+   SELECT "EXT_ID","EXT_TYPE","ID" FROM "IACUBE"."DOCUMENTS" A WHERE EXISTS(SELECT NULL FROM "IACUBE"."REQUISITION_SKILLS" B WHERE
+                                                                            A."EXT_ID"=B."REQ_ID" AND A."EXT_TYPE"='R') OR
+                                                                     EXISTS(SELECT NULL FROM "IACUBE"."SKILLS" C WHERE
+                                                                            A."EXT_ID"=C."PROFILE_ID" AND A."EXT_TYPE"='P');
+
+-- Requisition Skills 
+
+
+   FOR ls_req AS lc_req DO
+      lv_skillSet='';
+
+      FOR ls_req_skill AS lc_req_skill(ls_req."ID") DO
+         lv_weight=IFNULL(ls_req_skill."WEIGHT",0);
+         IF lv_weight < 0 THEN
+            lv_weight=0;
+         END IF;
+         FOR lv_i IN 1..lv_weight DO
+            lv_skillSet=lv_skillSet||' '||ls_req_skill."SKILL";
+         END FOR;
+      END FOR;
+      lv_skillSet=LTRIM(lv_skillSet);
+      IF LENGTH(lv_skillSet) !=0 AND lv_skillSet IS NOT NULL THEN 
+         UPDATE "IACUBE"."DOCUMENT_SKILLS"      
+         SET "CONTENT"=lv_skillSet,
+             "LANGUAGE"=ls_req."LANGUAGE"
+         WHERE "EXT_ID"=ls_req."ID" AND "EXT_TYPE"='R';
+      END IF;
+   END FOR;
+
+  
+-- Profile
+
+   FOR ls_prof AS lc_prof DO
+-- Profile skills   
+      lv_skillSet='';
+      FOR ls_prof_skill AS lc_prof_skill(ls_prof."ID") DO
+         lv_skillSet=lv_skillSet||' '||ls_prof_skill."SKILL";
+      END FOR;
+      lv_skillSet=LTRIM(lv_skillSet);
+      IF LENGTH(lv_skillSet) !=0 AND lv_skillSet IS NOT NULL THEN 
+         UPDATE "IACUBE"."DOCUMENT_SKILLS"      
+         SET "CONTENT"=lv_skillSet,
+             "LANGUAGE"=ls_prof."LANGUAGE"
+         WHERE "EXT_ID"=ls_prof."ID" AND "EXT_TYPE"='P';
+      END IF;
+-- Profile experience
+      lv_skillSet='';
+      FOR ls_prof_exp AS lc_prof_exp(ls_prof."ID") DO
+         IF IFNULL(ls_prof_exp."END_YEAR",'') = '' THEN
+            lv_weight=4;
+         ELSEIF YEAR(CURRENT_DATE)-TO_SMALLINT(ls_prof_exp."END_YEAR") <= 1 THEN 
+            lv_weight=4;
+         ELSEIF YEAR(CURRENT_DATE)-TO_SMALLINT(ls_prof_exp."END_YEAR") > 1 AND
+                YEAR(CURRENT_DATE)-TO_SMALLINT(ls_prof_exp."END_YEAR") <= 1 THEN
+            lv_weight=2;
+         ELSEIF YEAR(CURRENT_DATE)-TO_SMALLINT(ls_prof_exp."END_YEAR") > 5 THEN
+            lv_weight=1;
+         ELSE
+            lv_weight=0;
+         END IF;
+            FOR lv_i IN 1..lv_weight DO
+               lv_skillSet=SUBSTRING(lv_skillSet||' '||ls_prof_exp."DESCRIPTION",1,5000);
+            END FOR;
+      END FOR;
+      lv_skillSet=LTRIM(lv_skillSet);
+      IF LENGTH(lv_skillSet) !=0 AND lv_skillSet IS NOT NULL THEN 
+         UPDATE "IACUBE"."DOCUMENTS"      
+         SET "CONTENT"=SUBSTRING("CONTENT"||lv_skillSet,1,5000)
+         WHERE "EXT_ID"=ls_prof."ID" AND "EXT_TYPE"='P';
+      END IF;
+
+   END FOR;
+END
