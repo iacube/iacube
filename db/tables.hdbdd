@@ -1,4 +1,4 @@
-namespace iacube.db;
+﻿namespace iacube.db;
 
 @Schema : 'IACUBE'
 context tables{
@@ -415,5 +415,26 @@ context tables{
 					Description : String(100);
 			};
 		};
+	};
+	
+	context Document{
+       type docId           : hana.SMALLINT;
+	   type docExtId        : hana.SMALLINT;			
+	   type docExtType      : String(2);	
+	   type docContent      : String(5000);
+	   type docDim          : String(1);
+	
+	   entity Documents{
+	      key Id                : docId;
+	      Language              : lang;
+	      Extid                 : docExtId;
+	      ExtType               : docExtType;
+	   };
+	   
+	   entity Texts{
+	      key Id                : docId;
+	      Content               : docContent;
+	      DocDim                : docDim; 
+	   }
 	};
 };

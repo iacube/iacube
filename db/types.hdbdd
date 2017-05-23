@@ -35,8 +35,12 @@ context types {
 	type languageLevelId : String(10);
 	type languageId 	 : String(10);
 	type contactTypeId 	 : String(10);
-			
-		
+	type docId           : hana.SMALLINT;
+	type docExtId        : hana.SMALLINT;			
+	type docExtType      : String(2);	
+	type docContent      : String(5000);
+    type docDim          : String(1);
+	   
 	type error{
 		id		: Integer;
 		details : String(1000);

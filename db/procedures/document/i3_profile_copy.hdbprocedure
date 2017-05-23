@@ -1,5 +1,4 @@
-PROCEDURE "IACUBE"."dev::I3_PROFILE_COPY" ( )
-   LANGUAGE SQLSCRIPT
+PROCEDURE "IACUBE"."iacube.db.procedures.document::i3_profile_copy" ( ) LANGUAGE SQLSCRIPT
    SQL SECURITY DEFINER
    AS
 BEGIN
