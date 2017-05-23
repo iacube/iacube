@@ -86,5 +86,89 @@ var call = {
 				filter 		: filter
 			};
 		}
-	}	
+	},
+	put:{
+		procedure:"iacube.db.procedures.requisition::updateRequisitions",
+		parameters:{
+			requisitions:{
+				type:"table",
+				columns:{
+					ReqId : {
+						type : "integer"
+					},
+					Title : {
+						type : "string"
+					},
+					ProjectId : {
+						type : "string"
+					},
+					PriorityId : {
+						type :"string"
+					},
+					Location : {
+						type : "string"
+					},
+					StatusCodeId : {
+						type : "string"
+					},
+					SubcategoryId : {
+						type : "integer"
+					},
+					Language : {
+						type: "string"
+					},
+					Keywords : {
+						type: "string"
+					},
+					Description : {
+						type: "string"
+					},
+					flag:{
+						type:"string"
+					}
+				}
+			},
+			skills:{
+				type:"table",
+				columns:{
+					ReqId : {
+						type : "integer"
+					},
+					Skill : {
+						type : "string"
+					},
+					Weight : {
+						type : "integer"
+					},
+					flag:{
+						type:"string"
+					}
+				}
+			},
+			comments:{
+				type:"table",
+				columns:{
+					ReqId : {
+						type : "integer"
+					},
+					CommentId : {
+						type : "integer"
+					},
+					CommentTypeId : {
+						type : "string"
+					},
+					Title : {
+						type : "string"
+					},
+					Text : {
+						type : "string"
+					},
+					flag:{
+						type:"string"
+					}
+				}
+			},
+			
+		}
+	}
 };

@@ -1,0 +1,5 @@
+schema= "IACUBE";
+increment_by = 1;
+start_with = 1000;
+minvalue= 1;
+cycles= false;

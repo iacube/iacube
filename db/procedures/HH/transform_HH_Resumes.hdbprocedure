@@ -15,7 +15,8 @@ BEGIN
 				b."iaId" AS "GenderId",
 				a."City" AS "Location",
 				null AS "ProfArea",
-				a."ResumeId"
+				a."ResumeId",
+				a."Photo"
 			FROM "iacube.db::tables._HH.Resumes" AS a
 			LEFT JOIN "iacube.db::tables._HH._mapping.Gender" AS b
 				ON a."GenderId" = b."hhId"
@@ -49,7 +50,7 @@ BEGIN
 				ON a."ResumeId" = c."ResumeId"
 	;
 	UPSERT "iacube.db::tables.Candidate.Candidates"
-		("CandidateId","LastName","FirstName","MiddleName","BirthDate","GenderId","Location","ProfArea")
+		("CandidateId","LastName","FirstName","MiddleName","BirthDate","GenderId","Location","ProfArea","Photo")
 		SELECT DISTINCT
 				"CandidateId",
 				"LastName",
@@ -58,7 +59,8 @@ BEGIN
 				"BirthDate",
 				"GenderId",
 				"Location",
-				"ProfArea"
+				"ProfArea",
+				"Photo"
 			FROM :candidates
 	;
 	UPSERT "iacube.db::tables.Candidate.Languages"
