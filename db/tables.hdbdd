@@ -433,8 +433,18 @@ context tables{
 	   
 	   entity Texts{
 	      key Id                : docId;
+	      DocId                 : docId;
+	      Language              : lang;
 	      Content               : docContent;
 	      DocDim                : docDim; 
 	   }
+	   technical configuration {
+          fulltext index MYFTI1 on (Content)
+             LANGUAGE COLUMN Language
+             TEXT ANALYSIS on
+             SEARCH ONLY off 
+             FAST PREPROCESS off 
+             TEXT MINING on;
+	   };                 
 	};
 };
