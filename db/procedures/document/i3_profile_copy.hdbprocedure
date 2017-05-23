@@ -4,13 +4,15 @@ PROCEDURE "IACUBE"."dev::I3_PROFILE_COPY" ( )
    AS
 BEGIN
 
-   DECLARE CURSOR lc_req FOR SELECT "ID","LANGUAGE" FROM "IACUBE"."REQUISITIONS" AS "A" WHERE EXISTS(SELECT NULL FROM "IACUBE"."REQUISITION_SKILLS" AS "B"
-                                                                                          WHERE "A"."ID"="B"."REQ_ID");
-   DECLARE CURSOR lc_req_skill(p_req_id SMALLINT) FOR SELECT "WEIGHT","SKILL" FROM "IACUBE"."REQUISITION_SKILLS" WHERE req_id=:p_req_id;                                                                      
-   DECLARE CURSOR lc_prof FOR SELECT "ID","LANGUAGE" FROM "IACUBE"."PROFILES" AS "A" WHERE EXISTS(SELECT NULL FROM "IACUBE"."SKILLS" AS "B"
-                                                                                                  WHERE "A"."ID"="B"."PROFILE_ID");
-   DECLARE CURSOR lc_prof_skill(p_prof_id SMALLINT) FOR SELECT "SKILL" FROM "IACUBE"."SKILLS" WHERE profile_id=:p_prof_id;                                                                      
-   DECLARE CURSOR lc_prof_exp(p_prof_id SMALLINT) FOR SELECT "END_YEAR","DESCRIPTION" FROM "IACUBE"."EXPERIENCE" WHERE profile_id=:p_prof_id;                                                                      
+   DECLARE CURSOR lc_req FOR SELECT "ReqId","Language" FROM "IACUBE"."iacube.db::tables.Requisition.Requisitions" AS "A"
+                                                    WHERE EXISTS(SELECT NULL FROM "IACUBE"."iacube.db::tables.Requisition.Skills" AS "B"
+                                                                             WHERE "A"."ReqId"="B"."ReqId");
+   DECLARE CURSOR lc_req_skill(p_req_id SMALLINT) FOR SELECT "Weight","Skill" FROM "IACUBE"."iacube.db::tables.Requisition.Skills" WHERE "ReqId"=:p_req_id;                                                                      
+   DECLARE CURSOR lc_prof FOR SELECT "ProfileId" FROM "IACUBE"."iacube.db::tables.Profile.Profiles" AS "A" 
+                          WHERE EXISTS(SELECT NULL FROM "IACUBE"."iacube.db::tables.Profile.Skills" AS "B"
+                                                   WHERE "A"."ProfileId"="B"."ProfileId");
+   DECLARE CURSOR lc_prof_skill(p_prof_id SMALLINT) FOR SELECT "Skill" FROM "IACUBE"."iacube.db::tables.Profile.Skills" WHERE "ProfileId"=:p_prof_id;                                                                      
+   DECLARE CURSOR lc_prof_exp(p_prof_id SMALLINT) FOR SELECT "EndDate","Description" FROM "IACUBE"."iacube.db::tables.Profile.Experience" WHERE "ProfileId"=:p_prof_id;                                                                      
 
    DECLARE lv_skillSet NVARCHAR(5000);
    DECLARE lv_weight SMALLINT;
@@ -18,10 +20,10 @@ BEGIN
 
    TRUNCATE TABLE "IACUBE"."DOCUMENTS";
    TRUNCATE TABLE "IACUBE"."DOCUMENT_SKILLS";
-   
+
 -- Keys D
-   lt_keyD= SELECT "ID",'R' AS "EXT_TYPE", 'A' AS "CLASS" FROM "IACUBE"."REQUISITIONS" UNION ALL
-            SELECT "ID",'P' AS "EXT_TYPE", 'A' AS "CLASS" FROM "IACUBE"."PROFILES";
+   lt_keyD= SELECT "ReqId" AS "ID",'R' AS "EXT_TYPE", 'A' AS "CLASS" FROM "IACUBE"."iacube.db::tables.Requisition.Requisitions" UNION ALL
+            SELECT "ProfileId" AS "ID",'P' AS "EXT_TYPE", 'A' AS "CLASS" FROM "IACUBE"."iacube.db::tables.Profile.Profiles";
 
 -- Documents
    INSERT INTO "IACUBE"."DOCUMENTS"("EXT_ID","EXT_TYPE","ID")
@@ -29,25 +31,24 @@ BEGIN
 
 -- Requisitions   
    UPDATE "IACUBE"."DOCUMENTS" AS A
-   SET "CONTENT"= (SELECT "DESCRIPTION" FROM "IACUBE"."REQUISITIONS" AS B
-                   WHERE A.ext_id=B.id AND A.ext_type='R'),
-       "LANGUAGE"= (SELECT "LANGUAGE" FROM "IACUBE"."REQUISITIONS" AS B
-                    WHERE A.ext_id=B.id AND A.ext_type='R')
+   SET "CONTENT"= (SELECT "Description" FROM "IACUBE"."iacube.db::tables.Requisition.Requisitions" AS B
+                   WHERE A."EXT_ID"=B."ReqId" AND A."EXT_TYPE"='R'),
+       "LANGUAGE"= (SELECT "Language" FROM "IACUBE"."iacube.db::tables.Requisition.Requisitions" AS B
+                    WHERE A."EXT_ID"=B."ReqId" AND A."EXT_TYPE"='R')
    WHERE A."EXT_TYPE"='R';                    
                     
 -- Profiles
    UPDATE "IACUBE"."DOCUMENTS" AS A
-   SET "LANGUAGE"= (SELECT "LANGUAGE" FROM "IACUBE"."PROFILES" AS B
-                    WHERE A."EXT_ID"=B."ID" AND A."EXT_TYPE"='P'),
-        "CONTENT"=(SELECT "SUMMARY" FROM "IACUBE"."PROFILES" AS B
-                   WHERE A."EXT_ID"=B."ID" AND A."EXT_TYPE"='P')
+   SET "LANGUAGE"= 'X',
+        "CONTENT"=(SELECT "Description" FROM "IACUBE"."iacube.db::tables.Requisition.Requisitions" AS B
+                   WHERE A."EXT_ID"=B."ReqId" AND A."EXT_TYPE"='P')
    WHERE A."EXT_TYPE"='P';                    
 
    INSERT INTO "IACUBE"."DOCUMENT_SKILLS"("EXT_ID","EXT_TYPE","ID")
-   SELECT "EXT_ID","EXT_TYPE","ID" FROM "IACUBE"."DOCUMENTS" A WHERE EXISTS(SELECT NULL FROM "IACUBE"."REQUISITION_SKILLS" B WHERE
-                                                                            A."EXT_ID"=B."REQ_ID" AND A."EXT_TYPE"='R') OR
-                                                                     EXISTS(SELECT NULL FROM "IACUBE"."SKILLS" C WHERE
-                                                                            A."EXT_ID"=C."PROFILE_ID" AND A."EXT_TYPE"='P');
+   SELECT "EXT_ID","EXT_TYPE","ID" FROM "IACUBE"."DOCUMENTS" A WHERE EXISTS(SELECT NULL FROM "IACUBE"."iacube.db::tables.Requisition.Skills" B WHERE
+                                                                            A."EXT_ID"=B."ReqId" AND A."EXT_TYPE"='R') OR
+                                                                     EXISTS(SELECT NULL FROM "IACUBE"."iacube.db::tables.Profile.Skills" C WHERE
+                                                                            A."EXT_ID"=C."ProfileId" AND A."EXT_TYPE"='P');
 
 -- Requisition Skills 
 
@@ -55,21 +56,21 @@ BEGIN
    FOR ls_req AS lc_req DO
       lv_skillSet='';
 
-      FOR ls_req_skill AS lc_req_skill(ls_req."ID") DO
-         lv_weight=IFNULL(ls_req_skill."WEIGHT",0);
+      FOR ls_req_skill AS lc_req_skill(ls_req."ReqId") DO
+         lv_weight=IFNULL(ls_req_skill."Weight",0);
          IF lv_weight < 0 THEN
             lv_weight=0;
          END IF;
          FOR lv_i IN 1..lv_weight DO
-            lv_skillSet=lv_skillSet||' '||ls_req_skill."SKILL";
+            lv_skillSet=lv_skillSet||' '||ls_req_skill."Skill";
          END FOR;
       END FOR;
       lv_skillSet=LTRIM(lv_skillSet);
       IF LENGTH(lv_skillSet) !=0 AND lv_skillSet IS NOT NULL THEN 
          UPDATE "IACUBE"."DOCUMENT_SKILLS"      
          SET "CONTENT"=lv_skillSet,
-             "LANGUAGE"=ls_req."LANGUAGE"
-         WHERE "EXT_ID"=ls_req."ID" AND "EXT_TYPE"='R';
+             "LANGUAGE"=ls_req."Language"
+         WHERE "EXT_ID"=ls_req."ReqId" AND "EXT_TYPE"='R';
       END IF;
    END FOR;
 
@@ -79,40 +80,40 @@ BEGIN
    FOR ls_prof AS lc_prof DO
 -- Profile skills   
       lv_skillSet='';
-      FOR ls_prof_skill AS lc_prof_skill(ls_prof."ID") DO
-         lv_skillSet=lv_skillSet||' '||ls_prof_skill."SKILL";
+      FOR ls_prof_skill AS lc_prof_skill(ls_prof."ProfileId") DO
+         lv_skillSet=lv_skillSet||' '||ls_prof_skill."Skill";
       END FOR;
       lv_skillSet=LTRIM(lv_skillSet);
       IF LENGTH(lv_skillSet) !=0 AND lv_skillSet IS NOT NULL THEN 
          UPDATE "IACUBE"."DOCUMENT_SKILLS"      
          SET "CONTENT"=lv_skillSet,
-             "LANGUAGE"=ls_prof."LANGUAGE"
-         WHERE "EXT_ID"=ls_prof."ID" AND "EXT_TYPE"='P';
+             "LANGUAGE"='X'
+         WHERE "EXT_ID"=ls_prof."ProfileId" AND "EXT_TYPE"='P';
       END IF;
 -- Profile experience
       lv_skillSet='';
-      FOR ls_prof_exp AS lc_prof_exp(ls_prof."ID") DO
-         IF IFNULL(ls_prof_exp."END_YEAR",'') = '' THEN
+      FOR ls_prof_exp AS lc_prof_exp(ls_prof."ProfileId") DO
+         IF ls_prof_exp."EndDate" IS NULL THEN
             lv_weight=4;
-         ELSEIF YEAR(CURRENT_DATE)-TO_SMALLINT(ls_prof_exp."END_YEAR") <= 1 THEN 
+         ELSEIF YEAR(CURRENT_DATE)-YEAR(ls_prof_exp."EndDate") <= 1 THEN 
             lv_weight=4;
-         ELSEIF YEAR(CURRENT_DATE)-TO_SMALLINT(ls_prof_exp."END_YEAR") > 1 AND
-                YEAR(CURRENT_DATE)-TO_SMALLINT(ls_prof_exp."END_YEAR") <= 1 THEN
+         ELSEIF YEAR(CURRENT_DATE)-YEAR(ls_prof_exp."EndDate") > 1 AND
+                YEAR(CURRENT_DATE)-YEAR(ls_prof_exp."EndDate") <= 1 THEN
             lv_weight=2;
-         ELSEIF YEAR(CURRENT_DATE)-TO_SMALLINT(ls_prof_exp."END_YEAR") > 5 THEN
+         ELSEIF YEAR(CURRENT_DATE)-YEAR(ls_prof_exp."EndDate") > 5 THEN
             lv_weight=1;
          ELSE
             lv_weight=0;
          END IF;
             FOR lv_i IN 1..lv_weight DO
-               lv_skillSet=SUBSTRING(lv_skillSet||' '||ls_prof_exp."DESCRIPTION",1,5000);
+               lv_skillSet=SUBSTRING(lv_skillSet||' '||ls_prof_exp."Description",1,5000);
             END FOR;
       END FOR;
       lv_skillSet=LTRIM(lv_skillSet);
       IF LENGTH(lv_skillSet) !=0 AND lv_skillSet IS NOT NULL THEN 
          UPDATE "IACUBE"."DOCUMENTS"      
          SET "CONTENT"=SUBSTRING("CONTENT"||lv_skillSet,1,5000)
-         WHERE "EXT_ID"=ls_prof."ID" AND "EXT_TYPE"='P';
+         WHERE "EXT_ID"=ls_prof."ProfileId" AND "EXT_TYPE"='P';
       END IF;
 
    END FOR;
