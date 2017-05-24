@@ -1,7 +1,8 @@
 sap.ui.define([
-	"requisitions_report/controller/BaseController",
-	"iacube/ui/common/dataHelper"
-], function(Controller, DataHelper) {
+	"candidates_search/controller/BaseController",
+	"iacube/ui/common/dataHelper",
+	"iacube/ui/common/mapper"
+], function(Controller, DataHelper, Mapper) {
 	"use strict";
 
 	return Controller.extend("candidates_search.controller.CandidatesOverview", {
@@ -22,9 +23,10 @@ sap.ui.define([
 		 * @public
 		 */
 		onRequisitionPress: function(oEvent){
-			var sPath 	= oEvent.getSource().getBindingContext("ui").getPath();
+			var sPath = oEvent.getSource().getBindingContext("ui").getPath();
+			var ReqId = this.getModel("ui").getProperty(sPath).CandidateId;
 			var iIndex	= sPath.split("/")[2];
-			this.getRouter().navTo("requisition", {
+			this.getRouter().navTo("candidate", {
 				index: parseInt(iIndex)
 			});
 		},
@@ -34,14 +36,14 @@ sap.ui.define([
 		 * This hook is the same one that SAPUI5 controls get after being rendered.
 		 * @memberOf manage_vacancy.ui.requisitions_report.view.view.RequisitionsOverview
 		 */
-			onAfterRendering: function() {
-				//this.loadRequisitions();
-			},
+		onAfterRendering: function() {
+			this.loadCandidates();
+		},
 		
-		loadRequisitions: function(){
+		loadCandidates: function(){
 			var oModel = this.getModel("ui");
-			DataHelper.getRequisitions(this).then(function(aRequisitions){
-				oModel.setProperty("/requisitions", DataHelper.composeRequisitions(aRequisitions));
+			DataHelper.getCandidates(this).then(function(aCandidates){
+				oModel.setProperty("/candidates", Mapper.mapCandidates(aCandidates.data));
 			});
 		}
 

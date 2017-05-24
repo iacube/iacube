@@ -1,7 +1,8 @@
 sap.ui.define([
-	"requisitions_report/controller/BaseController",
-	"iacube/ui/common/dataHelper"
-], function(Controller, DataHelper) {
+	"candidates_search/controller/BaseController",
+	"iacube/ui/common/dataHelper",
+	"iacube/ui/common/mapper"
+], function(Controller, DataHelper,Mapper) {
 	"use strict";
 
 	return Controller.extend("candidates_search.controller.Candidate", {
@@ -22,11 +23,21 @@ sap.ui.define([
 		 * @public
 		 */
 		onRouteMatched: function(oEvent){		
-			if(oEvent.getParameter("name") === "config") {
+			if(oEvent.getParameter("name") === "candidate") {
 				var iIndex = oEvent.getParameter("arguments").index;				
 				var sPath = "/candidates/" + iIndex;				
 				this.getView().bindElement("ui>" + sPath);
+				
+				var CandidateId = this.getModel("ui").getProperty(sPath).CandidateId;
+				this.loadCandidate(CandidateId, sPath);
 			}			
+		},
+		loadCandidate: function(CandidateId, sPath){
+			var oModel = this.getModel("ui");
+			DataHelper.getCandidate(CandidateId).then(function(oData){
+				var oCandidate = oModel.getProperty(sPath);
+				oModel.setProperty(sPath, jQuery.extend(true, oCandidate, Mapper.mapCandidate(oData.data)));
+			});
 		}
 
 		/**

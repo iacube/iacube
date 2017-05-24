@@ -66,7 +66,12 @@ sap.ui.define([
 						}
 					})
 				}
-			}
+			},
+			mapCandidate: function(c) {
+				return {
+					}
+				}
 
-		};
+		}
+		
 	});

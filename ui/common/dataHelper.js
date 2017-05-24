@@ -44,6 +44,37 @@ sap.ui.define([
 						}
 					});
 				});
+			},
+			getCandidates: function(oComp, aContents) {
+				return new Promise(function(resolve, reject) {
+					var sPath = "/iacube/service/candidates";
+					ServiceAccess.ajax({
+						url: sPath,
+						success: function(data) {
+							resolve(data);
+						},
+						error: function() {
+							MessageToast.show("Data retrieval error");
+							reject();
+						}
+					});
+				});
+			},
+			
+			getCandidate: function(CandidateId) {
+				return new Promise(function(resolve, reject) {
+					var sPath = "/iacube/service/candidate/"+CandidateId;
+					ServiceAccess.ajax({
+						url: sPath,
+						success: function(data) {
+							resolve(data);
+						},
+						error: function() {
+							MessageToast.show("Data retrieval error");
+							reject();
+						}
+					});
+				});
 			}
 
 		};
