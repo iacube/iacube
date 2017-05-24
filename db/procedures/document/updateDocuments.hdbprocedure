@@ -9,7 +9,7 @@ BEGIN
                                                                              WHERE "A"."ReqId"="B"."ReqId");
    DECLARE CURSOR lc_req_skill(p_req_id SMALLINT) FOR SELECT "Weight","Skill" FROM "IACUBE"."iacube.db::tables.Requisition.Skills" 
                                                       WHERE "ReqId"=:p_req_id AND "Skill" IS NOT NULL;
-   DECLARE CURSOR lc_prof FOR SELECT "ProfileId","Summary" FROM "IACUBE"."iacube.db::tables.Profile.Profiles" AS "A" 
+   DECLARE CURSOR lc_prof FOR SELECT "ProfileId","Summary","Language" FROM "IACUBE"."iacube.db::tables.Profile.Profiles" AS "A" 
                           WHERE EXISTS(SELECT NULL FROM "IACUBE"."iacube.db::tables.Profile.Skills" AS "B"
                                                    WHERE "A"."ProfileId"="B"."ProfileId") OR
                                 EXISTS(SELECT NULL FROM "IACUBE"."iacube.db::tables.Profile.Experience" AS "C"
@@ -42,7 +42,8 @@ BEGIN
 
 -- Profiles
    UPDATE "IACUBE"."iacube.db::tables.Document.Documents" AS A
-   SET "Language"= 'X'
+   SET "Language"= (SELECT "Language" FROM "IACUBE"."iacube.db::tables.Profile.Profiles" AS B
+                    WHERE A."ExtId"=B."ProfileId" AND A."ExtType"='P')
    WHERE A."ExtType"='P';                    
 
 
@@ -117,7 +118,7 @@ BEGIN
       IF COALESCE(LENGTH(lv_skillSet),0) <> 0 THEN 
          UPDATE "IACUBE"."iacube.db::tables.Document.Texts" AS A      
          SET A."Content"=lv_skillSet,
-             A."Language"='X'
+             A."Language"=ls_prof."Language"
          WHERE A."DocId"=(SELECT B."Id" FROM "IACUBE"."iacube.db::tables.Document.Documents" AS B 
                           WHERE B."ExtId"=ls_prof."ProfileId" AND B."ExtType"='P') AND A."DocDim"='S';     
       END IF;
@@ -145,7 +146,7 @@ BEGIN
 
          UPDATE "IACUBE"."iacube.db::tables.Document.Texts" AS A      
          SET A."Content"=LTRIM(COALESCE(ls_prof."Summary",'')||' '||COALESCE(lv_skillSet,'')),
-             A."Language"='X' 
+             A."Language"=ls_prof."Language" 
          WHERE A."DocId"=(SELECT B."Id" FROM "IACUBE"."iacube.db::tables.Document.Documents" AS B 
                           WHERE  B."ExtId"=ls_prof."ProfileId" AND B."ExtType"='P') AND A."DocDim"='C';  
                           
