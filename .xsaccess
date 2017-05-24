@@ -7,7 +7,7 @@
 "authentication":[{"method":"Form"}],
 "rewrite_rules":[
 	{
-	"source": "/services/", 
+	"source": "/services", 
 	"target": "/xs/serviceProvider/provider.xsjs" 
 	},
 		{

@@ -48,6 +48,16 @@ sap.ui.define([
 			DataHelper.getRequisitions(this).then(function(aRequisitions){
 				oModel.setProperty("/requisitions", Mapper.mapRequisitions(aRequisitions.data));
 			});
+		},
+		
+		onShowCandPopover: function(oEvent){
+			if( !this._oCandPopover ) {
+				this._oCandPopover = sap.ui.xmlfragment("requisitions_report.view.fragment.CandPopover", this);
+				this.getView().addDependent(this._oCandPopover);
+			}
+			var oBinding = oEvent.getSource().getBindingContext("ui");			
+			this._oCandPopover.setBindingContext(oBinding, "ui");
+			this._oCandPopover.openBy(oEvent.getSource());
 		}
 
 	});

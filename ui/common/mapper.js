@@ -7,7 +7,7 @@ sap.ui.define([
 		return {
 
 			mapRequisitions: function(aRequisitions) {
-				return aRequisitions.map(function(r){
+				return aRequisitions.data.map(function(r){
 					return {
 						ReqId: r.ReqId,
 						Title: r.Title,
@@ -18,7 +18,7 @@ sap.ui.define([
 						SubcategoryName: r.SubcategoryName,
 						CreatedBy: r.CreatedBy,
 						CreatedAt: new Date(r.CreatedAt),
-						showCandidatesIcon: r.Candidates > 0 ? true : false
+						Candidates: r.candidates,
 					}
 				})
 			},
@@ -62,7 +62,15 @@ sap.ui.define([
 							FirstName: c.FirstName,
 							LastName: c.LastName,
 							Experience: c.Experience,
-							Distance: c.Distance	
+							Distance: c.Distance,
+							profiles: c.profiles.map(function(p) {
+								return {
+									ExternalId: p.ExternalId,
+									Link: p.Link,
+									ProfileId: p.ProfileId,
+									ProfileTypeId: p.ProfileTypeId
+								}	
+							})
 						}
 					})
 				}

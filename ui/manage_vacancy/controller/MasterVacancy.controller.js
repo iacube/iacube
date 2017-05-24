@@ -13,8 +13,10 @@ sap.ui.define([
 		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
 		 * @memberOf vacancymngt.view.MasterVacancy
 		 */
-			// onInit: function() {
-			// },
+			 onInit: function() {
+				 var oEventBus = sap.ui.getCore().getEventBus();
+				 oEventBus.subscribe("DetailVacancy", "RequisCancel", this.onRequisCancel, this);
+			 },
 
 		/**
 		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
@@ -49,10 +51,94 @@ sap.ui.define([
 		//
 		//	}
 		onReqSelected: function(oEvent){
-			var context = oEvent.getParameter("listItem").getBindingContext("ui");	  
+// reset additional properties in case selection was changed
+			var oModel = this.getModel("ui");
+			oModel.setProperty("/RequisEditable", false);
+			oModel.setProperty("/TableMode", sap.m.ListMode.None);
+			var oListItem = oEvent.getParameter("listItem");
+			if(!oListItem){
+				var context = oEvent.getParameters().getBindingContext("ui");
+			}
+			else {
+				context = oListItem.getBindingContext("ui");
+			}
 			var selPath = context.getPath();
 			this.getRouter().navTo("detail", {from: "master", index: selPath.substr(("/JobRequisCollection/").length)}, false);
-		}
+		},
+		
+		//Requisition search
+		onRequisSearch: function(oEvent) {
+			var query = oEvent.getParameter("query");
+			this._doSearch(query);
+		},
+		
+		_doSearch: function(val) {
+			var filters = [];
+			var filter = new sap.ui.model.Filter("Title", sap.ui.model.FilterOperator.Contains, val);
+			filters.push(filter);
+			var list = this.getView().byId("reqlist");
+			var binding = list.getBinding("items");
+			binding.filter(filters);
+			},
+		
+		onRequisCreate: function(oEvent) {
+			this._createNewRequis();
+		},
+		
+		_createNewRequis: function(oEvent) {
+// create new requisition entity
+			var oModel = this.getModel("ui");
+			var oRequisitions = oModel.getProperty("/JobRequisCollection");
+			
+			var oNewRequisition = {
+					ReqId: "0000",
+					Title: "",
+					ProjectId: "",
+					PriorityId: "",
+					Location: "",
+					StatusCodeId: "NEW",
+					SubcategoryId: "",
+					SubcategoryName: "",
+					CreatedBy: "",
+					CreatedAt: "",
+					Language: "",
+					Keywords: "",
+					Description: "",
+					skills: [{
+							Skill: "",
+							Weight: 100
+						}]
+					};
+			
+			oRequisitions.push(oNewRequisition);
+			oModel.setProperty("/JobRequisCollection", oRequisitions);
+			
+			// get new requisition index
+			var index = oRequisitions.length - 1;
+			this._setNewSelection(index);
+			// set property editable
+			oModel.setProperty("/RequisEditable", true);
+			oModel.setProperty("/TableMode", sap.m.ListMode.Delete);
+			this.getRouter().navTo("detail", {from: "master", index: index}, false);
+			},
+			
+		 onRequisCancel: function(sView, oEvent, sIndex) {
+			 var index = sIndex
+			 if(sIndex != 0) {
+				this._setNewSelection(sIndex-1);
+			 }
+			 else {
+				this._setNewSelection(sIndex-1);
+			}
+		 },
+		 
+		 _setNewSelection: function(sIndex) {
+			 var oList = this.getView().byId("reqlist");
+			 var oNewItem = oList.getItems()[sIndex];
+			 oList.setSelectedItem(oNewItem, true);
+			 oList.fireSelectionChange(oNewItem, true);
+		 }
+			
 	});
 
 });

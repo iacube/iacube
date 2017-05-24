@@ -32,12 +32,12 @@ sap.ui.define([
 		},
 		
 		
-		getLanguageText: function(sLanguCode) {
-			if(sLanguCode === "EN" || sLanguCode === "en_EN") {
-				return "English";
+		getLanguageText: function(sLanguCode, sLangEn, sLanguRu) {
+			if(sLanguCode === "EN") {
+				return sLangEn;
 			}
-			else if(sLanguCode === "RU" || sLanguCode === "ru_RU"){
-				return "Русский";
+			else if(sLanguCode === "RU"){
+				return sLanguRu;
 			}
 		}
 

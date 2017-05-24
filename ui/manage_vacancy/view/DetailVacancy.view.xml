@@ -4,7 +4,7 @@
 		  controllerName="manage_vacancy.controller.DetailVacancy" id="detail" displayBlock="false"
 		  xmlns:candidates="manage_vacancy.SharedBlocks.candidates"
 		  xmlns:comments="manage_vacancy.SharedBlocks.comments">
-	<semantic:DetailPage id="detailvac" title="{i18n>title}" enableScrolling="false">
+	<semantic:DetailPage id="detailvac" title="{i18n>title}" enableScrolling="false" floatingFooter="true">
 		<semantic:content >	
 			<ObjectPageLayout id="detObj" showTitleInHeaderContent="false">
 				<headerTitle>
@@ -25,10 +25,12 @@
 					<layout:VerticalLayout width="40%">
 					</layout:VerticalLayout>
 					<layout:VerticalLayout>
-						<m:ObjectStatus title="{i18n>created}" text="{ path: 'ui>CreatedAt',
+						<m:FlexBox alignContent="End" justifyContent="End">
+							<m:ObjectStatus title="{i18n>created}" text="{ path: 'ui>CreatedAt',
 																	   formatter: 'manage_vacancy.util.formatter.formatDate'
 																	}"/>
-						<m:FlexBox alignContent="End" justifyContent="End">
+						</m:FlexBox>
+						<m:FlexBox alignContent="End" justifyContent="End" class="statusCSS">
 							<m:ObjectStatus text="{ui>StatusCodeId}" state="{path: 'ui>StatusCodeId', formatter: 'manage_vacancy.util.formatter.formatReqStatus'}"/>
 					    </m:FlexBox>
 					    
@@ -36,8 +38,8 @@
 					    	<m:Select forceSelection="false"
 					    			  selectedKey="{ui>Language}"
 					    			  items="{ui>/AvailableLanguages}"
-					    			  enabled="false">
-								<core:Item key="{ui>SlsLang}" text="{path: 'ui>SlsLang', formatter: 'manage_vacancy.util.formatter.getLanguageText'}" />
+					    			  enabled="{ui>/RequisEditable}">
+								<core:Item key="{ui>SlsLang}" text="{parts: [{path:'ui>SlsLang'}, {path:'i18n>en'}, {path:'i18n>ru'}], formatter: 'manage_vacancy.util.formatter.getLanguageText'}" />
 							</m:Select>	
 						</m:FlexBox>
 					</layout:VerticalLayout> 
@@ -82,5 +84,11 @@
 				</sections>
 			</ObjectPageLayout>
 		</semantic:content>
+		<semantic:saveAction>
+			<semantic:SaveAction id="idReqSave" press="onRequisSave" visible="{ui>/RequisEditable}"/>
+		</semantic:saveAction>
+		<semantic:cancelAction>
+			<semantic:CancelAction id="idReqCancel" press="onRequisCancel" visible="{ui>/RequisEditable}"/>
+		</semantic:cancelAction>
 	</semantic:DetailPage>
 </mvc:View>
