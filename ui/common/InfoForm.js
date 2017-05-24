@@ -33,35 +33,41 @@ sap.ui.define([
 				content: [
 					new Label({
 						text: "{i18nCom>requisName}",
-						labelFor: "idPos"
+						labelFor: "idPos",
+						required: "{ui>/RequisEditable}"
 					}),
 					new Input("idPos", {
-						value: "{ui>Title}"
-					}).setEditable(false),
+						value: "{ui>Title}",
+						editable: "{ui>/RequisEditable}"
+					}),
 
 					new Label({
 						text: "{i18nCom>Project}",
-						labelFor: "idProj"
+						labelFor: "idProj",
+						required: "{ui>/RequisEditable}"
 					}),
 					new Input("idProj", {
 						value: "{ui>ProjectId}",
 						showSuggestion: true,
 						showValueHelp: true,
+						editable: "{ui>/RequisEditable}",
 						events: [{
 							valueHelpRequest: "this._handleProjValueHelp"
 						}]
-					}).setEditable(false).bindAggregation("suggestionItems", "ui>/JobRequisCollection",
+					}).bindAggregation("suggestionItems", "ui>/JobRequisCollection",
 						new Item({
 							text: "{ui>ProjectId}"
 						})),
 						
 					new Label({
 						text: "{i18nCom>priority}",
-						labelFor: "idPrior"
+						labelFor: "idPrior",
+						required: "{ui>/RequisEditable}"
 					}),
 					
 					new ComboBox("idPrior", {
-						selectedKey: "{ui>PriorityId}"
+						selectedKey: "{ui>PriorityId}",
+						editable: "{ui>/RequisEditable}"
 					}).bindAggregation("items", "ui>/AvailablePriorities", new Item({
 							key: "{ui>PriorityCode}",
 							text: { parts: [{path: 'ui>PriorityCode'},
@@ -73,15 +79,17 @@ sap.ui.define([
 								}}
 									
 									
-						})).setEditable(false),
+						})),
 					
 					new Label({
 						text: "{i18nCom>location}",
-						labelFor: "idLocation"
+						labelFor: "idLocation",
+						required: "{ui>/RequisEditable}"
 					}),
 					new Input("idLocation", {
-						value: "{ui>Location}"
-					}).setEditable(false),
+						value: "{ui>Location}",
+						editable: "{ui>/RequisEditable}"
+					}),
 
 					new Label({
 						text: "{i18nCom>language}",
@@ -95,16 +103,18 @@ sap.ui.define([
 					new TextArea("idKeyW", {
 						growing: true,
 						growingMaxLines: 5,
-						value: "{ui>Keywords}"
-					}).setEditable(false),
+						value: "{ui>Keywords}",
+						editable: "{ui>/RequisEditable}"
+					}),
 					new Label({
 						text: "{i18nCom>descr}",
 						labelFor: "idDescr"
 					}),
 					new TextArea("idDescr", {
 						value: "{ui>Description}",
+						editable: "{ui>/RequisEditable}",
 						rows: 7
-					}).setEditable(false)
+					})
 				]
 			});
 

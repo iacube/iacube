@@ -62,7 +62,15 @@ sap.ui.define([
 							FirstName: c.FirstName,
 							LastName: c.LastName,
 							Experience: c.Experience,
-							Distance: c.Distance	
+							Distance: c.Distance,
+							profiles: c.profiles.map(function(p) {
+								return {
+									ExternalId: p.ExternalId,
+									Link: p.Link,
+									ProfileId: p.ProfileId,
+									ProfileTypeId: p.ProfileTypeId
+								}	
+							})
 						}
 					})
 				}
