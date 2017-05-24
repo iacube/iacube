@@ -74,6 +74,7 @@ context types {
 		Link			: String(1000);
 		LastChanged		: UTCTimestamp;
 		Language		: lang;
+		Photo			: String(1000);
 	};
 	
 	type update_HHContacts{
@@ -189,7 +190,38 @@ context types {
 				ProfileTypeId	: profileTypeId;
 				Link			: String(1000);
 			};
-	
+
+	type updateRequisitionDetails{
+		ReqId			: reqId;
+		Title			: String(100);
+		ProjectId		: String(100);
+		PriorityId		: priorityId;
+		Location		: String(1000);
+		StatusCodeId	: statusCodeTypeId;
+		SubcategoryId 	: subcategoryId;
+		Language		: lang;
+		Keywords		: LargeString;
+		Description		: LargeString;
+		flag			: sflag;
+	};
+//	|
+	type updateRequisitionSkills{
+		ReqId	  : reqId;
+		Skill	  : String(1000);
+		//IsPrimary : bool;
+		Weight	  : Integer;
+		flag	  : sflag;
+	};
+//	|
+	type updateRequisitionComments{
+		ReqId			: reqId;
+		CommentId		: Integer;
+		CommentTypeId	: commentTypeId;
+		Title			: String(200);
+		Text			: String(5000);
+		flag			: sflag;
+	};
+
 //Candidates
 	type searchCandidatesCandidates{
 		CandidateId	: candidateId;
@@ -197,6 +229,7 @@ context types {
 		FirstName	: name;
 		Location	: String(1000);
 		ProfArea	: String(1000);
+		Photo		: String(1000);
 	};
 	type searchCandidatesProfiles{
 		CandidateId	: candidateId;
@@ -239,6 +272,7 @@ context types {
 		GenderId	: genderTypeId;
 		Location	: String(1000);
 		ProfArea	: String(1000);
+		Photo		: String(1000);
 	};
 	type candidateContacts{
 		//CandidateId   : candidateId;
@@ -298,5 +332,12 @@ context types {
 		StatusId 	 : statusTypeId;
 		AssignedBy	 : creator;
 		AssignedAt	 : datetime;
+	};
+	
+	type assignCandidates{
+		ReqId		: reqId;
+		CandidateId	: candidateId;
+		StatusId	: statusTypeId;
+		flag		: sflag;
 	};
 };

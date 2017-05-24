@@ -71,5 +71,27 @@ var call = {
 				filter 		: filter
 			};
 		}
-	}	
+	},
+	put : {
+		procedure:"iacube.db.procedures.candidate::assignCandidates",
+		parameters:{
+			candidates:{
+				type:"table",
+				columns:{
+					ReqId:{
+						type:"integer"
+					},
+					CandidateId	: {
+						type: "integer"
+					},
+					StatusId : {
+						type: "string"
+					},
+					flag :{
+						type:"string"
+					}
+				}
+			}
+		}
+	}
 };

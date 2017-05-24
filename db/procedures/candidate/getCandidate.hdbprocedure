@@ -26,7 +26,8 @@ BEGIN
 				"BirthDate",
 				"GenderId",
 				"Location",
-				"ProfArea"
+				"ProfArea",
+				"Photo"
 			FROM "iacube.db::tables.Candidate.Candidates"
 			WHERE "CandidateId" = :candidateId
 	;

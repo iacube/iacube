@@ -1,0 +1,12 @@
+<core:FragmentDefinition	xmlns:core="sap.ui.core"
+							xmlns="sap.m">							
+	<Popover title="{i18n>req.table.candidates.popover.title}" placement="Left" class="sapUiSizeCompact" >
+		<VBox class="sapUiTinyMargin" items="{ui>Candidates}">
+			<HBox>
+				<Link text="{ui>FirstName} {ui>LastName}:" />
+				<Text text="01.06.2017" class="sapUiTinyMarginBeginEnd"/>
+				<Link text="/ {ui>AssignedBy}"/>
+			</HBox>
+		</VBox>
+	</Popover>
+</core:FragmentDefinition>

@@ -16,7 +16,7 @@ PROCEDURE "IACUBE"."iacube.db.procedures.HH::update_HH_Resumes" (
 BEGIN
 	
 	UPSERT "iacube.db::tables._HH.Resumes"
-		("ResumeId","Title","LastName","FirstName","MiddleName","Age","BirthDate","GenderId","City","RelocationId","BusinessTripId","Salary","SalaryCurr","Link","LastChanged","Language")
+		("ResumeId","Title","LastName","FirstName","MiddleName","Age","BirthDate","GenderId","City","RelocationId","BusinessTripId","Salary","SalaryCurr","Link","LastChanged","Language","Photo")
 		SELECT 
 				"ResumeId",
 				"Title",
@@ -33,7 +33,8 @@ BEGIN
 				"SalaryCurr",
 				"Link",
 				"LastChanged",
-				"Language"
+				"Language",
+				"Photo"
 			FROM :Resumes
 	;
 		
