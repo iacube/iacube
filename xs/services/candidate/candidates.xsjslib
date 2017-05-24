@@ -20,11 +20,17 @@ var call = {
 					},
 					ProfileTypeId:{
 						type: "list"
+					},
+					ReqId:{
+						type:"integer"
 					}
 				}
 			},
 			paging:{
 				type : "paging"
+			},
+			reqId:{
+				type: "integer"
 			}
 		},
 		result: function(responce){
@@ -56,7 +62,8 @@ var call = {
 						LastName	: responce.CANDIDATES[i].LastName,
 						FirstName	: responce.CANDIDATES[i].FirstName,
 						Location	: responce.CANDIDATES[i].Location,
-						ProfArea	: responce.CANDIDATES[i].ProfArea
+						ProfArea	: responce.CANDIDATES[i].ProfArea,
+						Photo       : responce.CANDIDATES[i].Photo
 				}));
 			}
 			

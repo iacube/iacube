@@ -79,12 +79,13 @@ BEGIN
 			LEFT JOIN "iacube.db::tables.Requisition._dictionary.PriorityTypes" AS c
 				ON a."PriorityId" = c."Id"	
 			LEFT JOIN "iacube.db::tables.Requisition._dictionary.StatusCodeTypes" AS d
-				ON a."PriorityId" = d."Id"	
+				ON a."StatusCodeId" = d."Id"	
 			LEFT JOIN "iacube.db::tables.Requisition._dictionary.SubcategoryTypes" AS e
-				ON a."PriorityId" = e."Id"
+				ON a."SubcategoryId" = e."Id"
 			WHERE a."flag" = 'I' 
 			   OR a."flag" = 'U'
 	;
+	
 	skills = 
 		SELECT
 				IFNULL(b."ReqId",a."ReqId") AS "ReqId",
@@ -93,7 +94,7 @@ BEGIN
 				a."flag"
 			FROM :skills AS a
 			LEFT JOIN :preparedDetails AS b
-				ON a."ReqId" = b."ReqId"
+				ON a."ReqId" = b."tempId"
 	;
 	comments = 
 		SELECT
@@ -105,7 +106,7 @@ BEGIN
 				a."flag"
 			FROM :comments AS a
 			LEFT JOIN :preparedDetails AS b
-				ON a."ReqId" = b."ReqId"
+				ON a."ReqId" = b."tempId"
 	;
 	checkedDetails = 
 		SELECT * 
@@ -113,6 +114,22 @@ BEGIN
 			WHERE "existedPriorityType" 	 IS NOT NULL
 			  AND "existedStatusCodeTypes"   IS NOT NULL
 			   AND "existedSubcategoryTypes" IS NOT NULL
+	;
+	
+	UPSERT "iacube.db::tables.Requisition.Requisitions"
+		("ReqId","Title","ProjectId","PriorityId","Location","StatusCodeId","SubcategoryId","Language","Keywords","Description")
+		SELECT
+				"ReqId",
+				"Title",
+				"ProjectId",
+				"PriorityId",
+				"Location",
+				"StatusCodeId",
+				"SubcategoryId",
+				"Language",
+				"Keywords",
+				"Description"
+			FROM :checkedDetails
 	;
 --process skills
 	DELETE 

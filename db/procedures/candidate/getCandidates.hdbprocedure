@@ -2,7 +2,7 @@ PROCEDURE "IACUBE"."iacube.db.procedures.candidate::getCandidates"(
 	IN 	searchTerm	  NVARCHAR(1000),
 	IN 	filter		  NVARCHAR(5000),
 	IN  paging		  "IACUBE"."iacube.db::types.paging"						DEFAULT EMPTY,
-	
+
 	OUT candidates	  "IACUBE"."iacube.db::types.searchCandidatesCandidates"	DEFAULT EMPTY,
 	OUT profiles	  "IACUBE"."iacube.db::types.searchCandidatesProfiles"		DEFAULT EMPTY,
 	OUT salary		  "IACUBE"."iacube.db::types.searchCandidatesSalary"		DEFAULT EMPTY,
@@ -32,14 +32,18 @@ BEGIN
 				c."ExternalId",
 				c."ProfileTypeId",
 				c."Link",
-				a."Photo"
+				a."Photo",
+				d."ReqId"
 			FROM "iacube.db::tables.Candidate.Candidates" AS a
 			INNER JOIN "iacube.db::tables.Candidate.Profiles" AS b
 				ON a."CandidateId" = b."CandidateId"
 			INNER JOIN "iacube.db::tables.Profile.Profiles" AS c
 				ON b."ProfileId" = c."ProfileId"
+			LEFT JOIN "iacube.db::tables.Requisition.Candidates" AS d
+				ON a."CandidateId" = d."CandidateId"
 			WHERE CONTAINS ((a."LastName",a."FirstName",a."Location"),:searchTerm, FUZZY(0.8))
 	;
+	
 	filtered = 
 		APPLY_FILTER (:prefiltered,:filter)
 	;
