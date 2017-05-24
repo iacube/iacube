@@ -46,7 +46,7 @@ sap.ui.define([
 		loadRequisitions: function(){
 			var oModel = this.getModel("ui");
 			DataHelper.getRequisitions(this).then(function(aRequisitions){
-				oModel.setProperty("/requisitions", Mapper.mapRequisitions(aRequisitions));
+				oModel.setProperty("/requisitions", Mapper.mapRequisitions(aRequisitions.data));
 			});
 		},
 		

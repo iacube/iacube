@@ -69,7 +69,7 @@ var types = {
 						transformation = transformation.columns;
 						for(key in transformation){
 							if (transformation.hasOwnProperty(key)){
-								convertObject[transformation[key].name || key] = types[transformation.type].get(requestData[key] !== undefined ? requestData[key] : defaultValue);
+								convertObject[transformation[key].name || key] = types[transformation[key].type].get(requestData[key] !== undefined ? requestData[key] : defaultValue,transformation[key]);
 							}
 						}
 					}else{

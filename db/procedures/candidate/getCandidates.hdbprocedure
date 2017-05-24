@@ -31,7 +31,8 @@ BEGIN
 				b."ProfileId",
 				c."ExternalId",
 				c."ProfileTypeId",
-				c."Link"
+				c."Link",
+				a."Photo"
 			FROM "iacube.db::tables.Candidate.Candidates" AS a
 			INNER JOIN "iacube.db::tables.Candidate.Profiles" AS b
 				ON a."CandidateId" = b."CandidateId"
@@ -59,7 +60,8 @@ BEGIN
 				"LastName",
 				"FirstName",
 				"Location",
-				"ProfArea"
+				"ProfArea",
+				"Photo"
 			FROM :filtered
 	;
 	
