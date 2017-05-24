@@ -36,7 +36,7 @@ sap.ui.define([
 					var oRequisition = oModel.getProperty(sPath);
 					oModel.setProperty(sPath, jQuery.extend(true, oRequisition, Mapper.mapRequisition(oData.data)));
 				});
-			}
+			},
 		/**
 		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
 		 * (NOT before the first rendering! onInit() is used for that one!).
@@ -62,6 +62,62 @@ sap.ui.define([
 		//	onExit: function() {
 		//
 		//	}
+			
+			onRequisSave: function(oEvent) {
+				var error = this._validateRequiredFields();
+			},
+			
+			onRequisCancel: function(oEvent) {
+// check if requisition in create mode
+				var oModel = this.getModel("ui");
+				var sPath = oEvent.getSource().getBindingContext("ui").getPath();
+				var ReqId = oModel.getProperty(sPath).ReqId;
+				if(ReqId === "0000") {
+					var index = parseInt(sPath.substring(sPath.lastIndexOf('/') +1));
+		            var aRequisitions = oModel.getProperty("/JobRequisCollection");
+		            aRequisitions.splice(index, 1);
+		            oModel.setData(aRequisitions, true)
+		            var oEventBus = sap.ui.getCore().getEventBus();
+					oEventBus.publish("DetailVacancy", "RequisCancel", index);
+				}
+// requisition in edit mode
+				else {
+					this.loadRequisition(ReqId, sPath);
+				}
+	            
+			},
+			
+			_validateRequiredFields: function(){
+				var oReqTitle = sap.ui.getCore().byId("idPos");
+				var error = false;
+				var reqTitleVal = oReqTitle.getValue();
+				if(reqTitleVal === ""){
+					oReqTitle.setValueState("Error");
+					error = true;
+				}
+				var oReqProj = sap.ui.getCore().byId("idProj");
+				var reqProjVal = oReqProj.getValue();
+				if(reqProjVal === ""){
+					oReqProj.setValueState("Error");
+					error = true;
+				}
+				
+				var oReqPrior = sap.ui.getCore().byId("idPrior");
+				var reqPriorVal = oReqPrior.getValue();
+				if(reqPriorVal === ""){
+					oReqPrior.setValueState("Error");
+					error = true;
+				}
+				
+				var oReqLocation = sap.ui.getCore().byId("idLocation");
+				var reqLocationVal = oReqLocation.getValue();
+				if(reqLocationVal === ""){
+					oReqLocation.setValueState("Error");
+					error = true;
+				}
+				
+				return error;
+			}
 
 	});
 

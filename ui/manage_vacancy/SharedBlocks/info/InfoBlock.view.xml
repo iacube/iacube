@@ -3,5 +3,5 @@ xmlns:f="sap.ui.layout.form" xmlns:layout="sap.ui.layout" xmlns:html="http://www
 xmlns:common="iacube.ui.common">
 	<layout:HorizontalLayout>
 	</layout:HorizontalLayout>
-	<common:InfoForm/>
+	<common:InfoForm id="idInfoBlock"/>
 </mvc:View>

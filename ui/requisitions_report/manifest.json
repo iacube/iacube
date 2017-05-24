@@ -66,10 +66,10 @@
 				}
 			},
 			"i18nCom": {
-			    "type": "sap.ui.model.resource.ResourceModel",
-			    "settings": {
-			     "bundleName": "iacube.ui.common.messagebundle"
-			    }
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "iacube.ui.common.messagebundle"
+				}
 			},
 			"ui": {
                 "type": "sap.ui.model.json.JSONModel",

@@ -2,14 +2,16 @@
 	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:semantic="sap.m.semantic" id="master">
 	<semantic:MasterPage
 			id="mastervac"
-			title="{i18n>title} ({ui>/JobRequisCollection/length})">
+			title="{i18n>title} ({ui>/JobRequisCollection/length})"
+			floatingFooter="true">
 		<semantic:subHeader>
 			<Bar id="headerBar">
 				<contentLeft>
 					<SearchField
 							id="searchVac"
 							width="100%"
-							search="onSearchVac">
+							search="onRequisSearch"
+							showRefreshButton="true">
 					</SearchField>
 				</contentLeft>
 			</Bar>
@@ -21,7 +23,6 @@
 					id="reqlist"
 					items="{ui>/JobRequisCollection}"
 					mode="SingleSelectMaster"
-					updateFinished="onUpdateFinished"
 					selectionChange="onReqSelected">
 				<items>
 					<ObjectListItem
@@ -46,5 +47,8 @@
 				</items>
 			</List>
 		</semantic:content>
+		<semantic:addAction>
+			<semantic:AddAction id="idReqCreate" press="onRequisCreate"/>
+		</semantic:addAction>
 	</semantic:MasterPage>
 </mvc:View>

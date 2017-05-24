@@ -164,6 +164,14 @@ var template = {
         	    column:"Skill",
 			    type:"string"
 	        }
+        },
+        photo:{
+        	reduce:{
+        		40:{
+        			type:"string"
+        		}
+        	},
+        	column:"Photo"
         }
 		
 	},
@@ -184,17 +192,6 @@ var template = {
 	        language	: []
 	    };
 	    data.forEach(function(item){
-	        
-	        /*["site"].forEach(function(entry){
-	            item[entry].forEach(function(entity){
-    	           template.contact.push({
-    	               ResumeId : item.ResumeId,
-    	               ContactId: entity.type.ContactId,
-    	               Value: entity.Value
-    	           });
-	            });
-	            delete item[entry];
-	        });*/
 
         	["employments","experience","schedules","skill_set","language","contact","site"].forEach(function(entry){
         	    item[entry].forEach(function(entity){
@@ -212,6 +209,9 @@ var template = {
             if(!item.salary){
                 item.Salary = null;
                 item.SalaryCurr = null;
+            }else{
+                item.Salary = item.salary.Salary;
+                item.SalaryCurr = item.salary.SalaryCurr;
             }
   
     	    delete item.business_trip_readiness;

@@ -10,12 +10,12 @@
 			<Image src="{ui>Image}" width="3rem" height="3rem" class="popoverImagePadding"/>
 			<Text text= "{i18n>popoverText}" class="popoverTextPadding"/>
 		</layout:HorizontalLayout>
-		<List items="{ui>candidates}">
+		<List items="{ui>profiles}">
 			<CustomListItem>
 				<FlexBox alignContent="Center" justifyContent="Center">
 					<FlexBox width="60%" alignItems="Center" justifyContent="Start">
-						<Link text="{}" 
-							  target="{}" press="handleLinkPress"/>
+						<Link text="{ui>Link}" 
+							  target="{ui>Link}" press="handleLinkPress"/>
 					</FlexBox>
 					<FlexBox width="40%" alignItems="Center" justifyContent="End">
 						<Image src="{}" width="3rem" height="3rem"/>

@@ -12,6 +12,9 @@ sap.ui.define([ "sap/ui/model/json/JSONModel", "sap/ui/Device" ], function(
 
 		createUiModel : function() {
 			var oModel = new JSONModel({
+				"TableMode": sap.m.ListMode.None,
+				"RequisEditable": false,
+
 				"AvailablePriorities" : [ {
 					"PriorityCode" : "H"
 				}, {

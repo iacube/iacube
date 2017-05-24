@@ -5,8 +5,8 @@ sap.ui.define([
 	"sap/m/Slider",
 	"sap/m/ObjectNumber",
 	"sap/m/ColumnListItem",
-	"sap/m/Toolbar"
-], function(Table, Column, Text, Slider, ObjectNumber, ColumnListItem) {
+	"sap/m/Input"
+], function(Table, Column, Text, Slider, ObjectNumber, ColumnListItem, Input) {
 	"use strict";
 
 	return Table.extend("iacube.ui.common.SkillsTable", {
@@ -25,6 +25,7 @@ sap.ui.define([
 					}
 				}
 			});
+			this.bindProperty("mode", "ui>/TableMode");
 			this._createColumns();
 			this._bindTable();
 		},
@@ -58,15 +59,16 @@ sap.ui.define([
 		},
 		
 		_bindTable: function() {
-			var oText = new Text({
-				text: "{ui>Skill}"
+			var oInput = new Input({
+				value: "{ui>Skill}",
+				editable: "{ui>/RequisEditable}"
 			});
 			
 			var oSlider = new Slider({
 				min: 0,
 				max: 100,
 				value: "{ui>Weight}",
-				enabled: false
+				enabled: "{ui>/RequisEditable}"
 			});
 			
 			oSlider.addStyleClass("sapUiSizeCompact");
@@ -79,7 +81,7 @@ sap.ui.define([
 			this.oTemplate	= new ColumnListItem({
 			vAlign: "Middle",
 			cells: [
-				oText, 
+				oInput, 
 				oSlider,
 				oPercentage
 			]
