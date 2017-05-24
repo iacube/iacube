@@ -230,6 +230,7 @@ context types {
 		Location	: String(1000);
 		ProfArea	: String(1000);
 		Photo		: String(1000);
+		Distance	: Integer;
 	};
 	type searchCandidatesProfiles{
 		CandidateId	: candidateId;

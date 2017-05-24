@@ -58,17 +58,7 @@ BEGIN
 			LIMIT :nLimit
 			OFFSET :nOffset
 	;
-	candidates = 
-		SELECT 
-				"CandidateId",
-				"LastName",
-				"FirstName",
-				"Location",
-				"ProfArea",
-				"Photo"
-			FROM :filtered
-	;
-	
+
 	profiles = 
 		SELECT DISTINCT
 				"CandidateId",
@@ -77,6 +67,32 @@ BEGIN
 				"ProfileTypeId",
 				"Link"
 			FROM :filtered AS a
+	;
+	distance = 
+		SELECT DISTINCT
+				b."CandidateId",
+				MAX(a."Distance") AS "Distance"
+			FROM "iacube.db::tables.Distance.Distances" AS a
+			INNER JOIN :filtered AS b
+				ON  a."ReqId"	  = b."ReqId"
+				AND a."ProfileId" = b."ProfileId"
+			GROUP BY 
+				--a."ReqId",
+				b."CandidateId"
+	;
+	
+	candidates = 
+		SELECT DISTINCT
+				a."CandidateId",
+				a."LastName",
+				a."FirstName",
+				a."Location",
+				a."ProfArea",
+				a."Photo",
+				b."Distance"
+			FROM :filtered AS a
+			LEFT JOIN :distance AS b
+				ON a."CandidateId" = b."CandidateId"
 	;
 	salary = 
 		SELECT 
@@ -123,6 +139,7 @@ BEGIN
 			LEFT JOIN "iacube.db::tables.Requisition.Requisitions" AS c
 				ON a."ReqId" = c."ReqId"
 	;
+
 	sites =
 		SELECT 
 				"Id" AS "id",
