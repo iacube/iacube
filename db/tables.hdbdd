@@ -421,7 +421,7 @@ context tables{
        type docId           : hana.SMALLINT;
 	   type docExtId        : hana.SMALLINT;			
 	   type docExtType      : String(2);	
-	   type docContent      : String(5000);
+	   type docContent      : LargeString;
 	   type docDim          : String(1);
 	
 	   entity Documents{
