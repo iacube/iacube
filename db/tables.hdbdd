@@ -1,4 +1,4 @@
-namespace iacube.db;
+﻿namespace iacube.db;
 
 @Schema : 'IACUBE'
 context tables{
@@ -420,4 +420,34 @@ context tables{
 			};
 		};
 	};
+ 	context Document{
+        type docId           : hana.SMALLINT;
+ 	   type docExtId        : hana.SMALLINT;			
+ 	   type docExtType      : String(2);	
+ 	   type docContent      : LargeString;
+ 	   type docDim          : String(1);
+ 	
+ 	   entity Documents{
+ 	      key Id                : docId;
+ 	      Language              : lang;
+ 	      ExtId                 : docExtId;
+ 	      ExtType               : docExtType;
+ 	   };
+ 	   
+ 	   entity Texts{
+ 	      key Id                : docId;
+ 	      DocId                 : docId;
+ 	      Language              : lang;
+ 	      Content               : docContent;
+ 	      DocDim                : docDim; 
+ 	   }
+ 	   technical configuration {
+           fulltext index MYFTI1 on (Content)
+              LANGUAGE COLUMN Language
+              TEXT ANALYSIS on
+              SEARCH ONLY off 
+              FAST PREPROCESS off 
+              TEXT MINING on;
+ 	   };                 
+ 	};
 };
