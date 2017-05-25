@@ -33,6 +33,13 @@ sap.ui.define([
 				index: parseInt(iIndex)
 			});
 		},
+		
+		onRequisitionSelect: function(oEvent){
+			var oModel = this.getModel("ui");
+			var sPath = oEvent.getSource().getBindingContext("ui").getPath();
+			var iReqId = oModel.getProperty(sPath).ReqId;
+			oModel.setProperty("/selectedRequisition", iReqId);
+		},
 
 		/**
 		 * Called when the View has been rendered (so its HTML is part of the document). Post-rendering manipulations of the HTML could be done here.
@@ -58,6 +65,13 @@ sap.ui.define([
 			var oBinding = oEvent.getSource().getBindingContext("ui");			
 			this._oCandPopover.setBindingContext(oBinding, "ui");
 			this._oCandPopover.openBy(oEvent.getSource());
+		},
+		
+		onShowCandidates: function(oEvent){
+			var reqId = this.getModel("ui").getProperty("/selectedRequisition");
+			this.getRouter().navTo("candidatesOverview", {
+				reqId: parseInt(reqId)
+			});
 		}
 
 	});

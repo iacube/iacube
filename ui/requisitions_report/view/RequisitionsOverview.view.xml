@@ -45,6 +45,9 @@
 						</Toolbar>
 					</headerToolbar>
 					<columns>
+						<Column>
+							<Text text="" />
+						</Column>
 						<Column width="8%">
 							<Text text="Id" />
 						</Column>
@@ -76,6 +79,7 @@
 					<items>
 						<ColumnListItem type="Navigation" press="onRequisitionPress">
 							<cells>
+								<RadioButton groupName="A" select="onRequisitionSelect"/>
 								<Text text="{ui>ReqId}" />
 								<Text text="{ui>Title}" />
 								<Text text="{ui>ProjectId}" />
@@ -101,7 +105,7 @@
 		<footer>
 			<Toolbar>
 				<ToolbarSpacer />
-				<Button text="Show Candidates" />
+				<Button text="{i18n>req.ovw.footer.button}" enabled="{= !!${ui>/selectedRequisition}}" press="onShowCandidates" />
 			</Toolbar>
 		</footer>
 	</Page>

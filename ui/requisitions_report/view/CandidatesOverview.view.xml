@@ -45,6 +45,9 @@
 						</Toolbar>
 					</headerToolbar>
 					<columns>
+						<Column>
+							<Text text="" />
+						</Column>
 						<Column width="8%">
 							<Text text="{i18n>cand.overview.tab.fname}" />
 						</Column>
@@ -70,11 +73,11 @@
 					<items>
 						<ColumnListItem type="Navigation" press="onRequisitionPress">
 							<cells>
-								<Text text="{ui>ReqId}" />
-								<Text text="{ui>Title}" />
-								<Text text="{ui>ProjectId}" />
-								<Text text="{ui>SubcategoryName}" />
-								<Text text="{ui>CreatedBy}" />
+								<CheckBox/>
+								<Text text="{ui>FirstName}" />
+								<Text text="{ui>LastName}" />
+								<Text text="{ui>Location}" />
+								<core:Icon src="sap-icon://globe" color="#6495ED" press="handleIconPress" size="2rem"/>
 								<ProgressIndicator percentValue="{ui>Distance}" showValue="true" 
 										state="Success"
 									    height="1.5rem" width="80%" displayValue="{ui>Distance} %"/>
@@ -88,7 +91,7 @@
 													}"
 												unit="{CurrencyCode}" />
 								<HBox>
-									<core:Icon visible="{= ${ui>Requisitions}.length > 0}" src="sap-icon://employee" press="onShowCandPopover"/>
+									<core:Icon visible="{= ${ui>Requisitions}.length > 0}" src="sap-icon://document" press="onShowRequisPopover"/>
 									<Text text="({= ${ui>Candidates}.length})" class="sapUiTinyMarginBeginEnd"/>
 								</HBox>								
 							</cells>
