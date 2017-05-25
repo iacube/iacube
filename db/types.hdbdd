@@ -22,6 +22,7 @@ context types {
 	type priorityId	  	  : String(10);
 	type subcategoryId	  : Integer;
 	type commentTypeId	  : String(10);
+	type commentStatusId  : String(1);
 	
 	type profileId 	 	    : Integer;
 	type profileTypeId    	: String(10);
@@ -171,6 +172,7 @@ context types {
 		CreatedBy		: creator;
 		Title			: String(200);
 		Text			: String(5000);
+		CommentStatusId : commentStatusId;
 	};
 //	|___
 		type requisitionCandidates{
@@ -219,6 +221,7 @@ context types {
 		CommentTypeId	: commentTypeId;
 		Title			: String(200);
 		Text			: String(5000);
+		CommentStatusId	: commentStatusId;
 		flag			: sflag;
 	};
 
@@ -281,7 +284,7 @@ context types {
 		Value		  : String(1000);
 	};
 	
-	type candidateLanguages{
+	type candidateLanguages{ 
 		//CandidateId : candidateId;
 		LanguageId 	: languageId;
 		LevelId		: languageLevelId;
