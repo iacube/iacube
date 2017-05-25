@@ -163,6 +163,9 @@ var call = {
 					Text : {
 						type : "string"
 					},
+					CommentStatusId : {
+						type : "string"
+					},
 					flag:{
 						type:"string"
 					}

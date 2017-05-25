@@ -2,7 +2,7 @@ PROCEDURE "IACUBE"."iacube.db.procedures.requisition::updateRequisitions"(
 	IN  details "IACUBE"."iacube.db::types.updateRequisitionDetails"   DEFAULT EMPTY,
 	IN  skills 	 "IACUBE"."iacube.db::types.updateRequisitionSkills"   DEFAULT EMPTY,
 	IN  comments "IACUBE"."iacube.db::types.updateRequisitionComments" DEFAULT EMPTY,
-	
+
 	OUT	errors 		"IACUBE"."iacube.db::types.error"				 DEFAULT EMPTY
 ) 
 	LANGUAGE SQLSCRIPT
@@ -103,6 +103,7 @@ BEGIN
 				a."CommentTypeId",
 				a."Title"	,
 				a."Text",
+				a."CommentStatusId",
 				a."flag"
 			FROM :comments AS a
 			LEFT JOIN :preparedDetails AS b
@@ -119,7 +120,7 @@ BEGIN
 	UPSERT "iacube.db::tables.Requisition.Requisitions"
 		("ReqId","Title","ProjectId","PriorityId","Location","StatusCodeId","SubcategoryId","Language","Keywords","Description")
 		SELECT
-				"ReqId",
+				"ReqId", 
 				"Title",
 				"ProjectId",
 				"PriorityId",
@@ -189,13 +190,17 @@ BEGIN
 				a."CommentTypeId",
 				a."Title"	,
 				a."Text",
+				a."CommentStatusId",
 				b."ReqId" AS "existedReq",
-				c."Id" AS "existedCommmentType"
+				c."Id" AS "existedCommmentType",
+				d."Id" As "existedCommmentStatus"
 			FROM :comments AS a
 			LEFT JOIN "iacube.db::tables.Requisition.Requisitions" AS b
 				ON a."ReqId" = b."ReqId"
 			LEFT JOIN "iacube.db::tables.Requisition._dictionary.CommentTypes" AS c
 				ON a."CommentTypeId" = c."Id"
+			LEFT JOIN "iacube.db::tables.Requisition._dictionary.CommentStatusTypes" AS d
+				ON a."CommentStatusId" = d."Id"
 			WHERE a."flag" = 'I' 
 			   OR a."flag" = 'U'
 	;
@@ -205,9 +210,10 @@ BEGIN
 			FROM :preparedComments
 			WHERE "existedReq" 			IS NOT NULL
 			  AND "existedCommmentType" IS NOT NULL
+			  AND "existedCommmentStatus" IS NOT NULL
 	;
 	UPSERT "iacube.db::tables.Requisition.Comments"
-		("ReqId","CommentId","CommentTypeId","CreatedBy","CreatedAt","Title","Text")
+		("ReqId","CommentId","CommentTypeId","CreatedBy","CreatedAt","Title","Text","CommentStatusId")
 		SELECT 
 				"ReqId",
 				IFNULL("CommentId","iacube.db.sequences::commentId".nextval),
@@ -215,7 +221,8 @@ BEGIN
 				SESSION_USER 		AS "CreatedBy",
 				CURRENT_TIMESTAMP 	AS "CreatedAt",
 				"Title"	,
-				"Text"
+				"Text",
+				"CommentStatusId"
 			FROM :checkedComments
 	;
 	
@@ -240,21 +247,27 @@ BEGIN
 		UNION
 		SELECT 
 				15005 AS "id",
-				"ReqId" AS "details"
+				"PriorityId" AS "details"
 			FROM :preparedDetails
 			WHERE "existedPriorityType" IS NULL
 		UNION
 		SELECT 
 				15006 AS "id",
-				"ReqId" AS "details"
+				"StatusCodeId" AS "details"
 			FROM :preparedDetails
 			WHERE "existedStatusCodeTypes" IS NULL
 		UNION
 		SELECT 
 				15007 AS "id",
-				"ReqId" AS "details"
+				"SubcategoryId" AS "details"
 			FROM :preparedDetails
 			WHERE "existedSubcategoryTypes" IS NULL
+		UNION
+		SELECT 
+				15008 AS "id",
+				"CommentStatusId" AS "details"
+			FROM :preparedComments
+			WHERE "existedCommmentStatus" IS NULL
 	;
 	
 END;

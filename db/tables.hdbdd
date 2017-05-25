@@ -329,6 +329,7 @@ context tables{
 		type priorityId	  	  : String(10);
 		type subcategoryId	  : Integer;
 		type commentTypeId	  : String(10);
+		type commentStatusId  : String(1);
 //нужны ли в реквезишене ScheduleTypes EmploymentTypes?
 		entity Requisitions{
 			key ReqId			: reqId;
@@ -371,7 +372,8 @@ context tables{
 				CreatedAt	  : datetime;
 				CreatedBy	  : creator;
 			 	Title		  : String(200);
-			 	Text		  : String(5000);	
+			 	Text		  : String(5000);
+			 	CommentStatusId : commentStatusId;
 		};
 
 		context _dictionary{
@@ -380,6 +382,11 @@ context tables{
 				key Id	 : commentTypeId;
 					Name : String(50);
 			};
+			
+			entity CommentStatusTypes{
+				key Id	 : commentStatusId;
+					Name : String(50);
+			}; 
 
 			entity StatusCodeTypes{
 				key Id	 : statusCodeTypeId;
