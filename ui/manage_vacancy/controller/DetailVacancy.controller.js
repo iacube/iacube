@@ -2,8 +2,9 @@ sap.ui.define([
 	"manage_vacancy/controller/BaseController",
 	"manage_vacancy/util/formatter",
 	"iacube/ui/common/dataHelper",
-	"iacube/ui/common/mapper"
-], function(BaseController, oFormatter, DataHelper, Mapper) {
+	"iacube/ui/common/mapper",
+	"sap/m/MessageToast"
+], function(BaseController, oFormatter, DataHelper, Mapper, MessageToast) {
 	"use strict";
 
 	return BaseController.extend("manage_vacancy.controller.DetailVacancy", {
@@ -65,12 +66,27 @@ sap.ui.define([
 			
 			onRequisSave: function(oEvent) {
 				var error = this._validateRequiredFields();
+				if (error === false) {
+					var oModel = this.getModel("ui");
+					var sPath = oEvent.getSource().getBindingContext("ui").getPath();		
+					var ReqId = oModel.getProperty(sPath).ReqId;
+// add requisition creation comment during save
+					if(ReqId === "0000") {
+							var oRequisition = this._addCreateComment(oEvent);
+							DataHelper.createRequisition(Mapper.composeRequisitionForCreate(oRequisition)).then(function(oData){
+								 if(oData.message=="S"){
+								 }else{
+								  console.log(oData);
+								 }
+								});
+						}
+					}
 			},
 			
 			onRequisCancel: function(oEvent) {
 // check if requisition in create mode
 				var oModel = this.getModel("ui");
-				var sPath = oEvent.getSource().getBindingContext("ui").getPath();
+				var sPath = oEvent.getSource().getBindingContext("ui").getPath();		
 				var ReqId = oModel.getProperty(sPath).ReqId;
 				if(ReqId === "0000") {
 					var index = parseInt(sPath.substring(sPath.lastIndexOf('/') +1));
@@ -84,7 +100,6 @@ sap.ui.define([
 				else {
 					this.loadRequisition(ReqId, sPath);
 				}
-	            
 			},
 			
 			_validateRequiredFields: function(){
@@ -92,31 +107,43 @@ sap.ui.define([
 				var error = false;
 				var reqTitleVal = oReqTitle.getValue();
 				if(reqTitleVal === ""){
-					oReqTitle.setValueState("Error");
+					oReqTitle.setValueState("Error").focus();
 					error = true;
 				}
 				var oReqProj = sap.ui.getCore().byId("idProj");
 				var reqProjVal = oReqProj.getValue();
 				if(reqProjVal === ""){
-					oReqProj.setValueState("Error");
+					oReqProj.setValueState("Error").focus();
 					error = true;
 				}
 				
 				var oReqPrior = sap.ui.getCore().byId("idPrior");
 				var reqPriorVal = oReqPrior.getValue();
 				if(reqPriorVal === ""){
-					oReqPrior.setValueState("Error");
+					oReqPrior.setValueState("Error").focus();
 					error = true;
 				}
 				
 				var oReqLocation = sap.ui.getCore().byId("idLocation");
 				var reqLocationVal = oReqLocation.getValue();
 				if(reqLocationVal === ""){
-					oReqLocation.setValueState("Error");
+					oReqLocation.setValueState("Error").focus();
 					error = true;
 				}
 				
 				return error;
+			},
+			
+			_addCreateComment: function(oEvent) {
+				var oModel = this.getModel("ui");
+				var sPath = oEvent.getSource().getBindingContext("ui").getPath();
+				var Title = oModel.getProperty(sPath).Title;
+				var sComment = oModel.getProperty(sPath + "/comments/0");
+				sComment.CommTitle = "created Job Requisition";
+				sComment.Text = "Requisition " + Title + " created";
+				var aComments = oModel.getProperty(sPath).comments;
+				aComments.splice(0, 1, sComment);
+				return oModel.getProperty(sPath);
 			}
 
 	});

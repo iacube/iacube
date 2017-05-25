@@ -13,6 +13,15 @@ sap.ui.define([
 				else if(sCommId === "NOTE"){
 					return "sap-icon://notes";
 				}
+				else if(sCommId === "OPEN"){
+					return "sap-icon://create-form"
+				}
+				else if(sCommId === "OTHER"){
+					return "sap-icon://employee"
+				}
+				else if(sCommId === "EMAIL"){
+					return "sap-icon://email"
+				}
 			},
 			
 			getCommentType: function(sCommId, sCommCall, sCommNote){

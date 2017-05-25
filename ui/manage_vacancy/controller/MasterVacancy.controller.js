@@ -107,7 +107,15 @@ sap.ui.define([
 					skills: [{
 							Skill: "",
 							Weight: 100
-						}]
+						}],
+					comments: [{
+						CommentId: "",
+						CommentTypeId: "OPEN",
+						CommCreatedAt: "",
+						CommCreatedBy: "",
+						CommTitle: "",
+						Text: ""
+					}]
 					};
 			
 			oRequisitions.push(oNewRequisition);

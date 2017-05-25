@@ -77,15 +77,16 @@ sap.ui.define([
 			},
 			
 			composeRequisitionForCreate: function(oReq){
-				return {
+				return JSON.stringify({
+						
 					requisitions:[{
-						ReqId: 0,
+						ReqId: 100,
 						Title: oReq.Title,
 						ProjectId: oReq.ProjectId,
 						PriorityId: oReq.PriorityId,
 						Location: oReq.Location,
 						StatusCodeId: oReq.StatusCodeId,
-						SubcategoryId: oReq1.SubcategoryId,
+						SubcategoryId: oReq.SubcategoryId,
 						Language: oReq.Language,
 						Keywords: oReq.Keywords,
 						Description: oReq.Description,
@@ -93,23 +94,23 @@ sap.ui.define([
 					}],
 					skills: oReq.skills.map(function(s){
 						return {
-							ReqId: 0,
+							ReqId: 100,
 							Skill: s.Skill,
 							Weight: s.Weight,
 							flag: "I"
 						}
 					}),
-					comments: oReq.skills.map(function(c){
+					comments: oReq.comments.map(function(c){
 						return {
-						  ReqId : 0,
+						  ReqId : 100,
 						  CommentId : 0,
-						  CommentTypeId : "OPEN",//TODO дополнить
-						  Title : c.Title,
+						  CommentTypeId : "OTHER",
+						  Title : c.CommTitle,
 						  Text : c.Text,
 						  flag:"I" 
 						}
 					})
-				}
+				})
 			},
 			
 			mapCandidates: function(aCandidates) {
