@@ -438,11 +438,16 @@ context tables{
  	      key Id                : docId;
  	      DocId                 : docId;
  	      Language              : lang;
- 	      Content               : docContent;
+//--        Uppercase because of To enable TM_GET_RELATED_DPCUMENTS BUG
+ 	      CONTENT              : docContent;
  	      DocDim                : docDim; 
+//--        To enable TM_GET_RELATED_DPCUMENTS
+ 	      ExtId                 : docExtId;
+ 	      ExtType               : docExtType;
+//--
  	   }
  	   technical configuration {
-           fulltext index MYFTI1 on (Content)
+           fulltext index MYFTI1 on (CONTENT)
               LANGUAGE COLUMN Language
               TEXT ANALYSIS on
               SEARCH ONLY off 

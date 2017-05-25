@@ -48,38 +48,40 @@ BEGIN
 
 
 -- Keys - Texts
-   lt_keyT= SELECT "Id" AS "Id",'C' AS "DocDim", 'A' AS "Class" FROM "IACUBE"."iacube.db::tables.Document.Documents" A
+   lt_keyT= SELECT "Id",'C' AS "DocDim", 'A' AS "Class", "ExtId", "ExtType","Language" 
+            FROM "IACUBE"."iacube.db::tables.Document.Documents" A
             WHERE EXISTS(SELECT NULL FROM "IACUBE"."iacube.db::tables.Requisition.Requisitions" B 
                          WHERE A."ExtId"=B."ReqId" AND IFNULL(LENGTH(B."Description"),0) <> 0) AND A."ExtType"='R'
             UNION ALL
-            SELECT "Id" AS "Id",'S' AS "DocDim", 'A' AS "Class" FROM "IACUBE"."iacube.db::tables.Document.Documents" A
+            SELECT "Id" AS "Id",'S' AS "DocDim", 'A' AS "Class", "ExtId", "ExtType","Language" 
+            FROM "IACUBE"."iacube.db::tables.Document.Documents" A
             WHERE EXISTS(SELECT NULL FROM "IACUBE"."iacube.db::tables.Requisition.Skills" B 
                          WHERE A."ExtId"=B."ReqId" AND IFNULL(B."Skill",'') <> '') AND A."ExtType"='R' 
             UNION ALL
-            SELECT "Id" AS "Id",'C' AS "DocDim", 'A' AS "Class" FROM "IACUBE"."iacube.db::tables.Document.Documents" A
+            SELECT "Id" AS "Id",'C' AS "DocDim", 'A' AS "Class", "ExtId", "ExtType","Language" 
+            FROM "IACUBE"."iacube.db::tables.Document.Documents" A
             WHERE EXISTS(SELECT NULL FROM "IACUBE"."iacube.db::tables.Profile.Profiles" B
                          JOIN "IACUBE"."iacube.db::tables.Profile.Experience" C
                          ON B."ProfileId" = C."ProfileId"
                          WHERE A."ExtId"=B."ProfileId" AND (IFNULL(LENGTH(B."Summary"),0) <> 0 OR
                                                             IFNULL(LENGTH(C."Description"),0) <> 0)) AND A."ExtType"='P'
             UNION ALL
-            SELECT "Id" AS "Id",'S' AS "DocDim", 'A' AS "Class" FROM "IACUBE"."iacube.db::tables.Document.Documents" A
+            SELECT "Id" AS "Id",'S' AS "DocDim", 'A' AS "Class", "ExtId", "ExtType","Language"
+            FROM "IACUBE"."iacube.db::tables.Document.Documents" A
             WHERE EXISTS(SELECT NULL FROM "IACUBE"."iacube.db::tables.Profile.Skills" B 
                          WHERE A."ExtId"="ProfileId" AND IFNULL(B."Skill",'') <> '') AND A."ExtType"='P';
 
 -- Texts
-   INSERT INTO "IACUBE"."iacube.db::tables.Document.Texts"("DocId","DocDim","Id")
-   SELECT "Id","DocDim",row_number() OVER(PARTITION BY "Class") FROM :lt_keyT;
+   INSERT INTO "IACUBE"."iacube.db::tables.Document.Texts"("DocId","DocDim","Id","ExtId","ExtType","Language")
+   SELECT "Id","DocDim",row_number() OVER(PARTITION BY "Class"),"ExtId","ExtType","Language" FROM :lt_keyT;
 
 -- Requisition summary
 
    UPDATE "IACUBE"."iacube.db::tables.Document.Texts" AS A
-   SET "Content"= (SELECT B."Description" FROM "IACUBE"."iacube.db::tables.Requisition.Requisitions" AS B
+   SET "CONTENT"= (SELECT B."Description" FROM "IACUBE"."iacube.db::tables.Requisition.Requisitions" AS B
                    JOIN "IACUBE"."iacube.db::tables.Document.Documents" AS C
                    ON B."ReqId"=C."ExtId"
-                   WHERE C."ExtType"='R' AND A."DocId"=C."Id"),
-       "Language"= (SELECT "Language" FROM "IACUBE"."iacube.db::tables.Document.Documents" AS B
-                    WHERE A."DocId"=B."Id" AND B."ExtType"='R')
+                   WHERE C."ExtType"='R' AND A."DocId"=C."Id")
    WHERE A."DocId"=(SELECT B."Id" FROM "IACUBE"."iacube.db::tables.Document.Documents" AS B 
                     WHERE A."DocId"=B."Id" AND B."ExtType"='R') AND A."DocDim"='C'; 
 
@@ -100,8 +102,7 @@ BEGIN
       lv_skillSet=LTRIM(lv_skillSet);
       IF COALESCE(LENGTH(lv_skillSet),0) <> 0 THEN 
          UPDATE "IACUBE"."iacube.db::tables.Document.Texts" AS A      
-         SET A."Content"=lv_skillSet,
-             A."Language"=ls_req."Language"
+         SET A."CONTENT"=lv_skillSet
          WHERE A."DocId"=(SELECT B."Id" FROM "IACUBE"."iacube.db::tables.Document.Documents" AS B 
                           WHERE B."ExtId"=ls_req."ReqId" AND B."ExtType"='R') AND A."DocDim"='S';     
       END IF;
@@ -117,8 +118,7 @@ BEGIN
       lv_skillSet=LTRIM(lv_skillSet);
       IF COALESCE(LENGTH(lv_skillSet),0) <> 0 THEN 
          UPDATE "IACUBE"."iacube.db::tables.Document.Texts" AS A      
-         SET A."Content"=lv_skillSet,
-             A."Language"=ls_prof."Language"
+         SET A."CONTENT"=lv_skillSet
          WHERE A."DocId"=(SELECT B."Id" FROM "IACUBE"."iacube.db::tables.Document.Documents" AS B 
                           WHERE B."ExtId"=ls_prof."ProfileId" AND B."ExtType"='P') AND A."DocDim"='S';     
       END IF;
@@ -145,11 +145,9 @@ BEGIN
          IFNULL(LENGTH(ls_prof."Summary"),0) <> 0 THEN 
 
          UPDATE "IACUBE"."iacube.db::tables.Document.Texts" AS A      
-         SET A."Content"=LTRIM(COALESCE(ls_prof."Summary",'')||' '||COALESCE(lv_skillSet,'')),
-             A."Language"=ls_prof."Language" 
+         SET A."CONTENT"=LTRIM(COALESCE(ls_prof."Summary",'')||' '||COALESCE(lv_skillSet,''))
          WHERE A."DocId"=(SELECT B."Id" FROM "IACUBE"."iacube.db::tables.Document.Documents" AS B 
                           WHERE  B."ExtId"=ls_prof."ProfileId" AND B."ExtType"='P') AND A."DocDim"='C';  
-                          
       END IF;
    END FOR;
 END
