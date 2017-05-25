@@ -161,7 +161,7 @@ BEGIN
 				*
 			FROM :preparedSkills
 			WHERE "existedReq" 			IS NOT NULL
-			AND "Skill" is null
+			AND "Skill" is not null
 	;
 	UPSERT "iacube.db::tables.Requisition.Skills"
 		("ReqId","Skill","Weight")

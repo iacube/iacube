@@ -21,7 +21,7 @@ function convertToResult(resultObject,transformation,message){
            for(key in resultObject){
         		if (resultObject.hasOwnProperty(key)){
         			name = transformation[key] || key;
-        			returnObject[name] = convertToResult(resultObject[key],transformation);
+        			returnObject[name] = convertToResult(resultObject[key],transformation,message);
         		}
     	    } 
         }else{
