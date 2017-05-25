@@ -342,4 +342,14 @@ context types {
 		StatusId	: statusTypeId;
 		flag		: sflag;
 	};
+
+	type relatedCandidates{
+		
+                ReqId		: reqId;
+
+		CandidateId	: candidateId;
+
+                score       : hana.SMALLINT;
+	
+        }
 };
