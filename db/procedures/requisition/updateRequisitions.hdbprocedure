@@ -108,13 +108,13 @@ BEGIN
 			FROM :comments AS a
 			LEFT JOIN :preparedDetails AS b
 				ON a."ReqId" = b."tempId"
-	;
+	; 
 	checkedDetails = 
 		SELECT * 
 			FROM :preparedDetails
 			WHERE "existedPriorityType" 	 IS NOT NULL
 			  AND "existedStatusCodeTypes"   IS NOT NULL
-			   AND "existedSubcategoryTypes" IS NOT NULL
+			   AND ("existedSubcategoryTypes" IS NOT NULL OR "SubcategoryId" IS NULL)
 	;
 	
 	UPSERT "iacube.db::tables.Requisition.Requisitions"
@@ -161,6 +161,7 @@ BEGIN
 				*
 			FROM :preparedSkills
 			WHERE "existedReq" 			IS NOT NULL
+			AND "Skill" is null
 	;
 	UPSERT "iacube.db::tables.Requisition.Skills"
 		("ReqId","Skill","Weight")
@@ -228,46 +229,52 @@ BEGIN
 	
 	errors = 
 		SELECT 
-				15001 AS "id",
-				"ReqId" AS "details"
+				15001 AS error_code,
+				TO_NVARCHAR("ReqId") AS details
 			FROM :preparedComments
 			WHERE "existedReq" IS NULL
 		UNION
 		SELECT
-				15004 AS "id",
-				"CommentTypeId" AS "details"
+				15004 AS error_code,
+				TO_NVARCHAR("CommentTypeId") AS details
 			FROM :preparedComments
 			WHERE "existedCommmentType" IS NULL
 		UNION
 		SELECT 
-				15001 AS "id",
-				"ReqId" AS "details"
+				15001 AS error_code,
+				TO_NVARCHAR("ReqId") AS details
 			FROM :preparedSkills
 			WHERE "existedReq" IS NULL
 		UNION
 		SELECT 
-				15005 AS "id",
-				"PriorityId" AS "details"
+				15005 AS error_code,
+				TO_NVARCHAR("PriorityId") AS details
 			FROM :preparedDetails
 			WHERE "existedPriorityType" IS NULL
 		UNION
 		SELECT 
-				15006 AS "id",
-				"StatusCodeId" AS "details"
+				15006 AS error_code,
+				TO_NVARCHAR("StatusCodeId") AS details
 			FROM :preparedDetails
 			WHERE "existedStatusCodeTypes" IS NULL
 		UNION
 		SELECT 
-				15007 AS "id",
-				"SubcategoryId" AS "details"
+				15007 AS error_code,
+				TO_NVARCHAR("SubcategoryId") AS details
 			FROM :preparedDetails
-			WHERE "existedSubcategoryTypes" IS NULL
+			WHERE "existedSubcategoryTypes" IS NULL AND "SubcategoryId" IS NOT NULL
 		UNION
 		SELECT 
-				15008 AS "id",
-				"CommentStatusId" AS "details"
+				15008 AS error_code,
+				TO_NVARCHAR("CommentStatusId") AS details
 			FROM :preparedComments
 			WHERE "existedCommmentStatus" IS NULL
+		UNION
+		SELECT 
+				15009 AS error_code,
+				'' AS details
+			FROM :preparedSkills
+			WHERE "Skill" IS NULL
 	;
 	
 END;

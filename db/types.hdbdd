@@ -1,5 +1,5 @@
 namespace iacube.db;
-
+ 
 @Schema: 'IACUBE'
 context types {
 	
@@ -39,8 +39,8 @@ context types {
 			
 		
 	type error{
-		id		: Integer;
-		details : String(1000);
+		ERROR_CODE	: Integer;
+		DETAILS : String(1000);
 	};
 	
 	type nameValue{
