@@ -35,10 +35,13 @@ BEGIN
 				a."Keywords",
 				a."Description",
 				a."OpenedBy",
-				a."OpenedAt"
+				a."OpenedAt",
+				DAYS_BETWEEN (CURRENT_DATE,ADD_DAYS("OpenedAt",c."Days")) AS "DaysRemain"
 			FROM "iacube.db::tables.Requisition.Requisitions" AS a
 			LEFT JOIN "iacube.db::tables.Requisition._dictionary.SubcategoryTypes" As b
 				ON a."SubcategoryId" = b."Id"
+			LEFT JOIN "iacube.db::tables.Requisition._dictionary.PriorityTypes" AS c
+				ON a."PriorityId" = c."Id"
 			WHERE a."ReqId" = :reqId
 	;
 	skills =
