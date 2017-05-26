@@ -18,17 +18,7 @@ sap.ui.define([
 						SubcategoryName: r.SubcategoryName,
 						CreatedBy: r.CreatedBy,
 						CreatedAt: new Date(r.CreatedAt),
-						candidates: r.candidates.map(function(c){
-							return {
-								AssignedAt: new Date(c.AssignedAt),
-								AssignedBy: c.AssignedBy,
-								CandidateId: c.CandidateId,
-								FirstName: c.FirstName,
-								LastName: c.LastName,
-								ReqId: c.ReqId,
-								StatusId: c.StatusId
-							}
-						}),
+						Candidates: r.candidates,
 					}
 				})
 			},
@@ -61,14 +51,15 @@ sap.ui.define([
 							CommCreatedAt: new Date(comm.CreatedAt),
 							CommCreatedBy: comm.CreatedBy,
 							CommTitle: comm.Title,
-							Text: comm.Text
+							Text: comm.Text,
+							CommentStatusId: comm.StatusId
 						}
 					}),
 					candidates: r.candidates.map(function(c) {
 						return {
 							CandidateId: c.CandidateId,
 							StatusId: c.StatusId,
-							ChangedAt: new Date(c.ChangedAt),
+							CChangedAt: c.ChangedAt,
 							FirstName: c.FirstName,
 							LastName: c.LastName,
 							Experience: c.Experience,
@@ -95,7 +86,7 @@ sap.ui.define([
 						ProjectId: oReq.ProjectId,
 						PriorityId: oReq.PriorityId,
 						Location: oReq.Location,
-						StatusCodeId: oReq.StatusCodeId,
+						StatusCodeId: "OPEN",
 						SubcategoryId: oReq.SubcategoryId,
 						Language: oReq.Language,
 						Keywords: oReq.Keywords,
@@ -113,10 +104,11 @@ sap.ui.define([
 					comments: oReq.comments.map(function(c){
 						return {
 						  ReqId : 100,
-						  CommentId : 0,
+						  CommentId : 10,
 						  CommentTypeId : "OTHER",
 						  Title : c.CommTitle,
 						  Text : c.Text,
+						  CommentStatusId: "E",
 						  flag:"I" 
 						}
 					})

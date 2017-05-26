@@ -47,6 +47,23 @@ sap.ui.define([
 						}
 			},
 			
+			getCommentStatus: function(sCommentStatusId) {
+				switch (sCommentStatusId) {
+				case "E":
+					return "Error";
+					break;
+				case "W":
+					return "Warning";
+					break;
+				case "I":
+					return "Information";
+					break;
+				case "S":
+					return "Success";
+					break
+					}
+			}
+			
 	};
 	
 	return formatterCom;
