@@ -266,12 +266,12 @@ context tables{
 		};
 		
 		entity Experience{
-			ProfileId	: profileId;
-			Company		: String(1000);
-			Position	: String(1000);
-			Description	: LargeString;
-			StartDate	: date;
-			EndDate		: date;
+			key ProfileId	: profileId;
+			key Company		: String(1000);
+				Position	: String(1000);
+				Description	: LargeString;
+				StartDate	: date;
+				EndDate		: date;
 		};
 			
 		entity Skills{
