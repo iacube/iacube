@@ -32,7 +32,14 @@ sap.ui.define([
 						formatter: function(sCommId) {
 							return oFormatterCom.getCommentIcon(sCommId);
 						}
-				}							
+				},
+				
+				status: {
+					path: "ui>CommentStatusId",
+					formatter: function(sCommentStatusId) {
+						return oFormatterCom.getCommentStatus(sCommentStatusId);
+					}
+				}
 			});
 			
 			this.setEnableScroll(false);

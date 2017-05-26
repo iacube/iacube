@@ -71,8 +71,11 @@ BEGIN
 				"CreatedBy",
 				"CreatedAt",
 				"OpenedBy",
-				"OpenedAt"
-			FROM :filtered
+				"OpenedAt",
+				DAYS_BETWEEN (CURRENT_DATE,ADD_DAYS("OpenedAt",b."Days")) AS "DaysRemain"
+			FROM :filtered AS a
+			LEFT JOIN "iacube.db::tables.Requisition._dictionary.PriorityTypes" AS b
+				ON a."PriorityId" = b."Id"
 			LIMIT :nLimit
 			OFFSET :nOffset
 	;

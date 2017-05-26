@@ -57,7 +57,7 @@ var call = {
 				}	
 			}
 			
-			addTo(["COMMENTTYPES","PRIORITYTYPES","STATUSCODETYPES","STATUSTYPES","SUBCATEGORYTYPES"],dictionary);
+			addTo(["COMMENTTYPES","COMMENTSTATUSTYPES","PRIORITYTYPES","STATUSCODETYPES","STATUSTYPES","SUBCATEGORYTYPES"],dictionary);
 
 			return {
 				data 		: requisition,

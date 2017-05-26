@@ -7,6 +7,7 @@ PROCEDURE "IACUBE"."iacube.db.procedures.requisition::getRequisition"(
 	OUT comments 	"IACUBE"."iacube.db::types.requisitionComments"   DEFAULT EMPTY,
 	
 	OUT commentTypes	 "IACUBE"."iacube.db::types.idName"			  DEFAULT EMPTY,
+	OUT commentStatusTypes	 "IACUBE"."iacube.db::types.idName"		  DEFAULT EMPTY,
 	OUT priorityTypes	 "IACUBE"."iacube.db::types.idName"			  DEFAULT EMPTY,
 	OUT statusCodeTypes	 "IACUBE"."iacube.db::types.idName"			  DEFAULT EMPTY,
 	OUT statusTypes		 "IACUBE"."iacube.db::types.idName"			  DEFAULT EMPTY,
@@ -34,10 +35,13 @@ BEGIN
 				a."Keywords",
 				a."Description",
 				a."OpenedBy",
-				a."OpenedAt"
+				a."OpenedAt",
+				DAYS_BETWEEN (CURRENT_DATE,ADD_DAYS("OpenedAt",c."Days")) AS "DaysRemain"
 			FROM "iacube.db::tables.Requisition.Requisitions" AS a
 			LEFT JOIN "iacube.db::tables.Requisition._dictionary.SubcategoryTypes" As b
 				ON a."SubcategoryId" = b."Id"
+			LEFT JOIN "iacube.db::tables.Requisition._dictionary.PriorityTypes" AS c
+				ON a."PriorityId" = c."Id"
 			WHERE a."ReqId" = :reqId
 	;
 	skills =
@@ -127,7 +131,8 @@ BEGIN
 				"CreatedAt",
 				"CreatedBy",
 				"Title",
-				"Text"
+				"Text",
+				"CommentStatusId"
 			FROM "iacube.db::tables.Requisition.Comments"
 			WHERE "ReqId" = :reqId
 	;
@@ -136,6 +141,12 @@ BEGIN
 				"Id" AS "id",
 				"Name" AS "name"
 			FROM "iacube.db::tables.Requisition._dictionary.CommentTypes"
+	;
+	commentStatusTypes =
+		SELECT 
+				"Id" AS "id",
+				"Name" AS "name"
+			FROM "iacube.db::tables.Requisition._dictionary.CommentStatusTypes"
 	;
 	priorityTypes = 
 		SELECT 

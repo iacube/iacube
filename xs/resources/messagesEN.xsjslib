@@ -83,6 +83,16 @@ var message = {
 		MESSAGE: "Service Error",
 		DETAILS: "Wrong Subcategory \"{0}\""
 	},
+	15008:{
+		STATUS: "E",
+		MESSAGE: "Service Error",
+		DETAILS: "Wrong Comment Status \"{0}\""
+	},
+	15009:{
+		STATUS: "E",
+		MESSAGE: "Service Error",
+		DETAILS: "Blank skill"
+	},
 //upload from external systems
 	16000:{
 		STATUS: "E",

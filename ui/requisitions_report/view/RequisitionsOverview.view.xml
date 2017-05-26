@@ -41,41 +41,45 @@
 				<Table id="idProductsTable" inset="false" items="{ui>/requisitions}">
 					<headerToolbar>
 						<Toolbar>
-							<Title text="Job Requisitions" level="H2" />
+							<Title text="{i18n>req.table.title} ({= ${ui>/requisitions}.length})" level="H2" />
 						</Toolbar>
 					</headerToolbar>
 					<columns>
-						<Column width="8%">
-							<Text text="Id" />
-						</Column>
-						<Column demandPopin="true">
-							<Text text="Name" />
-						</Column>
-						<Column demandPopin="true" hAlign="Right">
-							<Text text="Account" />
-						</Column>
-						<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
-							<Text text="Subcategory" />
+						<Column width="5%">
+							<Text text="" />
 						</Column>
 						<Column>
-							<Text text="Created By" />
+							<Text text="{i18n>req.table.id}" />
 						</Column>
 						<Column>
-							<Text text="Date / Time Opened" />
-						</Column>
-						<Column width="8%">
-							<Text text="Remaining Days" />
+							<Text text="{i18n>req.table.name}" />
 						</Column>
 						<Column>
-							<Text text="Status" />
+							<Text text="{i18n>req.table.account}" />
 						</Column>
 						<Column>
-							<Text text="Candidates" />
+							<Text text="{i18n>req.table.subcategory}" />
+						</Column>
+						<Column>
+							<Text text="{i18n>req.table.createdby}" />
+						</Column>
+						<Column>
+							<Text text="{i18n>req.table.datetimeopened}" />
+						</Column>
+						<Column>
+							<Text text="{i18n>req.table.remaingdays}" />
+						</Column>
+						<Column>
+							<Text text="{i18n>req.table.status}" />
+						</Column>
+						<Column>
+							<Text text="{i18n>req.table.candidates}" />
 						</Column>
 					</columns>
 					<items>
 						<ColumnListItem type="Navigation" press="onRequisitionPress">
 							<cells>
+								<RadioButton groupName="A" select="onRequisitionSelect"/>
 								<Text text="{ui>ReqId}" />
 								<Text text="{ui>Title}" />
 								<Text text="{ui>ProjectId}" />
@@ -84,12 +88,12 @@
 								<!-- <Text text="{ui>CreatedAt}"/> -->
 								<!-- <DatePicker value="{ui>CreatedAt}" displayFormat="short" editable="false"/> -->
 								<Text
-									text="{model: 'ui', path: 'CreatedAt', type:'sap.ui.model.type.DateTime', formatOptions: {style:'medium'}}" />
+									text="{model: 'ui', path: 'CreatedAt', type:'sap.ui.model.type.DateTime', formatOptions: {pattern:'dd/MM/yyyy hh:mm'}}" />
 								<Text text="{ui>RemainingDays}" />
-								<ObjectStatus text="{ui>StatusCodeId}" state="Success" />
+								<ObjectStatus text="{model: 'ui', path: 'StatusCodeId', formatter: '.formatter.formatReqStatus'}" state="Success" />
 								<HBox>
-									<core:Icon visible="{= ${ui>Candidates}.length > 0}" src="sap-icon://employee" press="onShowCandPopover"/>
-									<Text text="({= ${ui>Candidates}.length})" class="sapUiTinyMarginBeginEnd"/>
+									<core:Icon visible="{= ${ui>candidates}.length > 0}" src="sap-icon://employee" press="onShowCandPopover"/>
+									<Text text="({= ${ui>candidates}.length})" class="sapUiTinyMarginBeginEnd"/>
 								</HBox>
 								
 							</cells>
@@ -101,7 +105,7 @@
 		<footer>
 			<Toolbar>
 				<ToolbarSpacer />
-				<Button text="Show Candidates" />
+				<Button text="{i18n>req.ovw.footer.button}" enabled="{= !!${ui>/selectedRequisition}}" press="onShowCandidates" />
 			</Toolbar>
 		</footer>
 	</Page>
