@@ -1,4 +1,4 @@
-﻿namespace iacube.db;
+namespace iacube.db;
 
 @Schema : 'IACUBE'
 context tables{

@@ -42,8 +42,8 @@ context types {
  	type docContent      : LargeString;			
 		
 	type error{
-		error_code : Integer;
-		details	   : String(1000);
+		ERROR_CODE	: Integer;
+		DETAILS : String(1000);
 	};
 	
 	type nameValue{
@@ -131,6 +131,7 @@ context types {
 		CreatedAt		: datetime;
 		OpenedBy		: creator;
 		OpenedAt		: datetime;
+		DaysRemain		: Integer;
 	};
 //	|___
 		type searchRequisitionsCandidates{
@@ -160,6 +161,7 @@ context types {
 		Description		: LargeString;
 		OpenedBy		: creator;
 		OpenedAt		: datetime;
+		DaysRemain		: Integer;
 	};
 //	|
 	type requisitionSkills{
