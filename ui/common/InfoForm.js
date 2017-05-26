@@ -79,14 +79,16 @@ sap.ui.define([
 					}).bindAggregation("items", "ui>/AvailablePriorities", new Item({
 							key: "{ui>PriorityCode}",
 							text: { parts: [{path: 'ui>PriorityCode'},
-							                {path: 'i18nCom>priorLow'},
-							                {path: 'i18nCom>priorMedium'},
-							                {path: 'i18nCom>priorHigh'}],
-									formatter: function(sPriorCode, sProirLow, sPriorMedium, sPriorHigh) {
-										return oFormatterCom.getPriorDescr(sPriorCode, sProirLow, sPriorMedium, sPriorHigh);
+							                {path: 'i18nCom>priorL'},
+							                {path: 'i18nCom>priorMA'},
+							                {path: 'i18nCom>priorMI'},
+							                {path: 'i18nCom>priorH'},
+							                {path: 'i18nCom>priorN'},
+							                {path: 'i18nCom>priorVH'}],
+									formatter: function(sPriorCode, sPriorL, sPriorMA, sPriorMI, sPriorH, sPriorN, sPriorVH) {
+										return oFormatterCom.getPriorDescr(sPriorCode, sPriorL, sPriorMA, sPriorMI, sPriorH, sPriorN, sPriorVH);
 								}}
-									
-									
+				
 						})),
 					
 					new Label({

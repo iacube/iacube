@@ -18,10 +18,17 @@ sap.ui.define([ "sap/ui/model/json/JSONModel", "sap/ui/Device" ], function(
 				"AvailablePriorities" : [ {
 					"PriorityCode" : "H"
 				}, {
-					"PriorityCode" : "M"
+					"PriorityCode" : "MI"
 				}, {
 					"PriorityCode" : "L"
-				} ],
+				},
+				{
+					"PriorityCode" : "VH"
+				},
+				{
+					"PriorityCode" : "MA"
+				},
+				],
 				"AvailableLanguages" : [ {
 					"SlsLang" : "EN"
 				}, {
