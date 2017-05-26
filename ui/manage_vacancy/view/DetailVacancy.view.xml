@@ -1,0 +1,94 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:m="sap.m" xmlns:html="http://www.w3.org/1999/xhtml" 
+		  xmlns:semantic="sap.m.semantic" xmlns="sap.uxap" xmlns:layout="sap.ui.layout" xmlns:info="manage_vacancy.SharedBlocks.info"
+		  xmlns:skills="manage_vacancy.SharedBlocks.skills"
+		  controllerName="manage_vacancy.controller.DetailVacancy" id="detail" displayBlock="false"
+		  xmlns:candidates="manage_vacancy.SharedBlocks.candidates"
+		  xmlns:comments="manage_vacancy.SharedBlocks.comments">
+	<semantic:DetailPage id="detailvac" title="{i18n>title}" enableScrolling="false" floatingFooter="true">
+		<semantic:content >	
+			<ObjectPageLayout id="detObj" showTitleInHeaderContent="false">
+				<headerTitle>
+					<ObjectPageHeader objectImageURI="sap-icon://product" 
+									  objectTitle="{ui>Title}" 
+									  objectSubtitle="{ui>ReqId}" 
+									  objectImageShape="Circle"
+									  isObjectIconAlwaysVisible="true">
+					</ObjectPageHeader>
+				</headerTitle>
+				<headerContent>
+					<layout:VerticalLayout width="5%">
+					</layout:VerticalLayout>
+					<layout:VerticalLayout>
+						<m:ObjectStatus title="{i18n>location}" text="{ui>Location}"/>
+						<m:ObjectStatus title="{i18n>project}" text="{ui>ProjectId}"/>
+					</layout:VerticalLayout>
+					<layout:VerticalLayout width="40%">
+					</layout:VerticalLayout>
+					<layout:VerticalLayout>
+						<m:FlexBox alignContent="End" justifyContent="End">
+							<m:ObjectStatus title="{i18n>created}" text="{ path: 'ui>CreatedAt',
+																	   formatter: 'manage_vacancy.util.formatter.formatDate'
+																	}"/>
+						</m:FlexBox>
+						<m:FlexBox alignContent="End" justifyContent="End" class="statusCSS">
+							<m:ObjectStatus text="{ui>StatusCodeId}" state="{path: 'ui>StatusCodeId', formatter: 'manage_vacancy.util.formatter.formatReqStatus'}"/>
+					    </m:FlexBox>
+					    
+					    <m:FlexBox alignContent="End" justifyContent="End" class="languageCSS">
+					    	<m:Select forceSelection="false"
+					    			  selectedKey="{ui>Language}"
+					    			  items="{ui>/AvailableLanguages}"
+					    			  enabled="{ui>/RequisEditable}">
+								<core:Item key="{ui>SlsLang}" text="{parts: [{path:'ui>SlsLang'}, {path:'i18n>en'}, {path:'i18n>ru'}], formatter: 'manage_vacancy.util.formatter.getLanguageText'}" />
+							</m:Select>	
+						</m:FlexBox>
+					</layout:VerticalLayout> 
+				</headerContent>
+				<sections>
+					<ObjectPageSection id="detInfo" title="{i18n>info}" titleUppercase="false">
+						<subSections>
+							<ObjectPageSubSection title="">
+								<blocks>
+									<info:InfoBlock id="infoblock" columnLayout="2"/>
+								</blocks>
+							</ObjectPageSubSection>
+						</subSections>
+					</ObjectPageSection>
+					<ObjectPageSection id="detSkills" title="{i18n>skills}" titleUppercase="false">
+						<subSections>
+							<ObjectPageSubSection title="{i18n>skills}">
+								<blocks>
+									<skills:Skills id="skills"/>
+								</blocks>
+							</ObjectPageSubSection>
+						</subSections>
+					</ObjectPageSection>
+					<ObjectPageSection id="detCandidates" title="{i18n>candidates}" titleUppercase="false">
+						<subSections>
+							<ObjectPageSubSection title="">
+								<blocks>
+									<candidates:Candidates id="cand"/>
+								</blocks>
+							</ObjectPageSubSection>
+						</subSections>
+					</ObjectPageSection>
+					<ObjectPageSection id="detComments" title="{i18n>comments}" titleUppercase="false">
+						<subSections>
+							<ObjectPageSubSection title="">
+								<blocks>
+									<comments:CommentsBlock id="comm"/>
+								</blocks>
+							</ObjectPageSubSection>
+						</subSections>
+					</ObjectPageSection>
+				</sections>
+			</ObjectPageLayout>
+		</semantic:content>
+		<semantic:saveAction>
+			<semantic:SaveAction id="idReqSave" press="onRequisSave" visible="{ui>/RequisEditable}"/>
+		</semantic:saveAction>
+		<semantic:cancelAction>
+			<semantic:CancelAction id="idReqCancel" press="onRequisCancel" visible="{ui>/RequisEditable}"/>
+		</semantic:cancelAction>
+	</semantic:DetailPage>
+</mvc:View>

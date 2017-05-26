@@ -1,0 +1,87 @@
+PROCEDURE "IACUBE"."iacube.db.procedures.candidate::assignCandidates"(
+	IN	candidates	"IACUBE"."iacube.db::types.assignCandidates" DEFAULT EMPTY, 
+	OUT	errors 		"IACUBE"."iacube.db::types.error"			 DEFAULT EMPTY
+) 
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER 
+	DEFAULT SCHEMA IACUBE
+	AS
+BEGIN
+
+	DELETE 
+		FROM "iacube.db::tables.Requisition.Candidates" AS s
+		WHERE EXISTS (
+			SELECT 
+					"ReqId",
+					"CandidateId"
+				FROM :candidates AS p
+				WHERE s."ReqId" = p."ReqId"
+				AND s."CandidateId" = p."CandidateId"
+				AND p."flag" = 'D')
+	;
+	prepared = 
+		SELECT 
+				a."ReqId",
+				a."CandidateId",
+				a."StatusId",
+				b."ReqId" 		AS "existedReq",
+				c."CandidateId" AS "existedCandidate",
+				d."Id" 			AS "existedStatus"
+			FROM :candidates AS a
+			LEFT JOIN "iacube.db::tables.Requisition.Requisitions" AS b
+				ON a."ReqId" = b."ReqId"
+			LEFT JOIN "iacube.db::tables.Requisition.Candidates" AS c
+				ON a."CandidateId" = c."CandidateId"
+			LEFT JOIN "iacube.db::tables.Requisition._dictionary.StatusTypes" AS d
+				ON a."StatusId" = d."Id"
+			WHERE a."flag" = 'I' 
+			   OR a."flag" = 'U'
+	;
+	checked = 
+		SELECT DISTINCT
+				*
+			FROM :prepared
+			WHERE "existedReq"		 IS NOT NULL
+			AND	  "existedCandidate" IS NOT NULL
+			AND   "existedStatus"	 IS NOT NULL
+	;
+	UPSERT "iacube.db::tables.Requisition.Candidates"
+		("ReqId","CandidateId","StatusId","ChangedBy","ChangedAt")
+		SELECT 
+				"ReqId",
+				"CandidateId",
+				"StatusId",
+				SESSION_USER 		AS "ChangedBy",
+				CURRENT_TIMESTAMP 	AS "ChangedAt"
+			FROM :checked
+	;
+	UPDATE a
+		SET 
+			a."AssignedBy" = SESSION_USER,
+			a."AssignedAt" = CURRENT_TIMESTAMP
+		FROM "iacube.db::tables.Requisition.Candidates" AS a
+		INNER JOIN :checked AS b
+			ON  a."ReqId" 		= b."ReqId"
+			AND a."CandidateId" = b."CandidateId"
+		WHERE b."StatusId" = 'ASSIGNED'	
+	;
+	errors = 
+		SELECT 
+				15001	AS error_code,
+				"ReqId" AS details
+			FROM :prepared
+			WHERE "existedReq" IS NULL
+		UNION
+		SELECT 
+				15002			   AS error_code,
+				"existedCandidate" AS details
+			FROM :prepared
+			WHERE "existedCandidate" IS NULL
+		UNION
+		SELECT 
+				15003	 AS error_code,
+				"ReqId"  AS details
+			FROM :prepared
+			WHERE "existedStatus" IS NULL
+	;
+END;

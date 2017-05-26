@@ -1,0 +1,23 @@
+import = [
+	{ 
+		table  = "iacube.db::tables.Candidate._dictionary.ContactTypes";
+		schema = "IACUBE";
+		file   = "iacube.db.initialDataImport.Candidate.dictionary:ContactTypes.csv";
+		header = true;
+		delimField = ";";
+	},
+	{ 	
+		table  = "iacube.db::tables.Candidate._dictionary.GenderTypes";
+		schema = "IACUBE";
+		file   = "iacube.db.initialDataImport.Candidate.dictionary:GenderTypes.csv";
+		header = true;
+		delimField = ";";
+	},
+	{ 	
+		table  = "iacube.db::tables.Candidate._dictionary.LanguageLevelTypes";
+		schema = "IACUBE";
+		file   = "iacube.db.initialDataImport.Candidate.dictionary:LanguageLevelTypes.csv";
+		header = true;
+		delimField = ";";
+	}
+];

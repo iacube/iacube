@@ -1,0 +1,176 @@
+PROCEDURE "IACUBE"."iacube.db.procedures.requisition::getRequisition"(
+	IN 	reqId 		INTEGER,
+	OUT	details 	"IACUBE"."iacube.db::types.requisitionDetails"	  DEFAULT EMPTY,
+	OUT skills		"IACUBE"."iacube.db::types.requisitionSkills"	  DEFAULT EMPTY,
+	OUT candidates 	"IACUBE"."iacube.db::types.requisitionCandidates" DEFAULT EMPTY,
+	OUT profiles 	"IACUBE"."iacube.db::types.requisitionProfiles"	  DEFAULT EMPTY,
+	OUT comments 	"IACUBE"."iacube.db::types.requisitionComments"   DEFAULT EMPTY,
+	
+	OUT commentTypes	 "IACUBE"."iacube.db::types.idName"			  DEFAULT EMPTY,
+	OUT commentStatusTypes	 "IACUBE"."iacube.db::types.idName"		  DEFAULT EMPTY,
+	OUT priorityTypes	 "IACUBE"."iacube.db::types.idName"			  DEFAULT EMPTY,
+	OUT statusCodeTypes	 "IACUBE"."iacube.db::types.idName"			  DEFAULT EMPTY,
+	OUT statusTypes		 "IACUBE"."iacube.db::types.idName"			  DEFAULT EMPTY,
+	OUT subcategoryTypes "IACUBE"."iacube.db::types.idName"			  DEFAULT EMPTY
+)
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER 
+	DEFAULT SCHEMA IACUBE
+	READS SQL DATA AS
+BEGIN
+
+	details = 
+		SELECT
+				a."ReqId",
+				a."Title",
+				a."ProjectId",
+				a."PriorityId",
+				a."Location",
+				a."StatusCodeId",
+				a."SubcategoryId",
+				b."Name" AS "SubcategoryName",
+				a."CreatedBy",
+				a."CreatedAt",
+				a."Language",
+				a."Keywords",
+				a."Description",
+				a."OpenedBy",
+				a."OpenedAt",
+				DAYS_BETWEEN (CURRENT_DATE,ADD_DAYS("OpenedAt",c."Days")) AS "DaysRemain"
+			FROM "iacube.db::tables.Requisition.Requisitions" AS a
+			LEFT JOIN "iacube.db::tables.Requisition._dictionary.SubcategoryTypes" As b
+				ON a."SubcategoryId" = b."Id"
+			LEFT JOIN "iacube.db::tables.Requisition._dictionary.PriorityTypes" AS c
+				ON a."PriorityId" = c."Id"
+			WHERE a."ReqId" = :reqId
+	;
+	skills =
+		SELECT 
+				"Skill",
+				"IsPrimary",
+				"Weight"
+			FROM "iacube.db::tables.Requisition.Skills"
+			WHERE "ReqId" = :reqId
+	;
+	candidates = 
+		SELECT
+				a."CandidateId",
+				a."StatusId",
+				a."ChangedAt",
+				b."FirstName",
+				b."LastName",
+				null AS "Experience",
+				null AS "Distance"
+			FROM "iacube.db::tables.Requisition.Candidates"	AS a
+			INNER JOIN "iacube.db::tables.Candidate.Candidates" AS b
+				ON a."CandidateId"  = b."CandidateId"
+			WHERE a."ReqId" = :reqId
+	;
+	profiles = 
+		SELECT 
+				a."CandidateId",
+				b."ProfileId",
+				c."ExternalId",
+				c."ProfileTypeId",
+				c."Link"
+			FROM :candidates AS a
+			INNER JOIN "iacube.db::tables.Candidate.Profiles" AS b
+				ON a."CandidateId" = b."CandidateId"
+			INNER JOIN "iacube.db::tables.Profile.Profiles" AS c
+				ON b."ProfileId" = c."ProfileId"
+			
+	;
+	
+	experience = 
+		SELECT 
+				a."ProfileId",
+				SUM(YEARS_BETWEEN (a."StartDate",a."EndDate")) AS "Experience"
+			FROM "iacube.db::tables.Profile.Experience" AS a
+			INNER JOIN :profiles As b
+				ON a."ProfileId" = b."ProfileId"
+			GROUP BY 
+				a."ProfileId"
+	;
+	
+	distance = 
+		SELECT 
+				b."CandidateId",
+				MAX(a."Distance") AS "Distance"
+			FROM "iacube.db::tables.Distance.Distances" AS a
+			INNER JOIN :profiles AS b
+				ON  a."ProfileId" = b."ProfileId"
+				--AND a."ReqId" 	  = b."ReqId" 
+				AND a."ReqId" 	  = :reqId
+			GROUP BY 
+				--a."ReqId",
+				b."CandidateId"
+	;
+			
+	candidates = 
+		SELECT 	
+				a."CandidateId",
+				a."StatusId",
+				a."ChangedAt",
+				a."FirstName",
+				a."LastName",
+				d."Experience",
+				b."Distance"	
+			FROM :candidates AS a
+			LEFT JOIN :distance AS b
+				ON  a."CandidateId" = b."CandidateId"
+			LEFT JOIN "iacube.db::tables.Distance.Distances" AS c
+				ON  b."Distance" = c."Distance" 
+				AND c."ReqId" 	 = :reqId
+			LEFT JOIN :experience AS d
+				ON  c."ProfileId" = d."ProfileId" 
+	;		
+	comments = 
+		SELECT 
+				"CommentId",
+				"CommentTypeId",
+				"CreatedAt",
+				"CreatedBy",
+				"Title",
+				"Text",
+				"CommentStatusId"
+			FROM "iacube.db::tables.Requisition.Comments"
+			WHERE "ReqId" = :reqId
+	;
+	commentTypes =
+		SELECT 
+				"Id" AS "id",
+				"Name" AS "name"
+			FROM "iacube.db::tables.Requisition._dictionary.CommentTypes"
+	;
+	commentStatusTypes =
+		SELECT 
+				"Id" AS "id",
+				"Name" AS "name"
+			FROM "iacube.db::tables.Requisition._dictionary.CommentStatusTypes"
+	;
+	priorityTypes = 
+		SELECT 
+				"Id" AS "id",
+				"Name" AS "name"
+			FROM "iacube.db::tables.Requisition._dictionary.PriorityTypes"
+	;
+	statusCodeTypes	=
+		SELECT 
+				"Id" AS "id",
+				"Name" AS "name"
+			FROM "iacube.db::tables.Requisition._dictionary.StatusCodeTypes"
+	;
+	statusTypes = 
+		SELECT 
+				"Id" AS "id",
+				"Name" AS "name"
+			FROM "iacube.db::tables.Requisition._dictionary.StatusTypes"
+	;
+	subcategoryTypes = 
+		SELECT 
+				"Id" AS "id",
+				"Name" AS "name"
+			FROM "iacube.db::tables.Requisition._dictionary.SubcategoryTypes"
+	;
+
+END;

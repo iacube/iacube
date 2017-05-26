@@ -46,5 +46,57 @@ var message = {
 		STATUS: "E",
 		MESSAGE: "Service Error",
 		DETAILS: "Can't find SQL query or Procedure for execution"
+	},
+//services starts from 15000
+	15001:{
+		STATUS: "E",
+		MESSAGE: "Service Error",
+		DETAILS: "Wrong Request ID \"{0}\""
+	},
+	15002:{
+		STATUS: "E",
+		MESSAGE: "Service Error",
+		DETAILS: "Wrong Candidate ID \"{0}\""
+	},
+	15003:{
+		STATUS: "E",
+		MESSAGE: "Service Error",
+		DETAILS: "Wrong Candidate Status \"{0}\""
+	},
+	15004:{
+		STATUS: "E",
+		MESSAGE: "Service Error",
+		DETAILS: "Wrong Comment Type \"{0}\""
+	},
+	15005:{
+		STATUS: "E",
+		MESSAGE: "Service Error",
+		DETAILS: "Wrong Priority \"{0}\""
+	},
+	15006:{
+		STATUS: "E",
+		MESSAGE: "Service Error",
+		DETAILS: "Wrong Requisition Status \"{0}\""
+	},
+	15007:{
+		STATUS: "E",
+		MESSAGE: "Service Error",
+		DETAILS: "Wrong Subcategory \"{0}\""
+	},
+	15008:{
+		STATUS: "E",
+		MESSAGE: "Service Error",
+		DETAILS: "Wrong Comment Status \"{0}\""
+	},
+	15009:{
+		STATUS: "E",
+		MESSAGE: "Service Error",
+		DETAILS: "Blank skill"
+	},
+//upload from external systems
+	16000:{
+		STATUS: "E",
+		MESSAGE: "Upload Error",
+		DETAILS: "Can't find upload template for {0}"
 	}
 }

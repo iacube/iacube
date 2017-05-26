@@ -1,0 +1,7 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+xmlns:f="sap.ui.layout.form" xmlns:layout="sap.ui.layout" xmlns:html="http://www.w3.org/1999/xhtml"
+xmlns:common="iacube.ui.common">
+	<layout:HorizontalLayout>
+	</layout:HorizontalLayout>
+	<common:InfoForm id="idInfoBlock"/>
+</mvc:View>

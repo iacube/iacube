@@ -1,0 +1,54 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="manage_vacancy.controller.MasterVacancy"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:semantic="sap.m.semantic" id="master">
+	<semantic:MasterPage
+			id="mastervac"
+			title="{i18n>title} ({ui>/JobRequisCollection/length})"
+			floatingFooter="true">
+		<semantic:subHeader>
+			<Bar id="headerBar">
+				<contentLeft>
+					<SearchField
+							id="searchVac"
+							width="100%"
+							search="onRequisSearch"
+							showRefreshButton="true">
+					</SearchField>
+				</contentLeft>
+			</Bar>
+		</semantic:subHeader>
+		
+		<semantic:content>
+			<!-- For client side filtering add this to the items attribute:  parameters: {operationMode: 'Client'}}" -->
+			<List
+					id="reqlist"
+					items="{ui>/JobRequisCollection}"
+					mode="SingleSelectMaster"
+					selectionChange="onReqSelected">
+				<items>
+					<ObjectListItem
+							press="onSelectionChange"
+							icon="sap-icon://product"
+							title="{ui>Title}">
+						<attributes>
+			    			<ObjectAttribute text = "{ui>Location}"/>
+			    			<ObjectAttribute text = "{ui>ProjectId}"/>
+			    		</attributes>
+			    		<firstStatus>
+			    			<ObjectStatus 
+			        			text = "{ui>ReqId}"
+			        			state = "{None}"/>
+			    		</firstStatus>
+			    		<secondStatus>
+			    			<ObjectStatus text = "{ui>StatusCodeId}"
+			    						  state = "{path: 'ui>StatusCodeId',
+													formatter: 'manage_vacancy.util.formatter.formatReqStatus'}"/>
+			    		</secondStatus>
+					</ObjectListItem>
+				</items>
+			</List>
+		</semantic:content>
+		<semantic:addAction>
+			<semantic:AddAction id="idReqCreate" press="onRequisCreate"/>
+		</semantic:addAction>
+	</semantic:MasterPage>
+</mvc:View>

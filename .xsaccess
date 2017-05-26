@@ -7,8 +7,40 @@
 "authentication":[{"method":"Form"}],
 "rewrite_rules":[
 	{
-	"source": "/services/", 
-	"target": "/services/serviceExecutor.xsjs" 
-	}
+	"source": "/services", 
+	"target": "/xs/serviceProvider/provider.xsjs" 
+	},
+		{
+		"source": "manage_vacancy",
+		"target": ""
+		},
+			{
+			"source": "/service/requisitions", 
+			"target": "/xs/serviceProvider/provider.xsjs?service=requisitions" 
+			},
+			{
+			"source": "/service/requisition/(\\d+)", 
+			"target": "/xs/serviceProvider/provider.xsjs?service=requisition&reqId=$1" 
+			},
+		{
+		"source": "candidates",
+		"target": ""
+		},
+			{
+			"source": "/service/candidates", 
+			"target": "/xs/serviceProvider/provider.xsjs?service=candidates" 
+			},
+			{
+			"source": "/service/candidate/(\\d+)", 
+			"target": "/xs/serviceProvider/provider.xsjs?service=candidate&candidateId=$1" 
+			},
+		{
+		"source": "data uploader",
+		"target": ""
+		},
+			{
+			"source": "/uploader", 
+			"target": "/xs/uploader/uploader.xsjs" 
+			}	
 ] 
 }

@@ -1,0 +1,149 @@
+PROCEDURE "IACUBE"."iacube.db.procedures.candidate::getCandidates"(
+	IN 	searchTerm	  NVARCHAR(1000),
+	IN 	filter		  NVARCHAR(5000),
+	IN  paging		  "IACUBE"."iacube.db::types.paging"						DEFAULT EMPTY,
+
+	OUT candidates	  "IACUBE"."iacube.db::types.searchCandidatesCandidates"	DEFAULT EMPTY,
+	OUT profiles	  "IACUBE"."iacube.db::types.searchCandidatesProfiles"		DEFAULT EMPTY,
+	OUT salary		  "IACUBE"."iacube.db::types.searchCandidatesSalary"		DEFAULT EMPTY,
+	OUT contacts	  "IACUBE"."iacube.db::types.searchCandidatesContacts"		DEFAULT EMPTY,
+	OUT languages	  "IACUBE"."iacube.db::types.searchCandidatesLanguages"		DEFAULT EMPTY,
+	OUT requisitions  "IACUBE"."iacube.db::types.searchCandidatesRequisitions" 	DEFAULT EMPTY,
+	
+	OUT sites		  "IACUBE"."iacube.db::types.idName" DEFAULT EMPTY
+)
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER 
+	DEFAULT SCHEMA IACUBE
+	READS SQL DATA AS
+BEGIN
+
+	DECLARE nLimit  INTEGER;
+	DECLARE nOffset INTEGER := 0;
+	
+	prefiltered = 
+		SELECT DISTINCT
+				a."CandidateId",
+				a."LastName",
+				a."FirstName",
+				a."Location",
+				a."ProfArea",
+				b."ProfileId",
+				c."ExternalId",
+				c."ProfileTypeId",
+				c."Link",
+				a."Photo",
+				d."ReqId"
+			FROM "iacube.db::tables.Candidate.Candidates" AS a
+			INNER JOIN "iacube.db::tables.Candidate.Profiles" AS b
+				ON a."CandidateId" = b."CandidateId"
+			INNER JOIN "iacube.db::tables.Profile.Profiles" AS c
+				ON b."ProfileId" = c."ProfileId"
+			LEFT JOIN "iacube.db::tables.Requisition.Candidates" AS d
+				ON a."CandidateId" = d."CandidateId"
+			WHERE CONTAINS ((a."LastName",a."FirstName",a."Location"),:searchTerm, FUZZY(0.8))
+	;
+	
+	filtered = 
+		APPLY_FILTER (:prefiltered,:filter)
+	;
+	SELECT TOP 1
+			"t","s"
+		INTO nLimit,nOffset
+		FROM :paging
+	;
+	filtered = 
+		SELECT *
+			FROM :filtered
+			LIMIT :nLimit
+			OFFSET :nOffset
+	;
+
+	profiles = 
+		SELECT DISTINCT
+				"CandidateId",
+				"ProfileId",
+				"ExternalId",
+				"ProfileTypeId",
+				"Link"
+			FROM :filtered AS a
+	;
+	distance = 
+		SELECT DISTINCT
+				b."CandidateId",
+				MAX(a."Distance") AS "Distance"
+			FROM "iacube.db::tables.Distance.Distances" AS a
+			INNER JOIN :filtered AS b
+				ON  a."ReqId"	  = b."ReqId"
+				AND a."ProfileId" = b."ProfileId"
+			GROUP BY 
+				--a."ReqId",
+				b."CandidateId"
+	;
+	
+	candidates = 
+		SELECT DISTINCT
+				a."CandidateId",
+				a."LastName",
+				a."FirstName",
+				a."Location",
+				a."ProfArea",
+				a."Photo",
+				b."Distance"
+			FROM :filtered AS a
+			LEFT JOIN :distance AS b
+				ON a."CandidateId" = b."CandidateId"
+	;
+	salary = 
+		SELECT 
+				a."CandidateId",
+				b."ProfileId",
+				c."Salary",
+				c."SalaryCurr"
+			FROM :candidates AS a
+			INNER JOIN "iacube.db::tables.Candidate.Profiles" AS b
+				ON a."CandidateId" = b."CandidateId"
+			INNER JOIN "iacube.db::tables.Profile.ProfileDetails" AS c
+				ON b."ProfileId" = c."ProfileId"
+			ORDER BY c."Salary"
+	;
+	contacts =
+		SELECT 
+				a."CandidateId",
+				a."ContactTypeId",
+				a."Value"
+			FROM "iacube.db::tables.Candidate.Contacts" AS a
+			INNER JOIN :candidates AS b
+				ON a."CandidateId" = b."CandidateId"
+	;
+	languages = 
+		SELECT
+				a."CandidateId",
+				a."LanguageId",
+				a."LevelId"
+			FROM "iacube.db::tables.Candidate.Languages" AS a
+			INNER JOIN :candidates AS b
+				ON a."CandidateId" = b."CandidateId"
+	;
+	requisitions = 
+		SELECT 
+				a."CandidateId",
+				a."ReqId",
+				c."Title",
+				a."StatusId",
+				a."AssignedBy",
+				a."AssignedAt"
+			FROM "iacube.db::tables.Requisition.Candidates" AS a
+			INNER JOIN :candidates AS b
+				ON a."CandidateId" = b."CandidateId"
+			LEFT JOIN "iacube.db::tables.Requisition.Requisitions" AS c
+				ON a."ReqId" = c."ReqId"
+	;
+
+	sites =
+		SELECT 
+				"Id" AS "id",
+				"Description" AS "name"
+			FROM "iacube.db::tables.Profile._dictionary.ProfileTypes"
+	;
+END;

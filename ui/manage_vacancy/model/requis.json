@@ -1,0 +1,215 @@
+{
+	"AvailablePriorities": [{
+		"PriorityCode": "H"
+	}, {
+		"PriorityCode": "M"
+	}, {
+		"PriorityCode": "L"
+	}],
+	"AvailableLanguages": [{
+		"SlsLang": "en_EN",
+		"LangDescr": "English"
+	}, {
+		"SlsLang": "ru_RU",
+		"LangDescr": "Russian"
+	}],
+	"JobRequisCollection": [{
+		"ReqId": "1000001",
+		"ReqName": "SAP ABAP Developer",
+		"ProjectName": "BURB-SAP",
+		"Priority": "L",
+		"Location": "London, UK",
+		"StatusCode": "STATUS_OPEN",
+		"SubcategoryName": "SAP Cloud",
+		"CreatedBy": "SYSTEM",
+        "CreatedAt": "2017-02-22T00:00:00",
+        "RemainingDays": "7",
+        "Candidates": 14,
+		"Language": "en_EN",
+		"Description": "tratata",
+		"RequisSkillsCollection": [{
+			"ReqId": "1000001",
+			"Skill": "Power Industry",
+			"IsPrimary": "",
+			"Weight": 65
+		}, {
+			"ReqId": "1000001",
+			"Skill": "Preventive Maintenance",
+			"IsPrimary": "",
+			"Weight": 75
+		}, {
+			"ReqId": "1000001",
+			"Skill": "Equipment Management",
+			"IsPrimary": "",
+			"Weight": 50
+		}],
+		"RequisCandidatesCollection": [{
+			"ReqId": "1000001",
+			"CandId": "2000001",
+			"CandStatus": "Proposed",
+			"Candidate": {
+				"CandId": "2000001",
+				"FirstName": "Elena",
+				"SecondName": "Petrova",
+				"Distance": 96,
+				"StartYear": 2013,
+				"EndYear": 2017,
+				"ChangedOn": "01.01.2016",
+				"Image": "",
+				"ProfileCollection": [{
+					"CandId": "2000001",
+					"ProfId": "3000001L",
+					"ProfDet": {
+						"ProfId": "3000001L",
+						"Link": "http://linkedin.com/elenapetrova",
+						"Title": "SAP specialist",
+						"Picture": "http://www.cbronline.com/wp-content/uploads/2016/06/linkedin.jpg"
+					}
+				}, {
+					"CandId": "2000001",
+					"ProfId": "3000001HH",
+					"ProfDet": {
+						"ProfId": "3000001HH",
+						"Link": "http://hh.ru/elenapetrova",
+						"Title": "SAP Consultant",
+						"Picture": "https://i.hh.ru/logos/openGraph/hh.ru.png"
+					}
+				}]
+			}
+		},
+		{
+			"ReqId": "1000001",
+			"CandId": "2000002",
+			"CandStatus": "Proposed",
+			"Candidate": {
+				"CandId": "2000002",
+				"FirstName": "Julie",
+				"SecondName": "Armstrong",
+				"Distance": 56,
+				"StartYear": 2014,
+				"EndYear": 2017,
+				"ChangedOn": "03.03.2016",
+				"Image": "http://storyfox.ru/wp-content/uploads/2015/11/shutterstock_265075847-696x528.jpg",
+				"ProfileCollection": [{
+					"CandId": "2000002",
+					"ProfId": "3000002L",
+					"ProfDet": {
+						"ProfId": "3000002L",
+						"Link": "http://linkedin.com/julie",
+						"Title": "ABAP developer",
+						"Picture": "http://www.cbronline.com/wp-content/uploads/2016/06/linkedin.jpg"
+					}
+				}, {
+					"CandId": "2000002",
+					"ProfId": "3000002HH",
+					"ProfDet": {
+						"ProfId": "3000002HH",
+						"Link": "http://hh.ru/julie",
+						"Title": "SAP specialist",
+						"Picture": "https://i.hh.ru/logos/openGraph/hh.ru.png"
+					}
+				}]
+			}
+		}]
+	},
+		
+	 {
+		"ReqId": "1000002",
+		"ReqName": "SAP Plant Maintenance Functional Consultant",
+		"ProjectName": "EPAM-TSAP",
+		"Priority": "H",
+		"Location": "London, UK",
+		"StatusCode": "STATUS_OPEN",
+		"SubcategoryName": "SAP Cloud",
+		"CreatedBy": "SYSTEM",
+        "CreatedAt": "2017-05-11T00:00:00",
+        "RemainingDays": "5",
+        "Candidates": 14,
+		"Language": "ru_RU",
+		"Description": "Provide clients with full life-cycle project implementation consulting expertise including assessments, blueprinting.Prepare and facilitate assessment/blueprint workshops to analyze clients’ business requirements. Consultant must be able to explain business reasons for utilizing functionalities and transform them into business SAP best business practice.Write detailed functional mapping to SAP applications, functional gap analysis, detailed blueprint design and process documentation and detailed functional specifications for any custom development.",
+		"RequisSkillsCollection": [{
+			"ReqId": "1000002",
+			"Skill": "Work Clearance Management",
+			"IsPrimary": "",
+			"Weight": 95
+		}, {
+			"ReqId": "1000002",
+			"Skill": "SAP ABAP Debugger",
+			"IsPrimary": "",
+			"Weight": 100
+		}, {
+			"ReqId": "1000002",
+			"Skill": "Teamwork",
+			"IsPrimary": "",
+			"Weight": 56
+		}],
+		"RequisCandidatesCollection": [{
+			"ReqId": "1000002",
+			"CandId": "2000003",
+			"CandStatus": "Proposed",
+			"Candidate": {
+				"CandId": "2000003",
+				"FirstName": "Anna",
+				"SecondName": "Ivanova",
+				"Distance": 26,
+				"StartYear": 2015,
+				"EndYear": 2017,
+				"ChangedOn": "17.05.2017",
+				"Image": "",
+				"ProfileCollection": [{
+					"CandId": "2000003",
+					"ProfId": "3000003L",
+					"ProfDet": {
+						"ProfId": "3000003L",
+						"Link": "http://linkedin.com/annaivanova",
+						"Title": "SAP specialist",
+						"Picture": "http://www.cbronline.com/wp-content/uploads/2016/06/linkedin.jpg"
+					}
+				}, {
+					"CandId": "2000003",
+					"ProfId": "3000003HH",
+					"ProfDet": {
+						"ProfId": "3000003HH",
+						"Link": "http://hh.ru/annaivanova",
+						"Title": "SAP specialist",
+						"Picture": "https://i.hh.ru/logos/openGraph/hh.ru.png"
+					}
+				}]
+			}
+		},
+		{
+			"ReqId": "1000002",
+			"CandId": "2000004",
+			"CandStatus": "Proposed",
+			"Candidate": {
+				"CandId": "2000004",
+				"FirstName": "Jone",
+				"SecondName": "Doe",
+				"Distance": 36,
+				"StartYear": 2016,
+				"EndYear": 2017,
+				"ChangedOn": "20.01.2017",
+				"Image": "",
+				"ProfileCollection": [{
+					"CandId": "2000004",
+					"ProfId": "3000004L",
+					"ProfDet": {
+						"ProfId": "3000004L",
+						"Link": "http://linkedin.com/jonedoe",
+						"Title": "SAP specialist",
+						"Picture": "http://www.cbronline.com/wp-content/uploads/2016/06/linkedin.jpg"
+					}
+				}, {
+					"CandId": "2000004",
+					"ProfId": "3000004HH",
+					"ProfDet": {
+						"ProfId": "3000004HH",
+						"Link": "http://hh.ru/jondoe",
+						"Title": "SAP specialist",
+						"Picture": "https://i.hh.ru/logos/openGraph/hh.ru.png"
+					}
+				}]
+			}
+		}]
+	}]
+}

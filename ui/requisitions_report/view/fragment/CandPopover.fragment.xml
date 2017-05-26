@@ -1,0 +1,12 @@
+<core:FragmentDefinition	xmlns:core="sap.ui.core"
+							xmlns="sap.m">							
+	<Popover title="{i18n>req.table.candidates.popover.title}" placement="Left" class="sapUiSizeCompact" >
+		<VBox class="sapUiTinyMargin" items="{ui>candidates}">
+			<HBox>
+				<Link text="{ui>FirstName} {ui>LastName}:" />
+				<Text text="{model: 'ui', path: 'AssignedAt', type:'sap.ui.model.type.DateTime', formatOptions: {pattern:'dd/MM/yyyy'}}" class="sapUiTinyMarginBeginEnd" />
+				<Link text="/ {ui>AssignedBy}"/>
+			</HBox>
+		</VBox>
+	</Popover>
+</core:FragmentDefinition>

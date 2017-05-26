@@ -1,0 +1,18 @@
+/* Enter your custom styles here */
+.languageCSS {
+	padding-top: 1rem !important;
+}
+
+.statusCSS {
+	padding-top: 0.5rem !important;
+}
+
+.popoverImagePadding{
+	padding-left: 1rem;
+	padding-right: 2rem;
+	padding-bottom: 1rem;
+}
+
+.popoverTextPadding{
+	padding-right:1rem;
+}

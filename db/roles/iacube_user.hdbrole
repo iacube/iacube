@@ -1,0 +1,7 @@
+//user role
+role iacube.db.roles::iacube_user
+{	
+application privilege	: "iacube::View";
+catalog schema "IACUBE"	: ALTER,CREATE ANY,DEBUG,DELETE,DROP,EXECUTE,INDEX,INSERT,SELECT,TRIGGER,UPDATE; 
+
+}

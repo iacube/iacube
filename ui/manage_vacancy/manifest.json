@@ -1,0 +1,143 @@
+{
+	"_version": "1.5.0",
+	"sap.app": {
+		"id": "manage_vacancy",
+		"type": "application",
+		"i18n": "i18n/i18n.properties",
+		"applicationVersion": {
+			"version": "1.0.0"
+		},
+		"title": "{{appTitle}}",
+		"description": "{{appDescription}}",
+		"sourceTemplate": {
+			"id": "ui5template.basicSAPUI5ApplicationProject",
+			"version": "1.44.12"
+		},
+		"dataSources": {
+			"requis": {
+				"uri": "model/requis.json",
+				"type": "JSON"
+			}
+		}
+	},
+	"sap.ui": {
+		"technology": "UI5",
+		"icons": {
+			"icon": "",
+			"favIcon": "",
+			"phone": "",
+			"phone@2": "",
+			"tablet": "",
+			"tablet@2": ""
+		},
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		},
+		"supportedThemes": [
+			"sap_hcb",
+			"sap_belize"
+		]
+	},
+	"sap.ui5": {
+		"rootView": {
+			"viewName": "manage_vacancy.view.SplitApp",
+			"type": "XML"
+		},
+		"dependencies": {
+			"minUI5Version": "1.30.0",
+			"libs": {
+				"sap.collaboration": {},
+				"sap.m": {},
+				"sap.ui.comp": {},
+				"sap.ui.core": {},
+				"sap.ui.layout": {},
+				"sap.ushell": {},
+				"sap.uxap": {}
+			}
+		},
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "manage_vacancy.i18n.i18n"
+				}
+			},
+			"requis": {
+				"type": "sap.ui.model.json.JSONModel",
+				"dataSource": "requis",
+				"preload": true
+			},
+			"i18nCom": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "iacube.ui.common.messagebundle"
+				}
+			}
+		},
+		"resources": {
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			]
+		},
+		"routing": {
+			"config": {
+				"viewPath": "manage_vacancy.view",
+				"viewType": "XML",
+				"controlAggregation": "detailPages",
+				"clearAggregation": false,
+				"controlId": "splitvac"
+			},
+			"routes": [
+				{
+					"name": "master",
+					"pattern": "",
+					"titleTarget": "",
+					"greedy": false,
+					"target": [
+						"detail",
+						"master"
+					]
+				},
+				{
+					"name": "detail",
+					"pattern": "JobRequisCollection/{index}",
+					"titleTarget": "",
+					"greedy": false,
+					"target": [
+						"master",
+						"detail"
+					]
+				}
+			],
+			"targets": {
+				"master": {
+					"viewType": "XML",
+					"transition": "slide",
+					"clearAggregation": true,
+					"viewName": "MasterVacancy",
+					"viewLevel": 1,
+					"controlAggregation": "masterPages",
+					"controlId": "splitvac",
+					"viewId": "master"
+				},
+				"detail": {
+					"viewType": "XML",
+					"transition": "slide",
+					"clearAggregation": true,
+					"viewName": "DetailVacancy",
+					"viewLevel": 2,
+					"viewId": "detail",
+					"controlAggregation": "detailPages"
+				}
+			}
+		}
+	}
+}

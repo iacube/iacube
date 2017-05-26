@@ -1,0 +1,280 @@
+PROCEDURE "IACUBE"."iacube.db.procedures.requisition::updateRequisitions"( 
+	IN  details "IACUBE"."iacube.db::types.updateRequisitionDetails"   DEFAULT EMPTY,
+	IN  skills 	 "IACUBE"."iacube.db::types.updateRequisitionSkills"   DEFAULT EMPTY,
+	IN  comments "IACUBE"."iacube.db::types.updateRequisitionComments" DEFAULT EMPTY,
+
+	OUT	errors 		"IACUBE"."iacube.db::types.error"				 DEFAULT EMPTY
+) 
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER 
+	DEFAULT SCHEMA IACUBE
+	AS
+BEGIN
+
+-- delete requisitions and all dependent objects
+	DELETE 
+		FROM "iacube.db::tables.Requisition.Requisitions" AS s
+		WHERE EXISTS (
+			SELECT 
+					"ReqId"
+				FROM :details AS p
+				WHERE s."ReqId" = p."ReqId"
+				AND p."flag" = 'D')
+	;
+	DELETE 
+		FROM "iacube.db::tables.Requisition.Skills" AS s
+		WHERE EXISTS (
+			SELECT 
+					"ReqId"
+				FROM :details AS p
+				WHERE s."ReqId" = p."ReqId"
+				AND p."flag" = 'D')
+	;
+	DELETE 
+		FROM "iacube.db::tables.Requisition.Skills" AS s
+		WHERE EXISTS (
+			SELECT 
+					"ReqId"
+				FROM :details AS p
+				WHERE s."ReqId" = p."ReqId"
+				AND p."flag" = 'D')
+	;
+	DELETE 
+		FROM "iacube.db::tables.Requisition.Candidates" AS s
+		WHERE EXISTS (
+			SELECT 
+					"ReqId"
+				FROM :details AS p
+				WHERE s."ReqId" = p."ReqId"
+				AND p."flag" = 'D')
+	;
+--the idea is  - new requsitions contains temp Id which needs to be replaced with 
+--consistens ids from sequence
+--to recognize temp id: flag is 'I' and id < 1000, as real ids starts from 1000
+	preparedDetails = 
+		SELECT
+				CASE 
+					WHEN a."flag" = 'I' 
+						THEN 
+							"iacube.db.sequences::requisitionId".nextval
+					ELSE a."ReqId"
+				END AS "ReqId",
+				a."Title",
+				a."ProjectId",
+				a."PriorityId",
+				a."Location",
+				a."StatusCodeId",
+				a."SubcategoryId",
+				a."Language",
+				a."Keywords",
+				a."Description",
+				a."flag",
+				a."ReqId" AS "tempId",
+				c."Id" AS "existedPriorityType",
+				d."Id" AS "existedStatusCodeTypes",
+				e."Id" AS "existedSubcategoryTypes"
+			FROM :details AS a
+			LEFT JOIN "iacube.db::tables.Requisition.Requisitions" AS b
+				ON a."ReqId" = b."ReqId"
+			LEFT JOIN "iacube.db::tables.Requisition._dictionary.PriorityTypes" AS c
+				ON a."PriorityId" = c."Id"	
+			LEFT JOIN "iacube.db::tables.Requisition._dictionary.StatusCodeTypes" AS d
+				ON a."StatusCodeId" = d."Id"	
+			LEFT JOIN "iacube.db::tables.Requisition._dictionary.SubcategoryTypes" AS e
+				ON a."SubcategoryId" = e."Id"
+			WHERE a."flag" = 'I' 
+			   OR a."flag" = 'U'
+	;
+	
+	skills = 
+		SELECT
+				IFNULL(b."ReqId",a."ReqId") AS "ReqId",
+				a."Skill",
+				a."Weight",
+				a."flag"
+			FROM :skills AS a
+			LEFT JOIN :preparedDetails AS b
+				ON a."ReqId" = b."tempId"
+	;
+	comments = 
+		SELECT
+				IFNULL(b."ReqId",a."ReqId") AS "ReqId",
+				a."CommentId",
+				a."CommentTypeId",
+				a."Title"	,
+				a."Text",
+				a."CommentStatusId",
+				a."flag"
+			FROM :comments AS a
+			LEFT JOIN :preparedDetails AS b
+				ON a."ReqId" = b."tempId"
+	; 
+	checkedDetails = 
+		SELECT * 
+			FROM :preparedDetails
+			WHERE "existedPriorityType" 	 IS NOT NULL
+			  AND "existedStatusCodeTypes"   IS NOT NULL
+			   AND ("existedSubcategoryTypes" IS NOT NULL OR "SubcategoryId" IS NULL)
+	;
+	
+	UPSERT "iacube.db::tables.Requisition.Requisitions"
+		("ReqId","Title","ProjectId","PriorityId","Location","StatusCodeId","SubcategoryId","Language","Keywords","Description")
+		SELECT
+				"ReqId", 
+				"Title",
+				"ProjectId",
+				"PriorityId",
+				"Location",
+				"StatusCodeId",
+				"SubcategoryId",
+				"Language",
+				"Keywords",
+				"Description"
+			FROM :checkedDetails
+	;
+--process skills
+	DELETE 
+		FROM "iacube.db::tables.Requisition.Skills" AS s
+		WHERE EXISTS (
+			SELECT 
+					"ReqId",
+					"Skill"
+				FROM :skills AS p
+				WHERE s."ReqId" = p."ReqId"
+				AND s."Skill" = p."Skill"
+				AND p."flag" = 'D')
+	;
+	preparedSkills = 
+		SELECT
+				a."ReqId",
+				a."Skill",
+				a."Weight",
+				b."ReqId" AS "existedReq"
+			FROM :skills AS a
+			LEFT JOIN "iacube.db::tables.Requisition.Requisitions" AS b
+				ON a."ReqId" = b."ReqId"
+			WHERE a."flag" = 'I' 
+			   OR a."flag" = 'U'
+	;
+	checkedSkills = 
+		SELECT DISTINCT 
+				*
+			FROM :preparedSkills
+			WHERE "existedReq" 			IS NOT NULL
+			AND "Skill" is not null
+	;
+	UPSERT "iacube.db::tables.Requisition.Skills"
+		("ReqId","Skill","Weight")
+		SELECT 
+				"ReqId",
+				"Skill",
+				"Weight"
+			FROM :checkedSkills
+	;
+--comments
+	DELETE 
+		FROM "iacube.db::tables.Requisition.Comments" AS s
+		WHERE EXISTS (
+			SELECT 
+					"ReqId",
+					"CommentId"
+				FROM :comments AS p
+				WHERE s."ReqId" = p."ReqId"
+				AND s."CommentId" = p."CommentId"
+				AND p."flag" = 'D')
+	;
+	
+	preparedComments = 
+		SELECT
+				a."ReqId",
+				a."CommentId",
+				a."CommentTypeId",
+				a."Title"	,
+				a."Text",
+				a."CommentStatusId",
+				b."ReqId" AS "existedReq",
+				c."Id" AS "existedCommmentType",
+				d."Id" As "existedCommmentStatus"
+			FROM :comments AS a
+			LEFT JOIN "iacube.db::tables.Requisition.Requisitions" AS b
+				ON a."ReqId" = b."ReqId"
+			LEFT JOIN "iacube.db::tables.Requisition._dictionary.CommentTypes" AS c
+				ON a."CommentTypeId" = c."Id"
+			LEFT JOIN "iacube.db::tables.Requisition._dictionary.CommentStatusTypes" AS d
+				ON a."CommentStatusId" = d."Id"
+			WHERE a."flag" = 'I' 
+			   OR a."flag" = 'U'
+	;
+	checkedComments = 
+		SELECT DISTINCT 
+				*
+			FROM :preparedComments
+			WHERE "existedReq" 			IS NOT NULL
+			  AND "existedCommmentType" IS NOT NULL
+			  AND "existedCommmentStatus" IS NOT NULL
+	;
+	UPSERT "iacube.db::tables.Requisition.Comments"
+		("ReqId","CommentId","CommentTypeId","CreatedBy","CreatedAt","Title","Text","CommentStatusId")
+		SELECT 
+				"ReqId",
+				IFNULL("CommentId","iacube.db.sequences::commentId".nextval),
+				"CommentTypeId",
+				SESSION_USER 		AS "CreatedBy",
+				CURRENT_TIMESTAMP 	AS "CreatedAt",
+				"Title"	,
+				"Text",
+				"CommentStatusId"
+			FROM :checkedComments
+	;
+	
+	errors = 
+		SELECT 
+				15001 AS error_code,
+				TO_NVARCHAR("ReqId") AS details
+			FROM :preparedComments
+			WHERE "existedReq" IS NULL
+		UNION
+		SELECT
+				15004 AS error_code,
+				TO_NVARCHAR("CommentTypeId") AS details
+			FROM :preparedComments
+			WHERE "existedCommmentType" IS NULL
+		UNION
+		SELECT 
+				15001 AS error_code,
+				TO_NVARCHAR("ReqId") AS details
+			FROM :preparedSkills
+			WHERE "existedReq" IS NULL
+		UNION
+		SELECT 
+				15005 AS error_code,
+				TO_NVARCHAR("PriorityId") AS details
+			FROM :preparedDetails
+			WHERE "existedPriorityType" IS NULL
+		UNION
+		SELECT 
+				15006 AS error_code,
+				TO_NVARCHAR("StatusCodeId") AS details
+			FROM :preparedDetails
+			WHERE "existedStatusCodeTypes" IS NULL
+		UNION
+		SELECT 
+				15007 AS error_code,
+				TO_NVARCHAR("SubcategoryId") AS details
+			FROM :preparedDetails
+			WHERE "existedSubcategoryTypes" IS NULL AND "SubcategoryId" IS NOT NULL
+		UNION
+		SELECT 
+				15008 AS error_code,
+				TO_NVARCHAR("CommentStatusId") AS details
+			FROM :preparedComments
+			WHERE "existedCommmentStatus" IS NULL
+		UNION
+		SELECT 
+				15009 AS error_code,
+				'' AS details
+			FROM :preparedSkills
+			WHERE "Skill" IS NULL
+	;
+	
+END;

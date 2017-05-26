@@ -1,0 +1,137 @@
+{
+	"_version": "1.5.0",
+	"sap.app": {
+		"id": "requisitions_report",
+		"type": "application",
+		"i18n": "i18n/i18n.properties",
+		"applicationVersion": {
+			"version": "1.0.0"
+		},
+		"title": "{{appTitle}}",
+		"description": "{{appDescription}}",
+		"sourceTemplate": {
+			"id": "ui5template.basicSAPUI5ApplicationProject",
+			"version": "1.40.12"
+		}
+	},
+
+	"sap.ui": {
+		"technology": "UI5",
+		"icons": {
+			"icon": "",
+			"favIcon": "",
+			"phone": "",
+			"phone@2": "",
+			"tablet": "",
+			"tablet@2": ""
+		},
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		},
+		"supportedThemes": [
+			"sap_hcb",
+			"sap_belize"
+
+		]
+	},
+
+	"sap.ui5": {
+		"rootView": {
+			"viewName": "requisitions_report.view.Main",
+			"type": "XML"
+		},
+		"dependencies": {
+			"minUI5Version": "1.30.0",
+			"libs": {
+				"sap.ui.core": {},
+				"sap.m": {},
+				"sap.ui.layout": {},
+				"sap.ushell": {},
+				"sap.collaboration": {},
+				"sap.ui.comp": {},
+				"sap.uxap": {}
+			}
+		},
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "requisitions_report.i18n.i18n"
+				}
+			},
+			"i18nCom": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "iacube.ui.common.messagebundle"
+				}
+			},
+			"ui": {
+                "type": "sap.ui.model.json.JSONModel",
+                "uri": "localService/requisitions.json"
+            }
+			
+		},
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"viewType": "XML",
+				"viewPath": "requisitions_report.view",
+				"controlId": "app",
+				"controlAggregation": "pages",
+				"async": true,
+	            "sapFiori2Adaptation": {
+	                  "style": true,       
+	                  "collapse": false,   
+	                  "title": true,       
+	                  "back": false,       
+	                  "hierarchy": false   
+	            }
+			},
+			"routes": [{
+				"pattern": "",
+				"name": "home",
+				"target": "home"				
+			},
+			{
+				"pattern"	: "requisition/{index}",
+	  			"name"		: "requisition",
+	  			"target"	: "requisition"
+			},
+			{
+				"pattern"	: "requisition/{reqId}/candidates",
+	  			"name"		: "candidates",
+	  			"target"	: "candidatesOverview"
+			},
+			{
+				"pattern"	: "requisition/{reqId}/candidates/{index2}",
+	  			"name"		: "candidate",
+	  			"target"	: "candidate"
+			}],
+			"targets": {
+				"home": {
+					"viewName": "RequisitionsOverview"
+				},
+				"requisition": {
+					"viewName": "Requisition"
+				},
+				"candidatesOverview": {
+					"viewName": "CandidatesOverview"
+				},				
+				"candidate": {
+					"viewName": "Candidate"
+				}
+			}
+		},
+		"resources": {
+			"css": [{
+				"uri": "css/style.css"
+			}]
+		}
+	}
+}

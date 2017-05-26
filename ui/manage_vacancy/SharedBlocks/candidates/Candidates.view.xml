@@ -1,0 +1,49 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:formatter="manage_vacancy.util.formatter" controllerName="manage_vacancy.SharedBlocks.candidates.CandidatesContr">
+	<Table id="idCandidates" items="{ui>candidates}"
+		   headerText="{i18n>candidates} ({ui>candidates/length})">
+		<columns>
+			<Column hAlign="Center"></Column>
+			<Column hAlign="Left">
+				<Text text="{i18n>firstName}"/>
+			</Column>
+			<Column hAlign="Left">
+				<Text text="{i18n>secondName}"/>
+			</Column>
+			<Column hAlign="Left">
+				<Text text="{i18n>experience}"/>
+			</Column>
+			<Column hAlign="Left">
+				<Text text="{i18n>link}"/>
+			</Column>
+			<Column hAlign="Left">
+				<Text text="{i18n>overDist}"/>
+			</Column>
+			<Column hAlign="Left">
+				<Text text="{i18n>status}"/>
+			</Column>
+			<Column hAlign="Left">
+				<Text text="{i18n>lastChanges}"/>
+			</Column>
+		</columns>
+		<items>
+			<ColumnListItem type="Navigation" vAlign="Middle" press="handleCandidatePress" tap="handleCandidateTap">
+				<cells>
+					<Image src="{ui>Image}" width="2rem" height="2rem"/>
+					<Text text="{ui>FirstName}" />
+					<Text text="{ui>LastName}"/>
+					<Text text="{ui>Experience}"/>
+					<core:Icon src="sap-icon://globe" color="#6495ED" press="handleIconPress" size="2rem"/>
+					<ProgressIndicator percentValue="{ui>Distance}" showValue="true" 
+										state="Success"
+									    height="1.5rem" width="80%" displayValue="{ui>Distance} %"/>
+					<ObjectStatus text="{ui>StatusId}"
+								  state="{ path: 'ui>StatusId',
+								  		   formatter: 'manage_vacancy.util.formatter.formatCandStatus'}"/>
+					<Text text= "{ path: 'ui>CChangedAt',
+								   formatter: 'manage_vacancy.util.formatter.formatDate'}"/>
+				</cells>
+			</ColumnListItem>
+		</items>
+	</Table>
+</mvc:View>

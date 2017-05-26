@@ -1,17 +1,99 @@
 PROCEDURE "IACUBE"."iacube.db.procedures.HH::update_HH_Resumes" (
-	IN 	Resume		"IACUBE"."iacube.db::types.update_HHResume",
-	IN 	Contacts 	"IACUBE"."iacube.db::types.update_HHContacts",
-	IN 	Employments	"IACUBE"."iacube.db::types.update_HHEmployments",
-	IN 	Experience	"IACUBE"."iacube.db::types.update_HHExperience",
-	IN 	Industries	"IACUBE"."iacube.db::types.update_HHIndustries",
-	IN 	Schedules	"IACUBE"."iacube.db::types.update_HHSchedules",
-	IN	Skills		"IACUBE"."iacube.db::types.update_HHSkills",
-	OUT	errors 		"IACUBE"."iacube.db::types.error"
+	IN 	Resumes		"IACUBE"."iacube.db::types.update_HHResume"			DEFAULT EMPTY,
+	IN 	Contacts 	"IACUBE"."iacube.db::types.update_HHContacts"		DEFAULT EMPTY,
+	IN 	Employments	"IACUBE"."iacube.db::types.update_HHEmployments"	DEFAULT EMPTY,
+	IN 	Experience	"IACUBE"."iacube.db::types.update_HHExperience"		DEFAULT EMPTY,
+	IN 	Schedules	"IACUBE"."iacube.db::types.update_HHSchedules"		DEFAULT EMPTY,
+	IN	Skills		"IACUBE"."iacube.db::types.update_HHSkills"			DEFAULT EMPTY,
+	IN	Languages	"IACUBE"."iacube.db::types.update_HHLanguages"		DEFAULT EMPTY,
+	
+	OUT	errors 		"IACUBE"."iacube.db::types.error"					DEFAULT EMPTY
 ) 
 	LANGUAGE SQLSCRIPT
 	SQL SECURITY INVOKER 
 	DEFAULT SCHEMA IACUBE
-	READS SQL DATA AS
+	AS
 BEGIN
+	
+	UPSERT "iacube.db::tables._HH.Resumes"
+		("ResumeId","Title","LastName","FirstName","MiddleName","Age","BirthDate","GenderId","City","RelocationId","BusinessTripId","Salary","SalaryCurr","Link","LastChanged","Language","Photo")
+		SELECT 
+				"ResumeId",
+				"Title",
+				IFNULL("LastName",'') AS "LastName",
+				IFNULL("FirstName",'') AS "FirstName",
+				IFNULL("MiddleName",'') AS "MiddleName",
+				"Age",
+				"BirthDate",
+				"GenderId",
+				"City",
+				"RelocationId",
+				"BusinessTripId",
+				"Salary",
+				"SalaryCurr",
+				"Link",
+				"LastChanged",
+				"Language",
+				"Photo"
+			FROM :Resumes
+	;
+		
+	UPSERT "iacube.db::tables._HH.Contacts"
+		("ResumeId","ContactId","Value")
+		SELECT 
+				"ResumeId",
+				"ContactId",
+				"Value"
+			FROM :Contacts
+	;
+	
+	UPSERT "iacube.db::tables._HH.Employments"
+		("ResumeId","EmploymentId")
+		SELECT 
+				"ResumeId",
+				"EmploymentId"
+			FROM :Employments
+	;
+	
+	UPSERT "iacube.db::tables._HH.Schedules"
+		("ResumeId","ScheduleId")
+		SELECT 
+				"ResumeId",
+				"ScheduleId"
+			FROM :Schedules
+	;
+	
+	UPSERT "iacube.db::tables._HH.Experience"
+		("ResumeId","Organization","Position","StartDate","EndDate","Description")
+		SELECT 
+				"ResumeId",
+				"Organization",
+				"Position",
+				"StartDate",
+				"EndDate",
+				"Description"
+			FROM :Experience
+	;
+	
+	UPSERT "iacube.db::tables._HH.Skills"
+		("ResumeId","Skill")
+		SELECT 
+				"ResumeId",
+				"Skill"
+			FROM :Skills
+	;
+	
+	UPSERT "iacube.db::tables._HH.Language"
+		("ResumeId","LanguageId","LevelId")
+		SELECT 
+				"ResumeId",
+				"LanguageId",
+				"LevelId"
+			FROM :Languages
+	;
+	
+--move data to main tables	
+	CALL "iacube.db.procedures.HH::transform_HH_Resumes"();
+	
 	
 END;

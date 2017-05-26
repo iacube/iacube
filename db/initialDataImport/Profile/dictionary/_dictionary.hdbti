@@ -1,0 +1,37 @@
+import = [ 
+	{ 	
+		table  = "iacube.db::tables.Profile._dictionary.BusinessTripTypes";
+		schema = "IACUBE";
+		file   = "iacube.db.initialDataImport.Profile.dictionary:BusinessTripTypes.csv";
+		header = true;
+		delimField = ";";
+	},
+	{ 	
+		table  = "iacube.db::tables.Profile._dictionary.EmploymentTypes";
+		schema = "IACUBE";
+		file   = "iacube.db.initialDataImport.Profile.dictionary:EmploymentTypes.csv";
+		header = true;
+		delimField = ";";
+	},
+	{ 	
+		table  = "iacube.db::tables.Profile._dictionary.RelocationTypes";
+		schema = "IACUBE";
+		file   = "iacube.db.initialDataImport.Profile.dictionary:RelocationTypes.csv";
+		header = true;
+		delimField = ";";
+	},
+	{ 	
+		table  = "iacube.db::tables.Profile._dictionary.ScheduleTypes";
+		schema = "IACUBE";
+		file   = "iacube.db.initialDataImport.Profile.dictionary:ScheduleTypes.csv";
+		header = true;
+		delimField = ";";
+	},
+	{ 	
+		table  = "iacube.db::tables.Profile._dictionary.ProfileTypes";
+		schema = "IACUBE";
+		file   = "iacube.db.initialDataImport.Profile.dictionary:ProfileTypes.csv";
+		header = true;
+		delimField = ";";
+	}
+];

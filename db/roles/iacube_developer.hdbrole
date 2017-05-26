@@ -1,8 +1,13 @@
-//this role is created to see IACUBE chema in catalog and get access to services
-role iacube.db.roles::iacube_developer {
-	
+//developer role
+role iacube.db.roles::iacube_developer 
+	extends role  sap.hana.ide.roles::Developer,
+				  sap.hana.xs.ide.roles::Developer,
+				  sap.hana.xs.admin.roles::HTTPDestAdministrator,
+				  sap.hana.xs.admin.roles::TrustStoreAdministrator,
+				  sap.hana.xs.debugger::Debugger,
+				  sap.hana.admin.roles::Administrator
+{	
 application privilege	: "iacube::View";
 catalog schema "IACUBE"	: ALTER,CREATE ANY,DEBUG,DELETE,DROP,EXECUTE,INDEX,INSERT,SELECT,TRIGGER,UPDATE; 
-  
 
 }

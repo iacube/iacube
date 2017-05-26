@@ -1,4 +1,4 @@
-namespace iacube.db;
+﻿namespace iacube.db;
 
 @Schema : 'IACUBE'
 context tables{
@@ -7,6 +7,9 @@ context tables{
 	type currency : String(4);
 	type name	  : String(100);
 	type bool	  : hana.TINYINT;
+	type datetime : UTCTimestamp;
+	type lang	  : String(2);
+	type creator  : String(100);
 /*HH.ru tables*/
 	context _HH{
 
@@ -14,10 +17,11 @@ context tables{
 		type hhSID	    : String(100);
 
 		entity Resumes{
-			key	Id				: hhResumeId;
-				LatName			: name;	
+			key	ResumeId		: hhResumeId;
+				Title			: String(1001);	
+				LastName		: name;	
 				FirstName		: name;	
-				MiddleName		: name;	
+				MiddleName		: name;
 				Age				: Integer;
 				BirthDate		: date;
 				GenderId		: hhSID;
@@ -26,14 +30,10 @@ context tables{
 				BusinessTripId	: hhSID;
 				Salary			: BinaryFloat;
 				SalaryCurr		: currency;	
-				
-				AddInfo			: String(5000);	//???
-				DesiredPosition	: String(100);	//???
-				CareerStarter	: bool;			//???//?????change to experience
-				ProfArea		: Integer; 		//???key table??
-				
 				Link			: String(1000);
-				LastChanged		: UTCTimestamp;
+				LastChanged		: datetime;
+				Language		: lang;
+				Photo			: String(1000);
 		};
 
 		entity Contacts{
@@ -52,8 +52,11 @@ context tables{
 			key ScheduleId	: hhSID;
 		};
 		
-		//language??????
-		//edication???
+		entity Language{
+			key ResumeId	: hhResumeId;
+			key LanguageId	: hhSID;
+				LevelId		: hhSID;
+		};
 		
 		entity Experience{
 			key ResumeId	 : hhResumeId;
@@ -69,12 +72,27 @@ context tables{
 			key Skill	 : String(1000);
 		};
 		
-		entity Industries{
+		/*entity Industries{
 			key ResumeId 	: hhResumeId;
 			key IndustryId	: hhSID;
-		};
+		};*/
 		
 		context _mapping{
+			entity BusinessTrip{
+				key hhId	: hhSID;
+					hhName	: String(60);
+					iaId	: tables.Profile.businessTripTypeId;
+			};
+			entity Contact{//phones + sites
+				key hhId	: hhSID;
+					hhName 	: String(60);
+					iaId 	: tables.Candidate.contactTypeId;
+			};
+			entity Employment{
+				key hhId	: hhSID;
+					hhName	: String(60);
+					iaId	: tables.Profile.employmentTypeId;
+			};
 			entity Gender{
 				key hhId   : hhSID;
 					hhName : String(50);
@@ -85,34 +103,26 @@ context tables{
 					hhName   : String(50);
 					iaId     : tables.Profile.relocationTypeId;
 			};
-			entity Contact{//phones + sites
-				key Id	 : hhSID;
-					Name : String(50);
-					iaId : tables.Candidate.contactTypeId;
-			};
-			entity Employment{
-				key Id	 : hhSID;
-					Name : String(50);
-					iaId : tables.Profile.employmentTypeId;
-			};
 			entity Schedule{
-				key Id	 : hhSID;
-					Name : String(50);
-					iaId : tables.Profile.scheduleTypeId;
+				key hhId	: hhSID;
+					hhName	: String(50);
+					iaId	: tables.Profile.scheduleTypeId;
 			};
-			entity BusinessTrip{
-				key Id	 : hhSID;
-					Name : String(50);
-					iaId : tables.Profile.businessTripTypeId;
+			entity LanguageLevel{
+				key hhId	: hhSID;
+					hhName	: String(50);
+					iaId	: tables.Candidate.languageLevelId;
 			};
-			entity Industry{
+			
+			
+			/*entity Industry{
 				key Id	 : hhSID;
 					Name : String(50);
 					iaId : tables.Profile.industryTypeId;
-			};
+			};*/
 		};
 	};
-	
+/*	
 	context _LI{
 		
 		type liSID : String(100);
@@ -126,7 +136,7 @@ context tables{
 			ZIPcode		: String(100);
 			Summary		: LargeString;
 			Link		: String(1000);
-			LastChanged	: UTCTimestamp;
+			LastChanged	: datetime;
 		};
 		
 		entity Experience{
@@ -144,41 +154,50 @@ context tables{
 			Endorsements : BinaryFloat;
 		};
 		
-		entity Industries{
-			key ProfileId 	: liSID;
-			key IndustryId	: String(100);//????;
-		};
+		//entity Industries{
+		//	key ProfileId 	: liSID;
+		//	key IndustryId	: String(100);//????;
+		//};
 		
-		context _mapping{//mapping???
-			entity Industry{
-				liId   : liSID;
-				liName : String(100);
-				iaId   : tables.Profile.industryTypeId;
-			};
+		//context _mapping{//mapping???
+		//	entity Industry{
+		//		liId   : liSID;
+		//		liName : String(100);
+		//		iaId   : tables.Profile.industryTypeId;
+		//	};
 		};
 	};
-	
+*/	
 	context Candidate{
-	
-		type candidateId   : Integer;
-		type genderTypeId  : Integer;
-		type contactTypeId : Integer;
+
+		type candidateId   	 : Integer;
+		type genderTypeId  	 : String(1);
+		type contactTypeId 	 : String(10);
+		type languageLevelId : String(10);
+		type languageId 	 : String(10);
 		
 		entity Candidates{
-			key Id			: candidateId;
+			key CandidateId	: candidateId;
 				LastName	: name;
 				FirstName	: name;
 				MiddleName	: name;
 				BirthDate	: date;
 				GenderId	: genderTypeId;
-				City		: String(100);
+				Location	: String(1000);
 				ProfArea	: String(1000);
+				Photo		: String(1000);
 		};
 		
 		entity Contacts{
 			key CandidateId   : candidateId;
 			key ContactTypeId : contactTypeId;
 				Value		  : String(1000);
+		};
+		
+		entity Languages{
+			key CandidateId : candidateId;
+			key LanguageId 	: languageId;
+				LevelId		: languageLevelId;
 		};
 
 		entity Profiles{
@@ -197,42 +216,43 @@ context tables{
 				key Id	 : contactTypeId;
 					Name : String(50);
 			};
+			
+			entity LanguageLevelTypes{
+				key Id	 : languageLevelId;
+					Name : String(50);
+			};
+			
 		};
 	};
 
 	context Profile{
 	
 		type profileId 	 		: Integer;
-	 	type profileTypeId    	: Integer;
-		type relocationTypeId 	: Integer;
-		type businessTripTypeId	: Integer;
-		type employmentTypeId	: Integer;
-		type scheduleTypeId		: Integer;
-		type industryTypeId		: Integer;
+	 	type profileTypeId    	: String(10);
+		type relocationTypeId 	: String(10);
+		type businessTripTypeId	: String(10);
+		type employmentTypeId	: String(10);
+		type scheduleTypeId		: String(10);
+		//type industryTypeId		: Integer;
 	
 		entity Profiles{
-			key Id				: profileId;
-				ExternalId		: String(1000);
+			key ProfileId		: profileId;
+				ExternalId		: String(1001);
 				ProfileTypeId	: profileTypeId;
 				Link			: String(1000);
 				Headline		: LargeString;
 				Summary			: LargeString;
-		};
-		
-		entity ProfileTypes{
-			key Id			: profileTypeId;
-				Description	: String(100);
-				IsResume	: bool;
+				Language		: lang;
 		};
 		
 		entity ProfileDetails{//was resumeDetails
-			ProfileId		: profileId;
-			DesiredPosition	: String(1000);
-			CareerStarter	: bool;//?????change to experience
-			Salary			: BinaryFloat;
-			SalaryCurr		: currency;
-			RelocationId	: relocationTypeId;
-			BusinessTripId	: businessTripTypeId;
+			key ProfileId		: profileId;
+				DesiredPosition	: String(1000);
+				CareerStarter	: bool;//?????change to experience
+				Salary			: BinaryFloat;
+				SalaryCurr		: currency;
+				RelocationId	: relocationTypeId;
+				BusinessTripId	: businessTripTypeId;
 		};
 		
 		entity Employments{
@@ -247,8 +267,8 @@ context tables{
 		
 		entity Experience{
 			ProfileId	: profileId;
-			Company		: String(100);
-			Position	: String(100);
+			Company		: String(1000);
+			Position	: String(1000);
 			Description	: LargeString;
 			StartDate	: date;
 			EndDate		: date;
@@ -259,13 +279,20 @@ context tables{
 			key Skill	  : String(100);
 		};
 		
-		entity Industries{
+		/*entity Industries{
 			key ProfileId  : profileId;
 			key IndustryId : industryTypeId;
-		};
+		};*/
 		
 
 		context _dictionary{
+		
+			entity ProfileTypes{
+				key Id			: profileTypeId;
+					Description	: String(100);
+					IsResume	: bool;
+			};
+		
 			entity EmploymentTypes{
 				key Id	 : employmentTypeId;
 					Name : String(50);
@@ -286,33 +313,41 @@ context tables{
 					Name : String(50);
 			};
 			
-			entity Industry{
+			/*entity Industry{
 				key Id   : industryTypeId;
 					Name : String(100);
-			};
+			};*/
 			
 		};
 	};
 
 	context Requisition{
 		
-		type reqId 		  : Integer;
-		type statusTypeId : Integer;
-		//нужны ли в реквезишене ScheduleTypes EmploymentTypes?
+		type reqId 		  	  : Integer;
+		type statusTypeId 	  : String(10);
+		type statusCodeTypeId : String(10);
+		type priorityId	  	  : String(10);
+		type subcategoryId	  : Integer;
+		type commentTypeId	  : String(10);
+		type commentStatusId  : String(1);
+//нужны ли в реквезишене ScheduleTypes EmploymentTypes?
 		entity Requisitions{
-			key Id			: reqId;
-				Position	: String(1000);
-				Description	: LargeString;
-				Location	: String(1000);
+			key ReqId			: reqId;
+				Title			: String(100); 
+				ProjectId		: String(100);
+				PriorityId		: priorityId;
+				Location		: String(1000);
+				StatusCodeId	: statusCodeTypeId; 
+				SubcategoryId 	: subcategoryId;
+				CreatedBy		: creator;
+				CreatedAt		: datetime;
+				Language		: lang;
+				Keywords		: LargeString;
+				Description		: LargeString;
+				OpenedBy		: creator;
+				OpenedAt		: datetime;
 		};
 		
-		entity Candidates{
-			key ReqId		 : reqId;
-			key CandidateId	 : tables.Candidate.candidateId;
-				StatusTypeId : statusTypeId;
-				Comment		 : String(5000);
-		};
-
 		entity Skills{
 			key ReqId	  : reqId;
 			key Skill	  : String(1000);
@@ -320,7 +355,54 @@ context tables{
 				Weight	  : Integer;
 		};
 		
+		entity Candidates{
+			key ReqId		 : reqId;
+			key CandidateId	 : tables.Candidate.candidateId;
+				StatusId 	 : statusTypeId;
+				ChangedBy	 : String(101);
+				ChangedAt	 : datetime;
+				AssignedBy	 : creator;
+				AssignedAt	 : datetime;
+		};
+		
+		entity Comments{
+			key ReqId		  : reqId;
+			key CommentId	  : Integer;
+				CommentTypeId : commentTypeId;
+				CreatedAt	  : datetime;
+				CreatedBy	  : creator;
+			 	Title		  : String(200);
+			 	Text		  : String(5000);
+			 	CommentStatusId : commentStatusId;
+		};
+
 		context _dictionary{
+			
+			entity CommentTypes{
+				key Id	 : commentTypeId;
+					Name : String(50);
+			};
+			
+			entity CommentStatusTypes{
+				key Id	 : commentStatusId;
+					Name : String(50);
+			}; 
+
+			entity StatusCodeTypes{
+				key Id	 : statusCodeTypeId;
+					Name : String(50);
+			};
+			
+			entity SubcategoryTypes{
+				key Id	 : subcategoryId;
+					Name : String(50);
+			};
+			
+			entity PriorityTypes{
+				key Id	 : priorityId;
+					Name : String(50);
+					Days : Integer;
+			};
 			entity StatusTypes{
 				key Id	 : statusTypeId;
 					Name : String(50);
@@ -334,7 +416,7 @@ context tables{
 
 		entity Distances{
 			ReqId			: tables.Requisition.reqId;
-			CandidateId  	: tables.Candidate.candidateId;
+			ProfileId  		: tables.Profile.profileId;
 			DistanceTypeId	: distanceTypeId;
 			Distance 	 	: BinaryFloat;
 		};
@@ -346,4 +428,34 @@ context tables{
 			};
 		};
 	};
+ 	context Document{
+        type docId           : hana.SMALLINT;
+ 	   type docExtId        : hana.SMALLINT;			
+ 	   type docExtType      : String(2);	
+ 	   type docContent      : LargeString;
+ 	   type docDim          : String(1);
+ 	
+ 	   entity Documents{
+ 	      key Id                : docId;
+ 	      Language              : lang;
+ 	      ExtId                 : docExtId;
+ 	      ExtType               : docExtType;
+ 	   };
+ 	   
+ 	   entity Texts{
+ 	      key Id                : docId;
+ 	      DocId                 : docId;
+ 	      Language              : lang;
+ 	      Content               : docContent;
+ 	      DocDim                : docDim; 
+ 	   }
+ 	   technical configuration {
+           fulltext index MYFTI1 on (Content)
+              LANGUAGE COLUMN Language
+              TEXT ANALYSIS on
+              SEARCH ONLY off 
+              FAST PREPROCESS off 
+              TEXT MINING on;
+ 	   };                 
+ 	};
 };

@@ -1,5 +1,5 @@
 namespace iacube.db;
-
+ 
 @Schema: 'IACUBE'
 context types {
 	
@@ -8,20 +8,63 @@ context types {
 	type currency : String(4);
 	type name	  : String(100);
 	type bool	  : hana.TINYINT;
-	type sflag	  :  String(1);
+	type sflag	  : String(1);
+	type datetime : UTCTimestamp;
+	type lang	  : String(2);
+	type creator  : String(100);
 	
 	type hhResumeId : String(1000);
 	type hhSID	    : String(100);
+	
+	type reqId 		  	  : Integer;
+	type statusTypeId 	  : String(10);
+	type statusCodeTypeId : String(10);
+	type priorityId	  	  : String(10);
+	type subcategoryId	  : Integer;
+	type commentTypeId	  : String(10);
+	type commentStatusId  : String(1);
+	
+	type profileId 	 	    : Integer;
+	type profileTypeId    	: String(10);
+	type relocationTypeId 	: String(10);
+	type businessTripTypeId	: String(10);
+	type employmentTypeId	: String(10);
+	type scheduleTypeId		: String(10);
+		
+	type candidateId   	 : Integer;
+	type genderTypeId  	 : String(1);
+	type languageLevelId : String(10);
+	type languageId 	 : String(10);
+	type contactTypeId 	 : String(10);
+ 	type docId           : hana.SMALLINT;
+ 	type docExtId        : hana.SMALLINT;			
+ 	type docExtType      : String(2);	
+ 	type docContent      : LargeString;			
 		
 	type error{
 		id		: Integer;
 		details : String(1000);
 	};
 	
+	type nameValue{
+		name  : String(100);
+		value : String(1000);
+	};
+	
+	type idName{
+		id   : String(100);
+		name : String(1000);
+	};
+	
+	type paging{
+		t : Integer;
+		s : Integer;
+	};
 	
 	type update_HHResume{
-		Id				: hhResumeId;
-		LatName			: name;	
+		ResumeId		: hhResumeId;
+		Title			: String(1000);
+		LastName		: name;	
 		FirstName		: name;	
 		MiddleName		: name;	
 		Age				: Integer;
@@ -31,39 +74,27 @@ context types {
 		RelocationId	: hhSID;
 		BusinessTripId	: hhSID;
 		Salary			: BinaryFloat;
-		SalaryCurr		: currency;	
-		
-		AddInfo			: String(5000);	//???
-		DesiredPosition	: String(100);	//???
-		CareerStarter	: bool;			//???//?????change to experience
-		ProfArea		: Integer; 		//???key table??
-		
+		SalaryCurr		: currency;
 		Link			: String(1000);
 		LastChanged		: UTCTimestamp;
-		
-		flag			: sflag;
+		Language		: lang;
+		Photo			: String(1000);
 	};
 	
 	type update_HHContacts{
 		ResumeId  : hhResumeId;
 		ContactId : hhSID;
 		Value	  : String(1000);
-		
-		flag	  : sflag;
 	};
 	
 	type update_HHEmployments{
 		ResumeId	 : hhResumeId;
 		EmploymentId : hhSID;
-		
-		flag		 : sflag;
 	};
 
 	type update_HHSchedules{
 		ResumeId	: hhResumeId;
 		ScheduleId	: hhSID;
-		
-		flag		 : sflag;
 	};
 	
 	type update_HHExperience{
@@ -73,21 +104,247 @@ context types {
 		StartDate	 : date;
 		EndDate		 : date;
 		Description	 : LargeString;
-		
-		flag		 : sflag;
 	};
 	
 	type update_HHSkills{
 		ResumeId : hhResumeId;
 		Skill	 : String(1000);
-
-		flag		 : sflag;
 	};
 	
-	type update_HHIndustries{
+	type update_HHLanguages{
 		ResumeId 	: hhResumeId;
-		IndustryId	: hhSID;
-		
-		flag		 : sflag;
+		LanguageId	: hhSID;
+		LevelId		: hhSID;
+	};
+	
+//Requisitions
+	type searchRequisitions{
+		ReqId			: reqId;
+		Title			: String(100);
+		ProjectId		: String(100);
+		PriorityId		: priorityId;
+		Location		: String(1000);
+		StatusCodeId	: statusCodeTypeId;
+		SubcategoryId 	: subcategoryId;
+		SubcategoryName	: String(200);
+		CreatedBy		: creator;
+		CreatedAt		: datetime;
+		OpenedBy		: creator;
+		OpenedAt		: datetime;
+	};
+//	|___
+		type searchRequisitionsCandidates{
+			ReqId		: reqId;
+			CandidateId	: candidateId;
+			StatusId	: statusTypeId;
+			FirstName	: name;
+			LastName	: name;
+			AssignedBy	: creator;
+			AssignedAt	: datetime;
+		};
+
+
+	type requisitionDetails{
+		ReqId			: reqId;
+		Title			: String(100);
+		ProjectId		: String(100);
+		PriorityId		: priorityId;
+		Location		: String(1000);
+		StatusCodeId	: statusCodeTypeId;
+		SubcategoryId 	: subcategoryId;
+		SubcategoryName	: String(200);
+		CreatedBy		: creator;
+		CreatedAt		: datetime;
+		Language		: lang;
+		Keywords		: LargeString;
+		Description		: LargeString;
+		OpenedBy		: creator;
+		OpenedAt		: datetime;
+	};
+//	|
+	type requisitionSkills{
+		Skill	  : String(1000);
+		IsPrimary : bool;
+		Weight	  : Integer;
+	};
+//	|
+	type requisitionComments{
+		CommentId		: Integer;
+		CommentTypeId	: commentTypeId;
+		CreatedAt		: datetime;
+		CreatedBy		: creator;
+		Title			: String(200);
+		Text			: String(5000);
+		CommentStatusId : commentStatusId;
+	};
+//	|___
+		type requisitionCandidates{
+			CandidateId	: candidateId;
+			StatusId	: statusTypeId;
+			ChangedAt	: datetime;
+			FirstName	: name;
+			LastName	: name;
+			Experience	: Integer;
+			Distance	: Integer;	
+		};
+//		|___
+			type requisitionProfiles{
+				CandidateId		: candidateId;
+				ProfileId		: profileId;
+				ExternalId		: String(1000);
+				ProfileTypeId	: profileTypeId;
+				Link			: String(1000);
+			};
+
+	type updateRequisitionDetails{
+		ReqId			: reqId;
+		Title			: String(100);
+		ProjectId		: String(100);
+		PriorityId		: priorityId;
+		Location		: String(1000);
+		StatusCodeId	: statusCodeTypeId;
+		SubcategoryId 	: subcategoryId;
+		Language		: lang;
+		Keywords		: LargeString;
+		Description		: LargeString;
+		flag			: sflag;
+	};
+//	|
+	type updateRequisitionSkills{
+		ReqId	  : reqId;
+		Skill	  : String(1000);
+		//IsPrimary : bool;
+		Weight	  : Integer;
+		flag	  : sflag;
+	};
+//	|
+	type updateRequisitionComments{
+		ReqId			: reqId;
+		CommentId		: Integer;
+		CommentTypeId	: commentTypeId;
+		Title			: String(200);
+		Text			: String(5000);
+		CommentStatusId	: commentStatusId;
+		flag			: sflag;
+	};
+
+//Candidates
+	type searchCandidatesCandidates{
+		CandidateId	: candidateId;
+		LastName	: name;
+		FirstName	: name;
+		Location	: String(1000);
+		ProfArea	: String(1000);
+		Photo		: String(1000);
+		Distance	: Integer;
+	};
+	type searchCandidatesProfiles{
+		CandidateId	: candidateId;
+		ProfileId		: profileId;
+		ExternalId		: String(1001);
+		ProfileTypeId	: profileTypeId;
+		Link			: String(1000);
+	};
+	type searchCandidatesSalary{
+		CandidateId	: candidateId;
+		ProfileId		: profileId;
+		Salary			: BinaryFloat;
+		SalaryCurr		: currency;
+	};
+	type searchCandidatesContacts{
+		CandidateId   : candidateId;
+		ContactTypeId : contactTypeId;
+		Value		  : String(1000);
+	};
+	type searchCandidatesLanguages{
+		CandidateId : candidateId;
+		LanguageId 	: languageId;
+		LevelId		: languageLevelId;
+	};
+	type searchCandidatesRequisitions{
+		CandidateId	 : candidateId;
+		ReqId		 : reqId;
+		Title		 : String(100); 
+		StatusId 	 : statusTypeId;
+		AssignedBy	 : creator;
+		AssignedAt	 : datetime;
+	};
+
+	type candidate{
+		CandidateId : candidateId;
+		LastName	: name;
+		FirstName	: name;
+		MiddleName	: name;
+		BirthDate	: date;
+		GenderId	: genderTypeId;
+		Location	: String(1000);
+		ProfArea	: String(1000);
+		Photo		: String(1000);
+	};
+	type candidateContacts{
+		//CandidateId   : candidateId;
+		ContactTypeId : contactTypeId;
+		Value		  : String(1000);
+	};
+	
+	type candidateLanguages{ 
+		//CandidateId : candidateId;
+		LanguageId 	: languageId;
+		LevelId		: languageLevelId;
+	};
+	
+	type candidateProfiles{
+		//CandidateId 	: candidateId;
+		ProfileId		: profileId;
+		ExternalId		: String(1001);
+		ProfileTypeId	: profileTypeId;
+		Link			: String(1000);
+		Headline		: LargeString;
+		Summary			: LargeString;
+		DesiredPosition	: String(1000);
+		Salary			: BinaryFloat;
+		SalaryCurr		: currency;
+		RelocationId	: relocationTypeId;
+		BusinessTripId	: businessTripTypeId;
+	};
+	
+	type candidateEmployments{
+		ProfileId	 : profileId;
+		EmploymentId : employmentTypeId;
+	};
+	
+	type candidateSchedules{
+		ProfileId	: profileId;
+		ScheduleId	: scheduleTypeId;
+	};
+	
+	type candidateExperience{
+		ProfileId	: profileId;
+		Company		: String(100);
+		Position	: String(100);
+		Description	: LargeString;
+		StartDate	: date;
+		EndDate		: date;
+	};
+	
+	type candidateSkills{
+		ProfileId : profileId;
+		Skill	  : String(100);
+	};
+	
+	type candidateRequisitions{
+		//CandidateId	 : candidateId;
+		ReqId		 : reqId;
+		Title		 : String(100); 
+		StatusId 	 : statusTypeId;
+		AssignedBy	 : creator;
+		AssignedAt	 : datetime;
+	};
+	
+	type assignCandidates{
+		ReqId		: reqId;
+		CandidateId	: candidateId;
+		StatusId	: statusTypeId;
+		flag		: sflag;
 	};
 };
