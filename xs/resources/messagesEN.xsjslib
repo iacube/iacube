@@ -51,7 +51,7 @@ var message = {
 	15001:{
 		STATUS: "E",
 		MESSAGE: "Service Error",
-		DETAILS: "Wrong Request ID \"{0}\""
+		DETAILS: "Wrong Requisition ID \"{0}\""
 	},
 	15002:{
 		STATUS: "E",
