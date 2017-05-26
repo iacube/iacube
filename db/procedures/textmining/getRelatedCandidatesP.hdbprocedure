@@ -1,0 +1,71 @@
+PROCEDURE "IACUBE"."iacube.db.procedures.textmining::getRelatedCandidatesP" (IN reqId INTEGER , IN topN SMALLINT ,
+                                                 OUT relatedCandidates "IACUBE"."iacube.db::types.relatedCandidates" DEFAULT EMPTY)
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY DEFINER
+   READS SQL DATA AS
+BEGIN
+   DECLARE X INTEGER;
+   DECLARE Y NVARCHAR(5000);   
+   DECLARE CURSOR lc_X FOR SELECT T."EXTID", T.TOTAL_TERM_COUNT, T.SCORE
+                     FROM TM_GET_RELATED_DOCUMENTS ( DOCUMENT IN FULLTEXT INDEX WHERE "EXTID" = 1 AND "EXTTYPE" = 'P' AND "DOCDIM" = 'S'
+                                                     SEARCH "CONTENT" FROM "IACUBE"."iacube.db::tables.Document.Texts" 
+                                                     WHERE "EXTTYPE"='P' AND "DOCDIM" = 'C'
+                                                     RETURN TOP 10  "EXTID" ) AS T;
+   X:=1;
+   Y:='Abc';
+/*   
+   lt_profBySumScore=SELECT T."EXTID",  T.TOTAL_TERM_COUNT, T.SCORE
+                     FROM TM_GET_RELATED_DOCUMENTS ( DOCUMENT (SELECT 'SAP' FROM DUMMY) LANGUAGE 'RU'
+                                                     SEARCH "CONTENT" FROM "IACUBE"."iacube.db::tables.Document.Texts" 
+                                                     WHERE "EXTTYPE"='P' AND "DOCDIM" = 'C'
+                                                     RETURN TOP 10 "EXTID" ) AS T;
+*/
+/*   
+   lt_profBySumScore=SELECT T."EXTID", T.TOTAL_TERM_COUNT, T.SCORE
+                     FROM TM_GET_RELATED_DOCUMENTS ( DOCUMENT IN FULLTEXT INDEX WHERE "EXTID" = :X AND "EXTTYPE" = 'P' AND "DOCDIM" = 'S'
+                                                     SEARCH "CONTENT" FROM "IACUBE"."iacube.db::tables.Document.Texts" 
+                                                     WHERE "EXTTYPE"='P' AND "DOCDIM" = 'C'
+                                                     RETURN TOP 10  "EXTID" ) AS T;
+*/   
+   
+   lt_profBySumScore=SELECT T."EXTID",  T.TOTAL_TERM_COUNT, T.SCORE
+                     FROM TM_GET_RELATED_DOCUMENTS ( DOCUMENT 'SAP'
+                                                     SEARCH "CONTENT" FROM "IACUBE"."iacube.db::tables.Document.Texts" 
+                                                     WHERE "EXTTYPE"='P' AND "DOCDIM" = 'C'
+                                                     RETURN TOP 10 "EXTID" ) AS T;
+
+
+/*   
+   lt_profBySumScore=SELECT T."Id", T."ExtId", T."CONTENT", T.TOTAL_TERM_COUNT, T.SCORE
+                     FROM TM_GET_RELATED_DOCUMENTS ( DOCUMENT IN FULLTEXT INDEX WHERE "ExtId" = X AND "ExtType" = 'R' AND "DocDim" = 'S'
+                                                     SEARCH "CONTENT" FROM "IACUBE"."iacube.db::tables.Document.Texts" 
+                                                     WHERE "ExtType"='P' AND "DocDim" = 'C'
+                                                     RETURN TOP 10 "Id", "ExtId", "CONTENT" ) AS T;
+   lt_profBySkillScore=SELECT T."Id", T."ExtId", T."CONTENT", T.TOTAL_TERM_COUNT, T.SCORE
+                       FROM TM_GET_RELATED_DOCUMENTS ( DOCUMENT IN FULLTEXT INDEX WHERE "ExtId" = reqId AND "ExtType" = 'R' AND "DocDim" = 'S'
+                                                       SEARCH "CONTENT" FROM "IACUBE"."iacube.db::tables.Document.Texts" 
+                                                       WHERE "ExtType"='P' AND "DocDim" = 'C'
+                                                       RETURN TOP 10 "Id", "ExtId", "CONTENT" ) AS T;
+
+   lt_profFullTotalScore=SELECT A."ExtId" AS "SumProfile",A."SCORE" AS "SumScore",B."ExtId" AS "SkillProfile",B."SCORE" AS "SkillScore" 
+                         FROM :lt_profBySumScore AS A 
+                         FULL OUTER JOIN :lt_profBySkillScore AS B
+                         ON A."ExtId"=B."ExtId"; 
+  
+   lt_profTotScore=SELECT COALESCE(A."SumProfile",A."SkillProfile") AS "ProfileId",
+                          SQRT(POWER(IFNULL(A."SumScore",0),2)+POWER(IFNULL(A."SkillScore",0),2)) AS "TotalScore"
+                   FROM :lt_profFullTotalScore AS A;
+                   
+   lt_candidateProfileScored=SELECT A."ProfileId" AS "ProfileId", B."CandidateId" AS "CandidateId", A."TotalScore" AS "score"
+                             FROM :lt_profTotScore AS A 
+                             JOIN "IACUBE"."iacube.db::tables.Candidate.Profiles" AS B
+                             ON A."ProfileId"=B."ProfileId"
+                             ORDER BY A."TotalScore" DESC;
+   relatedCandidates=SELECT TOP 10 "ProfileId", "CandidateId", "score" FROM :lt_candidateProfileScored;
+*/
+  FOR ls_X AS lc_X DO
+     Y='S';
+  END FOR;
+--   relatedCandidates=SELECT 1 AS "ProfileId", 2 AS "CandidateId", 3 AS "score" FROM :lt_profBySumScore;
+END
+;
