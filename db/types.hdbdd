@@ -345,11 +345,11 @@ context types {
 
 	type relatedCandidates{
 		
-                ReqId		: reqId;
+		ProfileId	: profileId;
 
-		CandidateId	: candidateId;
+ 		CandidateId	: candidateId;
 
-                score       : hana.SMALLINT;
-	
-        }
+                score           : hana.SMALLINT;
+        
+       }
 };
