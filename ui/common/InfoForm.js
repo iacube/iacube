@@ -12,12 +12,20 @@ sap.ui.define([
 
 	return VBox.extend("iacube.ui.common.InfoForm", {
 		
+		metadata : {			
+			properties :
+			{				
+				formEditable : {type : "boolean", group : "data", defaultValue : false}
+			}			
+		},
+		
 		init: function() {
 			VBox.prototype.init.apply(this, arguments);
 			this.createSimpleFormContent();
 		},
 
 		createSimpleFormContent: function() {
+			var bEditable = this.getFormEditable();
 			var oForm = new SimpleForm("infoForm", {
 				minWidth: 1024,
 				maxContainerCols: 2,
@@ -34,23 +42,23 @@ sap.ui.define([
 					new Label({
 						text: "{i18nCom>requisName}",
 						labelFor: "idPos",
-						required: "{ui>/RequisEditable}"
+						required: bEditable
 					}),
 					new Input("idPos", {
 						value: "{ui>Title}",
-						editable: "{ui>/RequisEditable}"
+						editable: bEditable
 					}),
 
 					new Label({
 						text: "{i18nCom>Project}",
 						labelFor: "idProj",
-						required: "{ui>/RequisEditable}"
+						required: bEditable
 					}),
 					new Input("idProj", {
 						value: "{ui>ProjectId}",
 						showSuggestion: true,
 						showValueHelp: true,
-						editable: "{ui>/RequisEditable}",
+						editable: bEditable,
 						events: [{
 							valueHelpRequest: "this._handleProjValueHelp"
 						}]
@@ -62,12 +70,12 @@ sap.ui.define([
 					new Label({
 						text: "{i18nCom>priority}",
 						labelFor: "idPrior",
-						required: "{ui>/RequisEditable}"
+						required: bEditable
 					}),
 					
 					new ComboBox("idPrior", {
 						selectedKey: "{ui>PriorityId}",
-						editable: "{ui>/RequisEditable}"
+						editable: bEditable
 					}).bindAggregation("items", "ui>/AvailablePriorities", new Item({
 							key: "{ui>PriorityCode}",
 							text: { parts: [{path: 'ui>PriorityCode'},
@@ -84,11 +92,11 @@ sap.ui.define([
 					new Label({
 						text: "{i18nCom>location}",
 						labelFor: "idLocation",
-						required: "{ui>/RequisEditable}"
+						required: bEditable
 					}),
 					new Input("idLocation", {
 						value: "{ui>Location}",
-						editable: "{ui>/RequisEditable}"
+						editable: bEditable
 					}),
 
 					new Label({
@@ -104,7 +112,7 @@ sap.ui.define([
 						growing: true,
 						growingMaxLines: 5,
 						value: "{ui>Keywords}",
-						editable: "{ui>/RequisEditable}"
+						editable: bEditable
 					}),
 					new Label({
 						text: "{i18nCom>descr}",
@@ -112,7 +120,7 @@ sap.ui.define([
 					}),
 					new TextArea("idDescr", {
 						value: "{ui>Description}",
-						editable: "{ui>/RequisEditable}",
+						editable: bEditable,
 						rows: 7
 					})
 				]

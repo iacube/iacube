@@ -39,7 +39,7 @@
 						<uxap:subSections>
 							<uxap:ObjectPageSubSection title="">
 								<uxap:blocks>
-									<common:InfoForm/>
+									<common:InfoForm formEditable="false"/>
 								</uxap:blocks>
 							</uxap:ObjectPageSubSection>
 						</uxap:subSections>
