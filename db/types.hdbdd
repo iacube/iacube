@@ -42,8 +42,8 @@ context types {
  	type docContent      : LargeString;			
 		
 	type error{
-		id		: Integer;
-		details : String(1000);
+		error_code : Integer;
+		details	   : String(1000);
 	};
 	
 	type nameValue{
