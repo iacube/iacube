@@ -86,29 +86,6 @@ BEGIN
 			   OR a."flag" = 'U'
 	;
 	
-	skills = 
-		SELECT
-				IFNULL(b."ReqId",a."ReqId") AS "ReqId",
-				a."Skill",
-				a."Weight",
-				a."flag"
-			FROM :skills AS a
-			LEFT JOIN :preparedDetails AS b
-				ON a."ReqId" = b."tempId"
-	;
-	comments = 
-		SELECT
-				IFNULL(b."ReqId",a."ReqId") AS "ReqId",
-				a."CommentId",
-				a."CommentTypeId",
-				a."Title"	,
-				a."Text",
-				a."CommentStatusId",
-				a."flag"
-			FROM :comments AS a
-			LEFT JOIN :preparedDetails AS b
-				ON a."ReqId" = b."tempId"
-	; 
 	checkedDetails = 
 		SELECT * 
 			FROM :preparedDetails
@@ -132,6 +109,32 @@ BEGIN
 				"Description"
 			FROM :checkedDetails
 	;
+	
+	skills = 
+		SELECT
+				IFNULL(b."ReqId",a."ReqId") AS "ReqId",
+				a."Skill",
+				a."Weight",
+				a."flag"
+			FROM :skills AS a
+			LEFT JOIN :preparedDetails AS b
+				ON a."ReqId" = b."tempId"
+	;
+	comments = 
+		SELECT
+				IFNULL(b."ReqId",a."ReqId") AS "ReqId",
+				a."CommentId",
+				a."CommentTypeId",
+				a."Title"	,
+				a."Text",
+				a."CommentStatusId",
+				a."flag"
+			FROM :comments AS a
+			LEFT JOIN :preparedDetails AS b
+				ON a."ReqId" = b."tempId"
+	; 
+	
+	
 --process skills
 	DELETE 
 		FROM "iacube.db::tables.Requisition.Skills" AS s

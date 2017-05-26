@@ -194,17 +194,19 @@ var template = {
 	    data.forEach(function(item){
 
         	["employments","experience","schedules","skill_set","language","contact","site"].forEach(function(entry){
-        	    item[entry].forEach(function(entity){
-        	        entity.ResumeId = item.ResumeId;
-        	        template[entry].push(entity);
-        	    });
-                delete item[entry];
+        		if(item[entry]){
+        			item[entry].forEach(function(entity){
+            	        entity.ResumeId = item.ResumeId;
+            	        template[entry].push(entity);
+            	    });
+                    delete item[entry];
+        		}
     	    });
     	    
-    	    item.BusinessTripId = item.business_trip_readiness.BusinessTripId;
-    	    item.RelocationId   = item.relocation.RelocationId;
-    	    item.GenderId       = item.gender.GenderId;
-    	    item.City           = item.area.City;
+    	    item.BusinessTripId = item.business_trip_readiness ? item.business_trip_readiness.BusinessTripId : null;
+    	    item.RelocationId   = item.relocation ? item.relocation.RelocationId : null;
+    	    item.GenderId       = item.gender ? item.gender.GenderId : null;
+    	    item.City           = item.area ? item.area.City : null;
     	    
             if(!item.salary){
                 item.Salary = null;
@@ -212,13 +214,13 @@ var template = {
             }else{
                 item.Salary = item.salary.Salary;
                 item.SalaryCurr = item.salary.SalaryCurr;
+                delete item.salary;
             }
-  
+            
     	    delete item.business_trip_readiness;
     	    delete item.relocation;
     	    delete item.gender;
     	    delete item.area;
-    	    delete item.salary;
     	    delete item.language;
     	    
     	    template.resume.push(item);
