@@ -435,20 +435,20 @@ context tables{
  	   };
  	   
  	   entity Texts{
- 	      key Id                : docId;
+//--        Uppercase because of To enable TM_GET_RELATED_DPCUMENTS BUG 	   
+ 	      key ID                : docId;
  	      DocId                 : docId;
- 	      Language              : lang;
-//--        Uppercase because of To enable TM_GET_RELATED_DPCUMENTS BUG
- 	      CONTENT              : docContent;
- 	      DocDim                : docDim; 
+ 	      LANGUAGE              : lang;
+ 	      CONTENT               : docContent;
+ 	      DOCDIM                : docDim; 
 //--        To enable TM_GET_RELATED_DPCUMENTS
- 	      ExtId                 : docExtId;
- 	      ExtType               : docExtType;
+ 	      EXTID                 : docExtId;
+ 	      EXTTYPE               : docExtType;
 //--
  	   }
  	   technical configuration {
            fulltext index MYFTI1 on (CONTENT)
-              LANGUAGE COLUMN Language
+              LANGUAGE COLUMN LANGUAGE
               TEXT ANALYSIS on
               SEARCH ONLY off 
               FAST PREPROCESS off 
