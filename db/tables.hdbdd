@@ -401,6 +401,7 @@ context tables{
 			entity PriorityTypes{
 				key Id	 : priorityId;
 					Name : String(50);
+					Days : Integer;
 			};
 			entity StatusTypes{
 				key Id	 : statusTypeId;

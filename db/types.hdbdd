@@ -1,3 +1,5 @@
+namespace iacube.db;
+ 
 @Schema: 'IACUBE'
 context types {
 	

@@ -1,7 +1,7 @@
 Id;Name
-MI;Minor
-L;Low
-N;Normal
-H;High
-VH;Very High
-MA;Major
+MI;Minor;72
+L;Low;36
+N;Normal;21
+H;High;14
+VH;Very High;7
+MA;Major;7
