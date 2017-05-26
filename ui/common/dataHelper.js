@@ -14,6 +14,8 @@ sap.ui.define([
 			 * @returns {Promise} Standard Promise
 			 * @public
 			 */
+			
+			/*REQUISITION*/
 			getRequisitions: function(oComp, aContents) {
 				return new Promise(function(resolve, reject) {
 					var sPath = "/iacube/service/requisitions";
@@ -64,10 +66,30 @@ sap.ui.define([
 				});
 			},
 			
+			/*CANDIDATES*/
+			
 			getCandidates: function(requisitionId){
 				return new Promise(function(resolve, reject) {
 					var sPath = "/iacube/service/candidates?filter="+JSON.stringify({ReqId:requisitionId});
 					ServiceAccess.ajax({
+						url: sPath,
+						success: function(data) {
+							resolve(data);
+						},
+						error: function() {
+							MessageToast.show("Data retrieval error");
+							reject();
+						}
+					});
+				});
+			},
+			
+			assignCandidatesToRequisitions: function(aCandAssigned){
+				return new Promise(function(resolve, reject) {
+					var sPath = "/iacube/service/candidates";
+					ServiceAccess.ajax({
+						type: "PUT",
+						data: JSON.stringify(aCandAssigned),
 						url: sPath,
 						success: function(data) {
 							resolve(data);

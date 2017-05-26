@@ -18,7 +18,17 @@ sap.ui.define([
 						SubcategoryName: r.SubcategoryName,
 						CreatedBy: r.CreatedBy,
 						CreatedAt: new Date(r.CreatedAt),
-						Candidates: r.candidates,
+						candidates: r.candidates.map(function(c){
+							return {
+								AssignedAt: new Date(c.AssignedAt),
+								AssignedBy: c.AssignedBy,
+								CandidateId: c.CandidateId,
+								FirstName: c.FirstName,
+								LastName: c.LastName,
+								ReqId: c.ReqId,
+								StatusId: c.StatusId
+							}
+						}),
 					}
 				})
 			},
@@ -58,7 +68,7 @@ sap.ui.define([
 						return {
 							CandidateId: c.CandidateId,
 							StatusId: c.StatusId,
-							CChangedAt: c.ChangedAt,
+							ChangedAt: new Date(c.ChangedAt),
 							FirstName: c.FirstName,
 							LastName: c.LastName,
 							Experience: c.Experience,

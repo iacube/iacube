@@ -17,23 +17,51 @@ sap.ui.define([
 		},
 			
 		onRouteMatched: function(oEvent){		
-			if(oEvent.getParameter("name") === "candidatesOverview") {
-				var reqId = oEvent.getParameter("arguments").reqId;				
-				var sPath = "/requisitions/" + reqId + "/candidates";				
+			if(oEvent.getParameter("name") === "candidates") {	
+				var reqId = oEvent.getParameter("arguments").reqId;	
+				var iIndex = this.getModel("ui").getProperty("/requisitions").findIndex(function(r){return r.ReqId == reqId});
+				var sPath = "/requisitions/" + iIndex;				
 				this.getView().bindElement("ui>" + sPath);
 
-				this.loadCandidates(ReqId, sPath);
-			}
-			
+				this.loadCandidates(reqId, sPath);
+			}			
 		},
 		
 		loadCandidates: function(ReqId, sPath){
-			var oModel = this.getModel("ui");
+			var oModel = this.getModel("ui");			
 			DataHelper.getCandidates(ReqId).then(function(oData){
-				oModel.setProperty(sPath, Mapper.mapCandidates(oData.data));
+				oModel.setProperty(sPath + "/candidates", Mapper.mapCandidates(oData.data));
+			});
+		},
+		
+		onProfilesPopover: function(oEvent){
+			if( !this._oProfPopover ) {
+				this._oProfPopover = sap.ui.xmlfragment("requisitions_report.view.fragment.ProfPopover", this);
+				this.getView().addDependent(this._oProfPopover);
+			}
+			var oBinding = oEvent.getSource().getBindingContext("ui");			
+			this._oProfPopover.setBindingContext(oBinding, "ui");
+			this._oProfPopover.openBy(oEvent.getSource());
+		},
+		
+		onAssignCandidates: function(oEvent){
+			var oContext = this.getView().getBindingContext("ui");
+			var sReqId = this.getModel("ui").getProperty("/selectedRequisition");
+			var aCandidates = this.getModel("ui").getProperty(oContext.getPath() + "/candidates");
+			var aSelectedCandidates = aCandidates.filter(function(c){
+				return c.selected
+			}).map(function(c2){
+				return {
+					ReqId: sReqId,
+					CandidateId	: c2.CandidateId,
+					StatusId : "OPEN",
+					flag: "I"
+				}
+			});
+			DataHelper.assignCandidatesToRequisitions(aSelectedCandidates).then(function(){
+				console.log("ok");
 			});
 		}
-
 
 	});
 

@@ -28,7 +28,7 @@ sap.ui.define([
 			};
 			if (params.type !== "get" && params.type !== "GET") {
 				$.ajax({
-					url: path + "/services/",
+					url: path + "/services",
 					type: "get",
 					beforeSend: function(xhr) {
 						xhr.setRequestHeader("X-CSRF-Token", "Fetch");

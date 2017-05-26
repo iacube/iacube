@@ -104,12 +104,12 @@
 	  			"target"	: "requisition"
 			},
 			{
-				"pattern"	: "requisition/{index}/candidates",
+				"pattern"	: "requisition/{reqId}/candidates",
 	  			"name"		: "candidates",
 	  			"target"	: "candidatesOverview"
 			},
 			{
-				"pattern"	: "requisition/{index}/candidates/{index2}",
+				"pattern"	: "requisition/{reqId}/candidates/{index2}",
 	  			"name"		: "candidate",
 	  			"target"	: "candidate"
 			}],

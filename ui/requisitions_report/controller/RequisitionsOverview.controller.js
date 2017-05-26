@@ -1,12 +1,14 @@
 sap.ui.define([
 	"requisitions_report/controller/BaseController",
 	"iacube/ui/common/dataHelper",
-	"iacube/ui/common/mapper"
-], function(Controller, DataHelper, Mapper) {
+	"iacube/ui/common/mapper",
+	"requisitions_report/utils/formatter"
+], function(Controller, DataHelper, Mapper, Formatter) {
 	"use strict";
 
 	return Controller.extend("requisitions_report.controller.RequisitionsOverview", {
 
+		formatter: Formatter,
 		/**
 		 * Called when a controller is instantiated and its View controls (if available) are already created.
 		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
@@ -69,7 +71,7 @@ sap.ui.define([
 		
 		onShowCandidates: function(oEvent){
 			var reqId = this.getModel("ui").getProperty("/selectedRequisition");
-			this.getRouter().navTo("candidatesOverview", {
+			this.getRouter().navTo("candidates", {
 				reqId: parseInt(reqId)
 			});
 		}
