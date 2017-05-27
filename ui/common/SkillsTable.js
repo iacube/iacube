@@ -17,12 +17,21 @@ sap.ui.define([
 		
 		init: function() {
 			Table.prototype.init.apply(this, arguments);
-			
-			this.bindProperty("mode", "ui>/TableMode");
-			this.attachDelete(this._onSkillDelete);
-			this._createToolbar();
-			this._createColumns();
-			this._bindTable();
+			this._bInitialized = false;
+		},
+		
+		onBeforeRendering: function(){
+			Table.prototype.onBeforeRendering.apply(this, arguments);
+			if(!this._bInitialized){
+				var oModel = this.getModel("ui");
+				oModel.setProperty("/RequisEditable", false)
+				this.bindProperty("mode", "ui>/TableMode");
+				this.attachDelete(this._onSkillDelete);
+				this._createToolbar();
+				this._createColumns();
+				this._bindTable();
+				this._bInitialized = true;
+			}
 		},
 		
 		_createToolbar: function(){
