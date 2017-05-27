@@ -40,7 +40,9 @@ sap.ui.define([
 			var oModel = this.getModel("ui");
 			var sPath = oEvent.getSource().getBindingContext("ui").getPath();
 			var iReqId = oModel.getProperty(sPath).ReqId;
+			var iIndex	= sPath.split("/")[2];
 			oModel.setProperty("/selectedRequisition", iReqId);
+			oModel.setProperty("/selectedRequisitionIndex", iIndex);
 		},
 
 		/**
@@ -70,9 +72,9 @@ sap.ui.define([
 		},
 		
 		onShowCandidates: function(oEvent){
-			var reqId = this.getModel("ui").getProperty("/selectedRequisition");
+			var iIndex = this.getModel("ui").getProperty("/selectedRequisitionIndex");
 			this.getRouter().navTo("candidates", {
-				reqId: parseInt(reqId)
+				ind: parseInt(iIndex)
 			});
 		}
 

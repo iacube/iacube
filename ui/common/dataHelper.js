@@ -84,6 +84,22 @@ sap.ui.define([
 				});
 			},
 			
+			getCandidate: function(CandId) {
+				return new Promise(function(resolve, reject) {
+					var sPath = "/iacube/service/candidate/"+CandId;
+					ServiceAccess.ajax({
+						url: sPath,
+						success: function(data) {
+							resolve(data);
+						},
+						error: function() {
+							MessageToast.show("Data retrieval error");
+							reject();
+						}
+					});
+				});
+			},
+			
 			assignCandidatesToRequisitions: function(oCandAssigned){
 				return new Promise(function(resolve, reject) {
 					var sPath = "/iacube/service/candidates";

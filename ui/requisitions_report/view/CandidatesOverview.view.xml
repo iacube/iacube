@@ -71,7 +71,7 @@
 						</Column>
 					</columns>
 					<items>
-						<ColumnListItem type="Navigation" press="onRequisitionPress">
+						<ColumnListItem type="Navigation" press="onCandidatePress">
 							<cells>
 								<CheckBox selected="{ui>selected}"/>
 								<Text text="{ui>FirstName}" />
