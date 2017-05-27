@@ -162,6 +162,7 @@ sap.ui.define([ "sap/m/MessageToast", "iacube/ui/common/serviceAccess" ],
 						Photo: c.Photo,
 						contacts: [ ],//TODO
 						languages: [ ],//TODO
+						selectedProfile: c.Location + " / " + c.profiles[0].Headline,
 						profiles: c.profiles.map(function(p){
 							return {
 								ProfileName: c.FirstName + " " + c.LastName,//field from candidate
@@ -180,7 +181,11 @@ sap.ui.define([ "sap/m/MessageToast", "iacube/ui/common/serviceAccess" ],
 								employments: [ ],//TODO
 								experience: [ ],//TODO
 								schedules: [ ],//TODO
-								skills: [ ]//TODO
+								skills : p.skills.map(function(s) {
+									return {
+										Skill : s.Skill,
+									}
+								}),
 							}
 						}),
 						requisitions: c.requisitions.map(function(r){

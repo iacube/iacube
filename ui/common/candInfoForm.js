@@ -4,10 +4,11 @@ sap.ui.define([
 	"sap/m/Label",
 	"sap/m/TextArea",
 	"sap/m/Input",
+	"sap/m/Link",
 	"sap/ui/core/Item",
 	"sap/m/ComboBox",
 	"iacube/ui/common/formatterCom"
-], function(VBox, SimpleForm, Label, TextArea, Input, Item, ComboBox, oFormatterCom) {
+], function(VBox, SimpleForm, Label, TextArea, Input, Link, Item, ComboBox, oFormatterCom) {
 	"use strict";
 
 	return VBox.extend("iacube.ui.common.candInfoForm", {
@@ -45,7 +46,7 @@ sap.ui.define([
 			var oForm = new SimpleForm("candInfoForm", {
 				minWidth: 1024,
 				maxContainerCols: 2,
-				editable: true,
+				editable: false,
 				layout: sap.ui.layout.form.SimpleFormLayout.ResponsiveGridLayout,
 				labelSpanL: 3,
 				labelSpanM: 3,
@@ -90,8 +91,8 @@ sap.ui.define([
 						text: "{i18nCom>cand.infoform.website}",
 						labelFor: "cand_info_site"
 					}),
-					new Input("cand_info_site", {
-						value: "{local>/Link}",
+					new Link("cand_info_site", {
+						text: "{local>/Link}",
 						editable: false
 					}),
 					
@@ -100,9 +101,12 @@ sap.ui.define([
 						text: "{i18nCom>cand.infoform.description}",
 						labelFor: "cand_info_descr"
 					}),
-					new Input("cand_info_descr", {
+					new TextArea("cand_info_descr", {
 						value: "{local>/Summary}",
-						editable: false
+						editable: false,
+						growing: true,
+						growingMaxLines: 7,
+						width: "100%"
 					})					
 				]
 			});

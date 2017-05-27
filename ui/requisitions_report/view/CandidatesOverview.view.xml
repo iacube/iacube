@@ -2,7 +2,7 @@
 	xmlns="sap.m" xmlns:fb="sap.ui.comp.filterbar"
 	controllerName="requisitions_report.controller.CandidatesOverview"
 	xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page title="title" id="page1">
+	<Page title="{i18n>cand.overview.page.title} {ui>/selectedRequisitionTitle}" id="page1">
 		<content>
 			<fb:FilterBar reset="onReset" search="onSearch"
 				showRestoreButton="true" showClearButton="true" useToolbar="true"

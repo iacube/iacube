@@ -3,7 +3,7 @@
 	<Popover title="{i18n>cand.page.popover.title}"
 		placement="Bottom">
 		<content>
-			<List mode="SingleSelectMaster" includeItemInSelection="true"
+			<List id="cand_page_popover_profiles_list" mode="SingleSelectMaster" includeItemInSelection="true"
 				select="handleItemSelect" items="{ui>profiles}">
 				<CustomListItem>
 					<HBox alignItems="Start" class="sapUiTinyMargin">

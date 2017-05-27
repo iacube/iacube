@@ -43,6 +43,7 @@ sap.ui.define([
 			var iIndex	= sPath.split("/")[2];
 			oModel.setProperty("/selectedRequisition", iReqId);
 			oModel.setProperty("/selectedRequisitionIndex", iIndex);
+			oModel.setProperty("/selectedRequisitionTitle", oModel.getProperty(sPath+"/Title"));
 		},
 
 		/**

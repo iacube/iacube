@@ -53,9 +53,28 @@ sap.ui.define([
 		},
 		
 		onProfileSelected: function(oEvent){
-			debugger;
-			var iIndex = oEvent.getProperty("selected");
+			var oContext = this.getView().getBindingContext("ui");
+			var oList = sap.ui.getCore().byId("cand_page_popover_profiles_list");
+			var iIndex = oList.indexOfItem(oList.getSelectedItem());//index of selected profile
+			
 			var oInfoForm = this.getView().byId("cand_page_info_form");
+			oInfoForm.bindProperty("Link", {
+				model 	: "ui",
+				path	: "profiles/"+iIndex+"/Link"
+			}).bindProperty("Summary", {
+				model 	: "ui",
+				path	: "profiles/"+iIndex+"/Summary"
+			});
+			
+			var oSkillsForm = this.getView().byId("cand_page_skills_form");
+			oSkillsForm.bindProperty("skills", {
+				model 	: "ui",
+				path	: "profiles/"+iIndex+"/skills"
+			});
+			
+			var sSelectedHeadline = this.getModel("ui").getProperty(oContext.getPath()+"/profiles/"+iIndex+"/Headline");
+			var sSelectedLocation = this.getModel("ui").getProperty(oContext.getPath()+"/Location");
+			this.getModel("ui").setProperty(oContext.getPath()+"/selectedProfile", sSelectedLocation + " / " + sSelectedHeadline);
 		}
 		
 
