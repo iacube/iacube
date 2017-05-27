@@ -16,8 +16,8 @@ sap.ui.define([
 						Location: r.Location,
 						StatusCodeId: r.StatusCodeId,
 						SubcategoryName: r.SubcategoryName,
-						CreatedBy: r.CreatedBy,
-						CreatedAt: new Date(r.CreatedAt),
+						CreatedBy: r.OpenedBy,
+						CreatedAt: new Date(r.OpenedAt),
 						Candidates: r.candidates,
 					}
 				})
@@ -33,8 +33,8 @@ sap.ui.define([
 					StatusCodeId: r.StatusCodeId,
 					SubcategoryId: r.SubcategoryId,
 					SubcategoryName: r.SubcategoryName,
-					CreatedBy: r.CreatedBy,
-					CreatedAt: new Date(r.CreatedAt),
+					CreatedBy: r.OpenedBy,
+					CratedAt: new Date(r.OpenedAt),
 					Language: r.Language,
 					Keywords: r.Keywords,
 					Description: r.Description,
