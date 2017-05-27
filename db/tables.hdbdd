@@ -1,4 +1,5 @@
-﻿namespace iacube.db;
+
+namespace iacube.db;
 
 @Schema : 'IACUBE'
 context tables{
@@ -443,27 +444,19 @@ context tables{
  	   };
  	   
  	   entity Texts{
-//--        Uppercase because of To enable TM_GET_RELATED_DPCUMENTS BUG 	   
- 	      key ID                : docId;
+ 	      key Id                : docId;
  	      DocId                 : docId;
- 	      LANGUAGE              : lang;
- 	      CONTENT               : docContent;
- 	      DOCDIM                : docDim; 
-//--        To enable TM_GET_RELATED_DPCUMENTS
- 	      
-              EXTID                 : docExtId;
-
- 	      EXTTYPE               : docExtType;
-
-//--
+ 	      Language              : lang;
+ 	      Content               : docContent;
+ 	      DocDim                : docDim; 
  	   }
  	   technical configuration {
-           fulltext index MYFTI1 on (CONTENT)
-              LANGUAGE COLUMN LANGUAGE
+           fulltext index MYFTI1 on (Content)
+              LANGUAGE COLUMN Language
               TEXT ANALYSIS on
               SEARCH ONLY off 
               FAST PREPROCESS off 
               TEXT MINING on;
  	   };                 
  	};
-}
+};

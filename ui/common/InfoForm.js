@@ -6,26 +6,28 @@ sap.ui.define([
 	"sap/m/Input",
 	"sap/ui/core/Item",
 	"sap/m/ComboBox",
-	"iacube/ui/common/formatterCom"
-], function(VBox, SimpleForm, Label, TextArea, Input, Item, ComboBox, oFormatterCom) {
+	"iacube/ui/common/formatterCom",
+	"sap/ui/model/json/JSONModel"
+], function(VBox, SimpleForm, Label, TextArea, Input, Item, ComboBox, oFormatterCom, JSONModel) {
 	"use strict";
 
 	return VBox.extend("iacube.ui.common.InfoForm", {
 		
-		metadata : {			
-			properties :
-			{				
-				formEditable : {type : "boolean", group : "data", defaultValue : false}
-			}			
-		},
-		
 		init: function() {
 			VBox.prototype.init.apply(this, arguments);
-			this.createSimpleFormContent();
+			this._bInitialized = false;
 		},
+		
+		onBeforeRendering: function() {
+			if(!this._bInitialized){
+				var oModel = this.getModel("ui");
+				oModel.setProperty("/RequisEditable", false)
+				this.createSimpleFormContent();
+				this._bInitialized = true;
+			}
+		},	
 
 		createSimpleFormContent: function() {
-			var bEditable = this.getFormEditable();
 			var oForm = new SimpleForm("infoForm", {
 				minWidth: 1024,
 				maxContainerCols: 2,
@@ -42,23 +44,23 @@ sap.ui.define([
 					new Label({
 						text: "{i18nCom>requisName}",
 						labelFor: "idPos",
-						required: bEditable
+						required: "{ui>/RequisEditable}"
 					}),
 					new Input("idPos", {
 						value: "{ui>Title}",
-						editable: bEditable
+						editable: "{ui>/RequisEditable}"
 					}),
 
 					new Label({
 						text: "{i18nCom>Project}",
 						labelFor: "idProj",
-						required: bEditable
+						required: "{ui>/RequisEditable}"
 					}),
 					new Input("idProj", {
 						value: "{ui>ProjectId}",
 						showSuggestion: true,
 						showValueHelp: true,
-						editable: bEditable,
+						editable: "{ui>/RequisEditable}",
 						events: [{
 							valueHelpRequest: "this._handleProjValueHelp"
 						}]
@@ -70,12 +72,12 @@ sap.ui.define([
 					new Label({
 						text: "{i18nCom>priority}",
 						labelFor: "idPrior",
-						required: bEditable
+						required: "{ui>/RequisEditable}"
 					}),
 					
 					new ComboBox("idPrior", {
 						selectedKey: "{ui>PriorityId}",
-						editable: bEditable
+						editable: "{ui>/RequisEditable}"
 					}).bindAggregation("items", "ui>/AvailablePriorities", new Item({
 							key: "{ui>PriorityCode}",
 							text: { parts: [{path: 'ui>PriorityCode'},
@@ -94,11 +96,11 @@ sap.ui.define([
 					new Label({
 						text: "{i18nCom>location}",
 						labelFor: "idLocation",
-						required: bEditable
+						required: "{ui>/RequisEditable}"
 					}),
 					new Input("idLocation", {
 						value: "{ui>Location}",
-						editable: bEditable
+						editable: "{ui>/RequisEditable}"
 					}),
 
 					new Label({
@@ -114,7 +116,7 @@ sap.ui.define([
 						growing: true,
 						growingMaxLines: 5,
 						value: "{ui>Keywords}",
-						editable: bEditable
+						editable: "{ui>/RequisEditable}"
 					}),
 					new Label({
 						text: "{i18nCom>descr}",
@@ -122,14 +124,17 @@ sap.ui.define([
 					}),
 					new TextArea("idDescr", {
 						value: "{ui>Description}",
-						editable: bEditable,
+						editable: "{ui>/RequisEditable}",
 						rows: 7
 					})
 				]
 			});
+		
 
 			this.addItem(oForm);
 		},
+		
+		
 
 		renderer: {}
 	});

@@ -11,19 +11,28 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 			oEventBus.subscribe("DetailVacancy", "RequisCancel",
 					this.onRequisCancel, this);
 			oEventBus.subscribe("DetailVacancy", "RequisSave",
-					this.loadRequisitions, this);
+					this.onRequisSave, this);
 		},
 
 		onAfterRendering : function() {
 			this.loadRequisitions();
 		},
 
-		loadRequisitions : function() {
+		loadRequisitions : function(isReload, sPath) {
 			var oModel = this.getModel("ui");
+			var that = this;
 			DataHelper.getRequisitions(this).then(
 					function(aRequisitions) {
 						oModel.setProperty("/JobRequisCollection", Mapper
 								.mapRequisitions(aRequisitions.data));
+						if(isReload){
+							//refresh model and set new selection
+							oModel.refresh();
+							that._setNewSelection("0");
+							var index = parseInt(sPath
+									.substring(sPath.lastIndexOf('/') + 1));
+							that._setNewSelection(index);		
+						}		
 					});
 		},
 
@@ -43,6 +52,10 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 				from : "master",
 				index : selPath.substr(("/JobRequisCollection/").length)
 			}, false);
+		},
+		
+		onRequisSave: function(sView, oEvent, sPath){
+			this.loadRequisitions(true, sPath);
 		},
 
 		// Requisition search
