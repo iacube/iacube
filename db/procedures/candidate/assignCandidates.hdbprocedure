@@ -1,7 +1,7 @@
 PROCEDURE "IACUBE"."iacube.db.procedures.candidate::assignCandidates"(
 	IN	candidates	"IACUBE"."iacube.db::types.assignCandidates" DEFAULT EMPTY, 
 	OUT	errors 		"IACUBE"."iacube.db::types.error"			 DEFAULT EMPTY
-) 
+)
 	LANGUAGE SQLSCRIPT
 	SQL SECURITY INVOKER 
 	DEFAULT SCHEMA IACUBE

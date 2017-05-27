@@ -4,7 +4,7 @@ PROCEDURE "IACUBE"."iacube.db.procedures.requisition::updateRequisitions"(
 	IN  comments "IACUBE"."iacube.db::types.updateRequisitionComments" DEFAULT EMPTY,
 
 	OUT	errors 		"IACUBE"."iacube.db::types.error"				 DEFAULT EMPTY
-) 
+)
 	LANGUAGE SQLSCRIPT
 	SQL SECURITY INVOKER 
 	DEFAULT SCHEMA IACUBE
@@ -72,10 +72,10 @@ BEGIN
 				a."ReqId" AS "tempId",
 				c."Id" AS "existedPriorityType",
 				d."Id" AS "existedStatusCodeTypes",
-				e."Id" AS "existedSubcategoryTypes"
+				e."Id" AS "existedSubcategoryTypes",
+				CURRENT_TIMESTAMP AS "UpdatedAt",
+				SESSION_USER AS "UpdatedBy"
 			FROM :details AS a
-			LEFT JOIN "iacube.db::tables.Requisition.Requisitions" AS b
-				ON a."ReqId" = b."ReqId"
 			LEFT JOIN "iacube.db::tables.Requisition._dictionary.PriorityTypes" AS c
 				ON a."PriorityId" = c."Id"	
 			LEFT JOIN "iacube.db::tables.Requisition._dictionary.StatusCodeTypes" AS d
@@ -95,7 +95,7 @@ BEGIN
 	;
 	
 	UPSERT "iacube.db::tables.Requisition.Requisitions"
-		("ReqId","Title","ProjectId","PriorityId","Location","StatusCodeId","SubcategoryId","Language","Keywords","Description")
+		("ReqId","Title","ProjectId","PriorityId","Location","StatusCodeId","SubcategoryId","Language","Keywords","Description","UpdatedAt","UpdatedBy")
 		SELECT
 				"ReqId", 
 				"Title",
@@ -106,8 +106,19 @@ BEGIN
 				"SubcategoryId",
 				"Language",
 				"Keywords",
-				"Description"
+				"Description",
+				"UpdatedAt",
+				"UpdatedBy"
 			FROM :checkedDetails
+	;
+	UPSERT "iacube.db::tables.Requisition.Requisitions"
+		("ReqId","OpenedAt","OpenedBy")
+		SELECT
+				"ReqId", 
+				"UpdatedAt",
+				"UpdatedBy"
+			FROM :checkedDetails
+			WHERE "flag" = 'I'
 	;
 	
 	skills = 

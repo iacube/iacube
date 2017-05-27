@@ -2,7 +2,7 @@ PROCEDURE "IACUBE"."iacube.db.procedures.requisition::getRequsitions"(
 	IN  searchTerm	 NVARCHAR(1000),
 	IN  filter		 NVARCHAR(5000),
 	IN  paging		 "IACUBE"."iacube.db::types.paging"						  DEFAULT EMPTY,
-	
+
 	OUT requisitions "IACUBE"."iacube.db::types.searchRequisitions"			  DEFAULT EMPTY,
 	OUT candidates	 "IACUBE"."iacube.db::types.searchRequisitionsCandidates" DEFAULT EMPTY,
 	
@@ -28,8 +28,8 @@ BEGIN
 			a."StatusCodeId",
 			a."SubcategoryId",
 			b."Name" AS "SubcategoryName",
-			a."CreatedBy",
-			a."CreatedAt",
+			a."UpdatedBy",
+			a."UpdatedAt",
 			a."OpenedBy",
 			a."OpenedAt"
 		FROM "iacube.db::tables.Requisition.Requisitions" AS a
@@ -45,8 +45,8 @@ BEGIN
 			a."StatusCodeId",
 			a."SubcategoryId",
 			b."Name",
-			a."CreatedBy",
-			a."CreatedAt",
+			a."UpdatedBy",
+			a."UpdatedAt",
 			a."OpenedBy",
 			a."OpenedAt"
 	;
@@ -68,8 +68,8 @@ BEGIN
 				"StatusCodeId",
 				"SubcategoryId",
 				"SubcategoryName",
-				"CreatedBy",
-				"CreatedAt",
+				"UpdatedBy",
+				"UpdatedAt",
 				"OpenedBy",
 				"OpenedAt",
 				DAYS_BETWEEN (CURRENT_DATE,ADD_DAYS("OpenedAt",b."Days")) AS "DaysRemain"
