@@ -22,15 +22,22 @@ sap.ui.define([
 		 * @param {object} oEvent Event parameter
 		 * @public
 		 */
-		onRequisitionPress: function(oEvent){
+		handleCandidatePress: function(oEvent){
 			var sPath = oEvent.getSource().getBindingContext("ui").getPath();
-			var ReqId = this.getModel("ui").getProperty(sPath).CandidateId;
+			var CandId = this.getModel("ui").getProperty(sPath).CandidateId;
 			var iIndex	= sPath.split("/")[2];
 			this.getRouter().navTo("candidate", {
 				index: parseInt(iIndex)
 			});
 		},
-
+		
+		onSearch :function(oEvent){
+			var oSearchTerm = oEvent.getSource().getValue;
+			var oModel = this.getModel("ui");
+			DataHelper.getCandidates(this).then(function(aCandidates){
+				oModel.setProperty("/candidates", Mapper.mapCandidates(aCandidates.data));
+			});
+		},
 		/**
 		 * Called when the View has been rendered (so its HTML is part of the document). Post-rendering manipulations of the HTML could be done here.
 		 * This hook is the same one that SAPUI5 controls get after being rendered.

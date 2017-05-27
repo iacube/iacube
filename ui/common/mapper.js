@@ -7,7 +7,7 @@ sap.ui.define([
 		return {
 
 			mapRequisitions: function(aRequisitions) {
-				return aRequisitions.data.map(function(r){
+				return aRequisitions.map(function(r){
 					return {
 						ReqId: r.ReqId,
 						Title: r.Title,
@@ -77,9 +77,111 @@ sap.ui.define([
 			},
 			mapCandidate: function(c) {
 				return {
-					}
+					CandidateId: c.CandidateId,
+					LastName: c.LastName,
+					FirstName: c.FirstName,
+					MiddleName: c.MiddleName,
+					BirthDate: c.BirthDate,
+					GenderId: c.GenderId,
+					Location: c.Location,
+					ProfArea: c.ProfArea,
+					contacts: c.contacts.map(function(con) 	{
+						return{	
+							ContactTypeId: con.ContactTypeId,
+							Value: con.Value
+							}
+					}),
+					languages: c.languages.map(function(l){
+						return{
+							LanguageId:l.LanguageId,
+							LevelId: l.LevelId
+						}
+					}),
+					
+					profiles: c.profiles.map(function(p) {
+						return {
+							ProfileId: p.ProfileId,
+							ExternalId: p.ExternalId,
+							ProfileTypeId: p.ProfileTypeId,
+							Link: p.Link,
+							Headline: p.Headline,
+							Summary: p.Summary,
+							DesiredPosition:p.DesiredPosition,
+							Salary: p.Salary,
+							SalaryCurr: p.SalaryCurr,
+							RelocationId: p.RelocationId,
+							BusinessTripId: p.BusinessTripId,
+							experience: p.experience.map(function(e){
+								return{
+									Company:e.Company,
+									Position:e.Position,
+									Description:e.Description,
+									StartDate: e.StartDate,
+									EndDate: e.EndDate
+								}
+								
+							}),
+							schedules: p.schedules.map(function(sc){
+								return{
+									ScheduleId: sc.ScheduleId
+								}
+							}),
+							skills: p.skills.map(function(sk) {
+								return{
+									ProfileId:sk.ProfileId,
+									Skill: sk.Skill
+								}
+							})
+							
+						}	
+					})
 				}
-
+			},
+			mapCandidates: function(aCandidates){
+				return aCandidates.map(function(c){
+					return{
+						CandidateId: c.CandidateId,
+						LastName: c.LastName,
+						FirstName: c.FirstName,
+						Location: c.Location,
+						ProfArea: c.ProfArea,
+						profiles: c.profiles.map(function(p) {
+							return {
+								CandidateId: p.CandidateId,
+								ProfileId: p.ProfileId,
+								ExternalId: p.ExternalId,
+								ProfileTypeId: p.ProfileTypeId,
+								Link: p.Link
+							}
+						}),
+						salary: c.salary.map(function(s){
+							return{
+								CandidateId: s.CandidateId,
+								ProfileId: s.ProfileId,
+								Salary: s.Salary,
+								SalaryCurr: s.SalaryCurr,
+							}
+						}),
+						contacts: c.contacts.map(function(con) 	{
+							return{	
+								CandidateId: con.CandidateId,
+								ContactTypeId: con.ContactTypeId,
+								Value: con.Value
+								}
+						}),
+						languages: c.languages.map(function(l){
+							return{
+								CandidateId: l.CandidateId,
+								LanguageId:l.LanguageId,
+								LevelId: l.LevelId
+							}
+						}),
+						
+					}
+				})
+					
+			}
+				
 		}
 		
 	});
