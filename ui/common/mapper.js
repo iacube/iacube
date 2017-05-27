@@ -2,7 +2,6 @@ sap.ui.define([ "sap/m/MessageToast", "iacube/ui/common/serviceAccess" ],
 		function(MessageToast, ServiceAccess) {
 			"use strict";
 			return {
-
 				mapRequisitions : function(aRequisitions) {
 					return aRequisitions.map(function(r) {
 						return {
@@ -13,8 +12,8 @@ sap.ui.define([ "sap/m/MessageToast", "iacube/ui/common/serviceAccess" ],
 							Location : r.Location,
 							StatusCodeId : r.StatusCodeId,
 							SubcategoryName : r.SubcategoryName,
-							CreatedBy : r.CreatedBy,
-							CreatedAt : new Date(r.CreatedAt),
+							CreatedBy: r.OpenedBy,
+							CreatedAt: new Date(r.OpenedAt),
 							DaysRemain: r.DaysRemain,
 							candidates : r.candidates.map(function(c) {
 								return {
@@ -41,8 +40,8 @@ sap.ui.define([ "sap/m/MessageToast", "iacube/ui/common/serviceAccess" ],
 						StatusCodeId : r.StatusCodeId,
 						SubcategoryId : r.SubcategoryId,
 						SubcategoryName : r.SubcategoryName,
-						CreatedBy : r.CreatedBy,
-						CreatedAt : new Date(r.CreatedAt),
+						CreatedBy: r.OpenedBy,
+						CreatedAt: new Date(r.OpenedAt),
 						Language : r.Language,
 						Keywords : r.Keywords,
 						Description : r.Description,
