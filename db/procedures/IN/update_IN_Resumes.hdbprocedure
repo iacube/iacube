@@ -1,0 +1,49 @@
+PROCEDURE "IACUBE"."iacube.db.procedures.IN::update_IN_Resumes" (
+	IN 	Profiles	"IACUBE"."iacube.db::types.update_INProfile"		DEFAULT EMPTY,
+	IN 	Experience	"IACUBE"."iacube.db::types.update_INExperience"		DEFAULT EMPTY,
+	IN	Skills		"IACUBE"."iacube.db::types.update_INSkills"			DEFAULT EMPTY,
+
+	OUT	errors 		"IACUBE"."iacube.db::types.error"					DEFAULT EMPTY
+)
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER 
+	DEFAULT SCHEMA IACUBE
+	AS
+BEGIN
+	
+	UPSERT "iacube.db::tables._IN.Profiles"
+		("ProfileId","Name","Position","Location","Summary","Link","Photo")
+		SELECT 
+				"ProfileId",
+				IFNULL("Name",'') AS "Name",
+				"Position",
+				"Location",
+				"Summary",
+				"Link",
+				"Photo"
+			FROM :Profiles
+	;
+	
+	UPSERT "iacube.db::tables._IN.Experience"
+		("ProfileId","Position","Company","Duration","Description")
+		SELECT 
+				"ProfileId",
+				"Position",
+				"Company",
+				"Duration",
+				"Description"
+			FROM :Experience
+	;
+	
+	UPSERT "iacube.db::tables._IN.Skills"
+		("ProfileId","Skill")
+		SELECT 
+				"ProfileId",
+				"Skill"
+			FROM :Skills
+	;
+--move data to main tables	
+	CALL "iacube.db.procedures.IN::transform_IN_Resumes"();
+	
+	
+END;

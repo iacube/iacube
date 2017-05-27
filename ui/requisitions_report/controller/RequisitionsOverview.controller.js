@@ -1,12 +1,14 @@
 sap.ui.define([
 	"requisitions_report/controller/BaseController",
 	"iacube/ui/common/dataHelper",
-	"iacube/ui/common/mapper"
-], function(Controller, DataHelper, Mapper) {
+	"iacube/ui/common/mapper",
+	"requisitions_report/utils/formatter"
+], function(Controller, DataHelper, Mapper, Formatter) {
 	"use strict";
 
 	return Controller.extend("requisitions_report.controller.RequisitionsOverview", {
 
+		formatter: Formatter,
 		/**
 		 * Called when a controller is instantiated and its View controls (if available) are already created.
 		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
@@ -33,6 +35,15 @@ sap.ui.define([
 				index: parseInt(iIndex)
 			});
 		},
+		
+		onRequisitionSelect: function(oEvent){
+			var oModel = this.getModel("ui");
+			var sPath = oEvent.getSource().getBindingContext("ui").getPath();
+			var iReqId = oModel.getProperty(sPath).ReqId;
+			var iIndex	= sPath.split("/")[2];
+			oModel.setProperty("/selectedRequisition", iReqId);
+			oModel.setProperty("/selectedRequisitionIndex", iIndex);
+		},
 
 		/**
 		 * Called when the View has been rendered (so its HTML is part of the document). Post-rendering manipulations of the HTML could be done here.
@@ -58,6 +69,13 @@ sap.ui.define([
 			var oBinding = oEvent.getSource().getBindingContext("ui");			
 			this._oCandPopover.setBindingContext(oBinding, "ui");
 			this._oCandPopover.openBy(oEvent.getSource());
+		},
+		
+		onShowCandidates: function(oEvent){
+			var iIndex = this.getModel("ui").getProperty("/selectedRequisitionIndex");
+			this.getRouter().navTo("candidates", {
+				ind: parseInt(iIndex)
+			});
 		}
 
 	});

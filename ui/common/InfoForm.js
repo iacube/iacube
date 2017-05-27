@@ -6,16 +6,26 @@ sap.ui.define([
 	"sap/m/Input",
 	"sap/ui/core/Item",
 	"sap/m/ComboBox",
-	"iacube/ui/common/formatterCom"
-], function(VBox, SimpleForm, Label, TextArea, Input, Item, ComboBox, oFormatterCom) {
+	"iacube/ui/common/formatterCom",
+	"sap/ui/model/json/JSONModel"
+], function(VBox, SimpleForm, Label, TextArea, Input, Item, ComboBox, oFormatterCom, JSONModel) {
 	"use strict";
 
 	return VBox.extend("iacube.ui.common.InfoForm", {
 		
 		init: function() {
 			VBox.prototype.init.apply(this, arguments);
-			this.createSimpleFormContent();
+			this._bInitialized = false;
 		},
+		
+		onBeforeRendering: function() {
+			if(!this._bInitialized){
+				var oModel = this.getModel("ui");
+				oModel.setProperty("/RequisEditable", false)
+				this.createSimpleFormContent();
+				this._bInitialized = true;
+			}
+		},	
 
 		createSimpleFormContent: function() {
 			var oForm = new SimpleForm("infoForm", {
@@ -71,14 +81,16 @@ sap.ui.define([
 					}).bindAggregation("items", "ui>/AvailablePriorities", new Item({
 							key: "{ui>PriorityCode}",
 							text: { parts: [{path: 'ui>PriorityCode'},
-							                {path: 'i18nCom>priorLow'},
-							                {path: 'i18nCom>priorMedium'},
-							                {path: 'i18nCom>priorHigh'}],
-									formatter: function(sPriorCode, sProirLow, sPriorMedium, sPriorHigh) {
-										return oFormatterCom.getPriorDescr(sPriorCode, sProirLow, sPriorMedium, sPriorHigh);
+							                {path: 'i18nCom>priorL'},
+							                {path: 'i18nCom>priorMA'},
+							                {path: 'i18nCom>priorMI'},
+							                {path: 'i18nCom>priorH'},
+							                {path: 'i18nCom>priorN'},
+							                {path: 'i18nCom>priorVH'}],
+									formatter: function(sPriorCode, sPriorL, sPriorMA, sPriorMI, sPriorH, sPriorN, sPriorVH) {
+										return oFormatterCom.getPriorDescr(sPriorCode, sPriorL, sPriorMA, sPriorMI, sPriorH, sPriorN, sPriorVH);
 								}}
-									
-									
+				
 						})),
 					
 					new Label({
@@ -117,9 +129,12 @@ sap.ui.define([
 					})
 				]
 			});
+		
 
 			this.addItem(oForm);
 		},
+		
+		
 
 		renderer: {}
 	});

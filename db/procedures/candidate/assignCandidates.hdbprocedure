@@ -1,7 +1,7 @@
 PROCEDURE "IACUBE"."iacube.db.procedures.candidate::assignCandidates"(
 	IN	candidates	"IACUBE"."iacube.db::types.assignCandidates" DEFAULT EMPTY, 
 	OUT	errors 		"IACUBE"."iacube.db::types.error"			 DEFAULT EMPTY
-) 
+)
 	LANGUAGE SQLSCRIPT
 	SQL SECURITY INVOKER 
 	DEFAULT SCHEMA IACUBE
@@ -67,20 +67,20 @@ BEGIN
 	;
 	errors = 
 		SELECT 
-				15001	AS "id",
-				"ReqId" AS "details"
+				15001	AS error_code,
+				"ReqId" AS details
 			FROM :prepared
 			WHERE "existedReq" IS NULL
 		UNION
 		SELECT 
-				15002			   AS "id",
-				"existedCandidate" AS "details"
+				15002			   AS error_code,
+				"existedCandidate" AS details
 			FROM :prepared
 			WHERE "existedCandidate" IS NULL
 		UNION
 		SELECT 
-				15003	 AS "id",
-				"ReqId"  AS "details"
+				15003	 AS error_code,
+				"ReqId"  AS details
 			FROM :prepared
 			WHERE "existedStatus" IS NULL
 	;

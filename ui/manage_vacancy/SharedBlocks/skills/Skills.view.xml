@@ -1,5 +1,4 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:html="http://www.w3.org/1999/xhtml"
-xmlns:common="iacube.ui.common" controllerName="manage_vacancy.SharedBlocks.skills.SkillsContr">
-	<common:SkillsTable id="idSkillsTable"
-						delete="onSkillDelete"/>
+xmlns:common="iacube.ui.common">
+	<common:SkillsTable id="idSkillsTable"/>
 </mvc:View>

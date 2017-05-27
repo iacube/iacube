@@ -3,7 +3,7 @@ PROCEDURE "IACUBE"."iacube.db.procedures.HH::transform_HH_Resumes"()
 	SQL SECURITY INVOKER 
 	DEFAULT SCHEMA IACUBE
 	AS
-BEGIN
+BEGIN 
 
 	candidates =
 		SELECT 
@@ -121,7 +121,8 @@ BEGIN
 				a."Position",
 				a."Description",
 				a."StartDate",
-				a."EndDate"
+				a."EndDate",
+				MONTHS_BETWEEN(a."StartDate",a."EndDate") AS "Duration"
 			FROM "iacube.db::tables._HH.Experience" AS a
 			INNER JOIN :profiles AS c
 				ON a."ResumeId" = c."ResumeId"
@@ -169,14 +170,15 @@ BEGIN
 			FROM :profiles
 	;
 	UPSERT "iacube.db::tables.Profile.Experience"
-		("ProfileId","Company","Position","Description","StartDate","EndDate")
+		("ProfileId","Company","Position","Description","StartDate","EndDate","Duration")
 		SELECT
 				"ProfileId",
 				"Company",
 				"Position",
 				"Description",
 				"StartDate",
-				"EndDate"
+				"EndDate",
+				"Duration"
 			FROM :experience
 	;
 	UPSERT "iacube.db::tables.Profile.Schedules"

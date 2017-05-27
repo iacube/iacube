@@ -14,6 +14,8 @@ sap.ui.define([
 			 * @returns {Promise} Standard Promise
 			 * @public
 			 */
+			
+			/*REQUISITION*/
 			getRequisitions: function(oComp, aContents) {
 				return new Promise(function(resolve, reject) {
 					var sPath = "/iacube/service/requisitions";
@@ -45,9 +47,30 @@ sap.ui.define([
 					});
 				});
 			},
-			getCandidates: function(oComp, aContents) {
+			
+			createRequisition: function(oRequisition) {
 				return new Promise(function(resolve, reject) {
-					var sPath = "/iacube/service/candidates";
+					var sPath = "/iacube/service/requisitions";
+					ServiceAccess.ajax({
+						type: "PUT",					
+						url: sPath,
+						data: oRequisition,
+						success: function(data) {
+							resolve(data);
+						},
+						error: function() {
+							MessageToast.show("Data retrieval error");
+							reject();
+						}
+					});
+				});
+			},
+			
+			/*CANDIDATES*/
+			
+			getCandidates: function(requisitionId){
+				return new Promise(function(resolve, reject) {
+					var sPath = "/iacube/service/candidates?filter="+JSON.stringify({ReqId:requisitionId});
 					ServiceAccess.ajax({
 						url: sPath,
 						success: function(data) {
@@ -61,9 +84,9 @@ sap.ui.define([
 				});
 			},
 			
-			getCandidate: function(CandidateId) {
+			getCandidate: function(CandId) {
 				return new Promise(function(resolve, reject) {
-					var sPath = "/iacube/service/candidate/"+CandidateId;
+					var sPath = "/iacube/service/candidate/"+CandId;
 					ServiceAccess.ajax({
 						url: sPath,
 						success: function(data) {
@@ -75,6 +98,25 @@ sap.ui.define([
 						}
 					});
 				});
+			},
+			
+			assignCandidatesToRequisitions: function(oCandAssigned){
+				return new Promise(function(resolve, reject) {
+					var sPath = "/iacube/service/candidates";
+					ServiceAccess.ajax({
+						type: "PUT",
+						data: oCandAssigned,
+						url: sPath,
+						success: function(data) {
+							resolve(data);
+						},
+						error: function() {
+							MessageToast.show("Data retrieval error");
+							reject();
+						}
+					});
+				});
+
 			}
 
 		};

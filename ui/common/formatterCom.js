@@ -13,6 +13,15 @@ sap.ui.define([
 				else if(sCommId === "NOTE"){
 					return "sap-icon://notes";
 				}
+				else if(sCommId === "OPEN"){
+					return "sap-icon://create-form"
+				}
+				else if(sCommId === "OTHER"){
+					return "sap-icon://employee"
+				}
+				else if(sCommId === "EMAIL"){
+					return "sap-icon://email"
+				}
 			},
 			
 			getCommentType: function(sCommId, sCommCall, sCommNote){
@@ -24,19 +33,45 @@ sap.ui.define([
 				}
 			},
 			
-			getPriorDescr: function (sPriorCode, sPriorLow, sPriorMedium, sPriorHigh) {
+			getPriorDescr: function (sPriorCode, sPriorL, sPriorMA, sPriorMI, sPriorH, sPriorN, sPriorVH) {
 				switch (sPriorCode) {
 					case "H":
-						return sPriorHigh;
+						return sPriorH;
 						break;
-					case "M":
-						return sPriorMedium;
+					case "MA":
+						return sPriorMA;
+						break;
+					case "MI":
+						return sPriorMI;
+						break;
+					case "N":
+						return sPriorN;
+						break;
+					case "VH":
+						return sPriorVH;
 						break;
 					case "L":
-						return sPriorLow;
-						break
+						return sPriorL;
+						break;
 						}
 			},
+			
+			getCommentStatus: function(sCommentStatusId) {
+				switch (sCommentStatusId) {
+				case "E":
+					return "Error";
+					break;
+				case "W":
+					return "Warning";
+					break;
+				case "I":
+					return "Information";
+					break;
+				case "S":
+					return "Success";
+					break
+					}
+			}
 			
 	};
 	

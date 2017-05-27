@@ -1,5 +1,5 @@
 namespace iacube.db;
-
+ 
 @Schema: 'IACUBE'
 context types {
 	
@@ -22,6 +22,7 @@ context types {
 	type priorityId	  	  : String(10);
 	type subcategoryId	  : Integer;
 	type commentTypeId	  : String(10);
+	type commentStatusId  : String(1);
 	
 	type profileId 	 	    : Integer;
 	type profileTypeId    	: String(10);
@@ -35,11 +36,14 @@ context types {
 	type languageLevelId : String(10);
 	type languageId 	 : String(10);
 	type contactTypeId 	 : String(10);
-			
+ 	type docId           : hana.SMALLINT;
+ 	type docExtId        : hana.SMALLINT;			
+ 	type docExtType      : String(2);	
+ 	type docContent      : LargeString;			
 		
 	type error{
-		id		: Integer;
-		details : String(1000);
+		ERROR_CODE	: Integer;
+		DETAILS : String(1000);
 	};
 	
 	type nameValue{
@@ -113,6 +117,31 @@ context types {
 		LevelId		: hhSID;
 	};
 	
+	type inSID : String(100);
+	
+	type update_INProfile{
+		ProfileId		: inSID;
+		Name			: name;	
+		Position		: String(1000);
+		Location		: String(100);
+		Summary			: LargeString;
+		Link			: String(1000);
+		Photo			: String(1000);
+	};
+	type update_INExperience{
+		ProfileId	 : inSID;
+		Company		 : String(1000); 	// ????key field
+		Position	 : String(1000);
+		Duration	 : String(100);
+		Description	 : LargeString;
+	};
+	
+	type update_INSkills{
+		ProfileId : inSID;
+		Skill	 : String(1000);
+	};
+	
+	
 //Requisitions
 	type searchRequisitions{
 		ReqId			: reqId;
@@ -123,10 +152,11 @@ context types {
 		StatusCodeId	: statusCodeTypeId;
 		SubcategoryId 	: subcategoryId;
 		SubcategoryName	: String(200);
-		CreatedBy		: creator;
-		CreatedAt		: datetime;
+		UpdatedBy		: creator;
+		UpdatedAt		: datetime;
 		OpenedBy		: creator;
 		OpenedAt		: datetime;
+		DaysRemain		: Integer;
 	};
 //	|___
 		type searchRequisitionsCandidates{
@@ -149,13 +179,14 @@ context types {
 		StatusCodeId	: statusCodeTypeId;
 		SubcategoryId 	: subcategoryId;
 		SubcategoryName	: String(200);
-		CreatedBy		: creator;
-		CreatedAt		: datetime;
+		UpdatedBy		: creator;
+		UpdatedAt		: datetime;
 		Language		: lang;
 		Keywords		: LargeString;
 		Description		: LargeString;
 		OpenedBy		: creator;
 		OpenedAt		: datetime;
+		DaysRemain		: Integer;
 	};
 //	|
 	type requisitionSkills{
@@ -171,6 +202,7 @@ context types {
 		CreatedBy		: creator;
 		Title			: String(200);
 		Text			: String(5000);
+		CommentStatusId : commentStatusId;
 	};
 //	|___
 		type requisitionCandidates{
@@ -219,6 +251,7 @@ context types {
 		CommentTypeId	: commentTypeId;
 		Title			: String(200);
 		Text			: String(5000);
+		CommentStatusId	: commentStatusId;
 		flag			: sflag;
 	};
 
@@ -230,6 +263,7 @@ context types {
 		Location	: String(1000);
 		ProfArea	: String(1000);
 		Photo		: String(1000);
+		Distance	: Integer;
 	};
 	type searchCandidatesProfiles{
 		CandidateId	: candidateId;
@@ -280,7 +314,7 @@ context types {
 		Value		  : String(1000);
 	};
 	
-	type candidateLanguages{
+	type candidateLanguages{ 
 		//CandidateId : candidateId;
 		LanguageId 	: languageId;
 		LevelId		: languageLevelId;
@@ -340,4 +374,14 @@ context types {
 		StatusId	: statusTypeId;
 		flag		: sflag;
 	};
+
+	type relatedCandidates{
+		
+		ProfileId	: profileId;
+
+ 		CandidateId	: candidateId;
+
+                score           : hana.SMALLINT;
+        
+       }
 };

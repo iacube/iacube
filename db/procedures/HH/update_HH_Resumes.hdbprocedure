@@ -8,7 +8,7 @@ PROCEDURE "IACUBE"."iacube.db.procedures.HH::update_HH_Resumes" (
 	IN	Languages	"IACUBE"."iacube.db::types.update_HHLanguages"		DEFAULT EMPTY,
 	
 	OUT	errors 		"IACUBE"."iacube.db::types.error"					DEFAULT EMPTY
-) 
+)
 	LANGUAGE SQLSCRIPT
 	SQL SECURITY INVOKER 
 	DEFAULT SCHEMA IACUBE

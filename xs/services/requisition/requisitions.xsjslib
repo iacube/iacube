@@ -52,24 +52,24 @@ var call = {
 			for(i = 0; i < responce.REQUISITIONS.length; i++){
 				result.push(
 					addTo({
-						ReqId: responce.REQUISITIONS[i].ReqId,
-						Title: responce.REQUISITIONS[i].Title,
-						ProjectId: responce.REQUISITIONS[i].ProjectId,
-						PriorityId: responce.REQUISITIONS[i].PriorityId,
-						Location: responce.REQUISITIONS[i].Location,
-						StatusCodeId: responce.REQUISITIONS[i].StatusCodeId,
-						SubcategoryId: responce.REQUISITIONS[i].SubcategoryId,
-						SubcategoryName: responce.REQUISITIONS[i].SubcategoryName,
-						CreatedBy: responce.REQUISITIONS[i].CreatedBy,
-						CreatedAt: responce.REQUISITIONS[i].CreatedAt,
-						OpenedBy: responce.REQUISITIONS[i].OpenedBy,
-						OpenedAt: responce.REQUISITIONS[i].OpenedAt
+						ReqId			: responce.REQUISITIONS[i].ReqId,
+						Title			: responce.REQUISITIONS[i].Title,
+						ProjectId		: responce.REQUISITIONS[i].ProjectId,
+						PriorityId		: responce.REQUISITIONS[i].PriorityId,
+						Location		: responce.REQUISITIONS[i].Location,
+						StatusCodeId	: responce.REQUISITIONS[i].StatusCodeId,
+						SubcategoryId	: responce.REQUISITIONS[i].SubcategoryId,
+						SubcategoryName	: responce.REQUISITIONS[i].SubcategoryName,
+						UpdatedBy		: responce.REQUISITIONS[i].UpdatedBy,
+						UpdatedAt		: responce.REQUISITIONS[i].UpdatedAt, 
+						OpenedBy		: responce.REQUISITIONS[i].OpenedBy,
+						OpenedAt		: responce.REQUISITIONS[i].OpenedAt,
+						DaysRemain		: responce.REQUISITIONS[i].DaysRemain
 				}));
 			}
 			
 			filter.SubcategoryId.values = [];
 			filter.StatusCodeId.values  = [];
-			
 			
 			for(i = 0; i < responce.STATUSCODETYPES.length; i++){
 				filter.StatusCodeId.values.push(responce.STATUSCODETYPES[i].id);
@@ -82,8 +82,8 @@ var call = {
 			}
 			
 			return {
-				data   		: result,
-				filter 		: filter
+				data	: result,
+				filter 	: filter
 			};
 		}
 	},
@@ -161,6 +161,9 @@ var call = {
 						type : "string"
 					},
 					Text : {
+						type : "string"
+					},
+					CommentStatusId : {
 						type : "string"
 					},
 					flag:{
