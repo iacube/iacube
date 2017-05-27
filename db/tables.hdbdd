@@ -123,36 +123,32 @@ context tables{
 			};*/
 		};
 	};
-/*	
-	context _LI{
+
+	context _IN{
 		
-		type liSID : String(100);
+		type inSID : String(100);
 		
 		entity Profiles{
-			Id			: liSID;
-			LastName	: name;
-			FirstName	: name;
-			Headline	: String(5000);
-			Country		: String(100);
-			ZIPcode		: String(100);
-			Summary		: LargeString;
-			Link		: String(1000);
-			LastChanged	: datetime;
+			key ProfileId	: inSID;
+				Name		: name;
+				Position	: String(1000);
+				Location	: String(100);
+				Summary		: LargeString;
+				Link		: String(1000);
+				Photo		: String(1001);
 		};
 		
 		entity Experience{
-			ProfileId	: liSID;
-			Title		: String(1000);
-			Company		: String(100);
-			StartDate	: date;
-			EndDate		: date;
-			Description	: LargeString;
+			key ProfileId	: inSID;
+			key Company		: String(100);
+			key Position	: String(1000);
+				Duration	: String(100);
+				Description	: LargeString;
 		};
 		
 		entity Skills{
-			ProfileId	 : liSID;
-			Skill		 : String(1000);
-			Endorsements : BinaryFloat;
+			key ProfileId	 : inSID;
+			key Skill		 : String(1000);
 		};
 		
 		//entity Industries{
@@ -166,9 +162,9 @@ context tables{
 		//		liName : String(100);
 		//		iaId   : tables.Profile.industryTypeId;
 		//	};
-		};
+		//};
 	};
-*/	
+
 	context Candidate{
 
 		type candidateId   	 : Integer;
@@ -267,12 +263,13 @@ context tables{
 		};
 		
 		entity Experience{
-			ProfileId	: profileId;
-			Company		: String(1000);
-			Position	: String(1000);
-			Description	: LargeString;
-			StartDate	: date;
-			EndDate		: date;
+			key ProfileId	: profileId;
+			key Company		: String(1000);
+				Position	: String(1000);
+				Description	: LargeString;
+				StartDate	: date;
+				EndDate		: date;
+				Duration	: Integer;
 		};
 			
 		entity Skills{
@@ -337,11 +334,11 @@ context tables{
 				Title			: String(100); 
 				ProjectId		: String(100);
 				PriorityId		: priorityId;
-				Location		: String(1000);
+				Location		: String(1001);
 				StatusCodeId	: statusCodeTypeId; 
 				SubcategoryId 	: subcategoryId;
-				CreatedBy		: creator;
-				CreatedAt		: datetime;
+				UpdatedBy		: creator;
+				UpdatedAt		: datetime;
 				Language		: lang;
 				Keywords		: LargeString;
 				Description		: LargeString;

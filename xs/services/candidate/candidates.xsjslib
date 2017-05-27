@@ -64,7 +64,7 @@ var call = {
 						Location	: responce.CANDIDATES[i].Location,
 						ProfArea	: responce.CANDIDATES[i].ProfArea,
 						Photo       : responce.CANDIDATES[i].Photo,
-						Distancde   : responce.CANDIDATES[i].Distance,
+						Distance   : responce.CANDIDATES[i].Distance,
 				}));
 			}
 			

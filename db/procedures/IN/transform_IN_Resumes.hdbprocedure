@@ -1,0 +1,120 @@
+PROCEDURE "IACUBE"."iacube.db.procedures.IN::transform_IN_Resumes"() 
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER
+	DEFAULT SCHEMA IACUBE
+	AS
+BEGIN
+
+	candidates =
+		SELECT 
+				IFNULL(c."CandidateId","iacube.db.sequences::candidateId".nextval) AS "CandidateId",
+				SUBSTR_AFTER (a."Name",' ') AS "LastName",
+				SUBSTR_BEFORE (a."Name",' ') AS "FirstName",
+				a."Location" AS "Location",
+				null AS "ProfArea",
+				a."ProfileId",
+				a."Photo"
+			FROM "iacube.db::tables._IN.Profiles" AS a
+			LEFT JOIN "iacube.db::tables.Candidate.Candidates" AS c
+				ON  a."Name"   = c."FirstName"||' '||c."LastName"
+	;
+	UPSERT "iacube.db::tables.Candidate.Candidates"
+		("CandidateId","LastName","FirstName","Location","Photo")
+		SELECT DISTINCT
+				"CandidateId",
+				"LastName",
+				"FirstName",
+				"Location",
+				"Photo"
+			FROM :candidates
+	;
+	profiles =
+		SELECT 
+				IFNULL(d."ProfileId","iacube.db.sequences::profileId".nextval) AS "ProfileId",
+				a."ProfileId" AS "ExternalId",
+				'IN' AS "ProfileTypeId",
+				a."Link",
+				a."Position" AS "Headline",
+				a."Summary" AS "Summary",
+				null AS "DesiredPosition",
+				null AS "CareerStarter",
+				null AS "Salary",
+				null AS "SalaryCurr",
+				null AS "RelocationId",
+				null AS "BusinessTripId",
+				'EN' AS "Language"
+			FROM "iacube.db::tables._IN.Profiles" AS a
+			LEFT JOIN "iacube.db::tables.Profile.Profiles" AS d
+				ON a."ProfileId" = d."ExternalId"
+	;
+	experience = 
+		SELECT 
+				c."ProfileId",
+				a."Company",
+				a."Position",
+				a."Description",
+				IFNULL(TO_INTEGER(SUBSTRING_REGEXPR( '\d+(?= year)' IN a."Duration")),0)*12 + 
+					IFNULL(TO_INTEGER(SUBSTRING_REGEXPR( '\d+(?= month)' IN a."Duration")),0) AS "Duration"
+			FROM "iacube.db::tables._IN.Experience" AS a
+			INNER JOIN :profiles AS c
+				ON a."ProfileId" = c."ProfileId"
+	;
+	skills = 
+		SELECT 
+				c."ProfileId",
+				"Skill"
+			FROM "iacube.db::tables._IN.Skills" AS a
+			INNER JOIN :profiles AS c
+				ON a."ProfileId" = c."ProfileId"
+	;
+	UPSERT "iacube.db::tables.Profile.Profiles"
+		("ProfileId","ExternalId","ProfileTypeId","Link","Headline","Summary","Language")
+		SELECT
+				"ProfileId",
+				"ExternalId",
+				"ProfileTypeId",
+				"Link",
+				"Headline",
+				"Summary",
+				"Language"
+			FROM :profiles
+	;
+	UPSERT "iacube.db::tables.Profile.ProfileDetails"
+		("ProfileId","DesiredPosition","CareerStarter","Salary","SalaryCurr","RelocationId","BusinessTripId")
+		SELECT DISTINCT
+				"ProfileId",
+				"DesiredPosition",
+				"CareerStarter",
+				"Salary",
+				"SalaryCurr",
+				"RelocationId",
+				"BusinessTripId"
+			FROM :profiles
+	;
+	UPSERT "iacube.db::tables.Profile.Experience"
+		("ProfileId","Company","Position","Description","Duration")
+		SELECT
+				"ProfileId",
+				"Company",
+				"Position",
+				"Description",
+				"Duration"
+			FROM :experience
+	;
+	UPSERT "iacube.db::tables.Profile.Skills"
+		("ProfileId","Skill")
+		SELECT DISTINCT
+				"ProfileId",
+				"Skill"
+			FROM :skills
+	;
+	UPSERT "iacube.db::tables.Candidate.Profiles"
+		("CandidateId","ProfileId")
+		SELECT DISTINCT
+				a."CandidateId",
+				b."ProfileId"
+			FROM :candidates AS a
+			LEFT JOIN :profiles AS b
+				ON a."ProfileId" = b."ProfileId"
+	;
+END;

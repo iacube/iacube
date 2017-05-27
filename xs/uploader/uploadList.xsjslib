@@ -6,5 +6,9 @@ var connection = {
 	HHdictionary:{
 		connection	: "HHdictionary",
 		template	: "HHdictionary"
-	}
+	},
+	IN:{
+		connection	: "IN",
+		template	: "IN"
+	} 
 };

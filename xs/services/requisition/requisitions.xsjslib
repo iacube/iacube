@@ -60,8 +60,8 @@ var call = {
 						StatusCodeId	: responce.REQUISITIONS[i].StatusCodeId,
 						SubcategoryId	: responce.REQUISITIONS[i].SubcategoryId,
 						SubcategoryName	: responce.REQUISITIONS[i].SubcategoryName,
-						CreatedBy		: responce.REQUISITIONS[i].CreatedBy,
-						CreatedAt		: responce.REQUISITIONS[i].CreatedAt,
+						UpdatedBy		: responce.REQUISITIONS[i].UpdatedBy,
+						UpdatedAt		: responce.REQUISITIONS[i].UpdatedAt, 
 						OpenedBy		: responce.REQUISITIONS[i].OpenedBy,
 						OpenedAt		: responce.REQUISITIONS[i].OpenedAt,
 						DaysRemain		: responce.REQUISITIONS[i].DaysRemain

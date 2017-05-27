@@ -1,0 +1,1 @@
+DROP TABLE  "IACUBE"."iacube.db::tables.Document.Texts"
