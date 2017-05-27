@@ -250,7 +250,7 @@ BEGIN
 		UNION
 		SELECT
 				15004 AS error_code,
-				TO_NVARCHAR("CommentTypeId") AS details
+				IFNULL(TO_NVARCHAR("CommentTypeId"),'null') AS details
 			FROM :preparedComments
 			WHERE "existedCommmentType" IS NULL
 		UNION
@@ -262,19 +262,19 @@ BEGIN
 		UNION
 		SELECT 
 				15005 AS error_code,
-				TO_NVARCHAR("PriorityId") AS details
+				IFNULL(TO_NVARCHAR("PriorityId"),'null') AS details
 			FROM :preparedDetails
 			WHERE "existedPriorityType" IS NULL
 		UNION
 		SELECT 
 				15006 AS error_code,
-				TO_NVARCHAR("StatusCodeId") AS details
+				IFNULL(TO_NVARCHAR("StatusCodeId"),'null') AS details
 			FROM :preparedDetails
 			WHERE "existedStatusCodeTypes" IS NULL
 		UNION
 		SELECT 
 				15007 AS error_code,
-				TO_NVARCHAR("SubcategoryId") AS details
+				IFNULL(TO_NVARCHAR("SubcategoryId"),'null') AS details
 			FROM :preparedDetails
 			WHERE "existedSubcategoryTypes" IS NULL AND "SubcategoryId" IS NOT NULL
 		UNION
