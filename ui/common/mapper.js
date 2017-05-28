@@ -159,6 +159,7 @@ sap.ui.define([ "sap/m/MessageToast", "iacube/ui/common/serviceAccess" ],
 									ProfileId : p.ProfileId,
 									ExternalId : p.ExternalId,
 									ProfileTypeId : p.ProfileTypeId,
+									Headline : p.Headline,
 									Link : p.Link
 								}
 							}),

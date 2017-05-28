@@ -25,6 +25,8 @@ sap.ui.define([
 			Popover.prototype.init.apply(this, arguments);
 			this.oLocalModel = new sap.ui.model.json.JSONModel();
 			this.setModel(this.oLocalModel, "local");
+			
+			this.attachAfterClose(function(){this.destroyContent()}.bind(this));
 		},
 		
 		onBeforeRendering: function(){
@@ -39,7 +41,7 @@ sap.ui.define([
 			
 			this.createPopoverContent();
 		},
-
+		
 		createPopoverContent: function() {
 			
 			var sText = this.oBundle.getText("profiles.list.popover.found", this.getFirstName());
@@ -52,12 +54,14 @@ sap.ui.define([
 			}).addStyleClass("sapUiTinyMargin");
 			
 			var oVBox = new VBox({
-				id: "profiles_popover_items_list"
 			}).bindAggregation("items", "local>/profiles",
 				new HBox({
 					justifyContent: "SpaceBetween",
 					items: [
-						new Link({text:"{local>Link}", target:"{local>Link}", press:"handleLinkPress"}),
+						new Link({text:"{local>Headline}", target:"{local>Link}", press: function(oEvent){
+							var sUrl = oEvent.getSource().getProperty("target");
+							window.open(sUrl,'_blank');
+						}}),
 						new Image({src: {model: 'local', path:'ProfileTypeId',
 							formatter:function(type){
 								if(type == "HH"){
