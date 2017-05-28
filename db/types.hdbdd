@@ -221,6 +221,7 @@ context types {
 				ExternalId		: String(1000);
 				ProfileTypeId	: profileTypeId;
 				Link			: String(1000);
+				Headline		: String(1000);
 			};
 
 	type updateRequisitionDetails{

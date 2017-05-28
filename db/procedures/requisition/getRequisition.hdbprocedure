@@ -74,7 +74,8 @@ BEGIN
 				b."ProfileId",
 				c."ExternalId",
 				c."ProfileTypeId",
-				c."Link"
+				c."Link",
+				c."Headline"
 			FROM :candidates AS a
 			INNER JOIN "iacube.db::tables.Candidate.Profiles" AS b
 				ON a."CandidateId" = b."CandidateId"
