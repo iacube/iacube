@@ -66,6 +66,7 @@ sap.ui.define([
 				path	: "profiles/"+iIndex+"/Summary"
 			});
 			
+			
 			var oSkillsForm = this.getView().byId("cand_page_skills_form");
 			oSkillsForm.bindProperty("skills", {
 				model 	: "ui",

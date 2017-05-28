@@ -10,7 +10,7 @@ PROCEDURE "IACUBE"."iacube.db.procedures.IN::update_IN_Resumes" (
 	DEFAULT SCHEMA IACUBE
 	AS
 BEGIN
-	
+
 	UPSERT "iacube.db::tables._IN.Profiles"
 		("ProfileId","Name","Position","Location","Summary","Link","Photo")
 		SELECT 

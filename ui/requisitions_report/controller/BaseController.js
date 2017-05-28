@@ -48,4 +48,5 @@ sap.ui.define([
 			return this.getOwnerComponent().getModel("i18n").getResourceBundle();
 		}
 	});
+
 });

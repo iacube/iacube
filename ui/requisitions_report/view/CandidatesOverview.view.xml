@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
 	xmlns="sap.m" xmlns:fb="sap.ui.comp.filterbar"
 	controllerName="requisitions_report.controller.CandidatesOverview"
@@ -112,4 +113,115 @@
 			</Toolbar>
 		</footer>
 	</Page>
+=======
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m" xmlns:fb="sap.ui.comp.filterbar"
+	controllerName="requisitions_report.controller.CandidatesOverview"
+	xmlns:html="http://www.w3.org/1999/xhtml">
+	<Page title="title" id="page1">
+		<content>
+			<fb:FilterBar reset="onReset" search="onSearch"
+				showRestoreButton="true" showClearButton="true" useToolbar="true"
+				id="req_fb">
+
+				<fb:filterItems>
+					<fb:FilterItem name="req_id" label="{i18n>req.table.id}">
+						<fb:control>
+							<Input type="Text" />
+						</fb:control>
+					</fb:FilterItem>
+					<fb:FilterItem name="req_name" label="{i18n>req.table.name}">
+						<fb:control>
+							<Input type="Text" />
+						</fb:control>
+					</fb:FilterItem>
+					<fb:FilterItem name="req_account" label="{i18n>req.table.account}">
+						<fb:control>
+							<Input type="Text" />
+						</fb:control>
+					</fb:FilterItem>
+					<fb:FilterItem name="req_subcategory" label="{i18n>req.table.subcategory}">
+						<fb:control>
+							<Input type="Text" />
+						</fb:control>
+					</fb:FilterItem>
+					<fb:FilterItem name="req_status" label="{i18n>req.table.status}">
+						<fb:control>
+							<Input type="Text" />
+						</fb:control>
+					</fb:FilterItem>
+				</fb:filterItems>
+
+			</fb:FilterBar>
+			<VBox class="sapUiSmallMargin">
+				<Table id="req_report_candidatesTable" inset="false" items="{ui>candidates}">
+					<headerToolbar>
+						<Toolbar>
+							<Title text="{i18n>cand.overview.tab.header} ({= ${ui>candidates}.length})" level="H2" />
+						</Toolbar>
+					</headerToolbar>
+					<columns>
+						<Column width="5%">
+							<Text text="" />
+						</Column>
+						<Column>
+							<Text text="{i18n>cand.overview.tab.fname}" />
+						</Column>
+						<Column>
+							<Text text="{i18n>cand.overview.tab.lname}" />
+						</Column>
+						<Column>
+							<Text text="{i18n>cand.overview.tab.region}" />
+						</Column>
+						<Column>
+							<Text text="{i18n>cand.overview.tab.site}" />
+						</Column>
+						<Column>
+							<Text text="{i18n>cand.overview.tab.suitability}" />
+						</Column>
+						<Column>
+							<Text text="{i18n>cand.overview.tab.salary}" />
+						</Column>
+						<Column width="8%">
+							<Text text="{i18n>cand.overview.tab.reqs}" />
+						</Column>
+					</columns>
+					<items>
+						<ColumnListItem type="Navigation" press="onRequisitionPress">
+							<cells>
+								<CheckBox selected="{ui>selected}"/>
+								<Text text="{ui>FirstName}" />
+								<Text text="{ui>LastName}" />
+								<Text text="{ui>Location}" />
+								<core:Icon src="sap-icon://globe" color="#6495ED" press="onProfilesPopover"/>
+								<ProgressIndicator percentValue="{ui>Distance}" showValue="true" 
+										state="Success"
+									    width="80%" displayValue="{ui>Distance} %"/>
+								<ObjectNumber
+												class="sapUiSmallMarginBottom"
+												binding="{/ProductCollection/0}"
+												number="{
+														parts:[{path:'Price'},{path:'CurrencyCode'}],
+														type: 'sap.ui.model.type.Currency',
+														formatOptions: {showMeasure: false}
+													}"
+												unit="{CurrencyCode}" />
+								<HBox>
+									<core:Icon visible="{= ${ui>Requisitions}.length > 0}" src="sap-icon://document" press="onShowRequisPopover"/>
+									<Text text="({= ${ui>Candidates}.length})" class="sapUiTinyMarginBeginEnd"/>
+								</HBox>								
+							</cells>
+						</ColumnListItem>
+					</items>
+				</Table>
+			</VBox>
+		</content>
+		<footer>
+			<Toolbar>
+				<ToolbarSpacer />
+				<Button text="{i18n>cand.overview.footer.button}" type="Emphasized" press="onAssignCandidates" />
+			</Toolbar>
+		</footer>
+	</Page>
+>>>>>>> branch 'dev' of https://github.com/iacube/iacube.git
 </mvc:View>

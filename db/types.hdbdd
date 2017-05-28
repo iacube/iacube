@@ -271,6 +271,7 @@ context types {
 		ExternalId		: String(1001);
 		ProfileTypeId	: profileTypeId;
 		Link			: String(1000);
+		Headline		: String(1000);
 	};
 	type searchCandidatesSalary{
 		CandidateId	: candidateId;

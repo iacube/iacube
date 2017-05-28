@@ -84,7 +84,8 @@ BEGIN
 	experience = 
 		SELECT 
 				a."ProfileId",
-				SUM(YEARS_BETWEEN (a."StartDate",a."EndDate")) AS "Experience"
+				--SUM(YEARS_BETWEEN (a."StartDate",a."EndDate")) AS "Experience",
+				SUM(a."Duration" / 12) AS "Experience"
 			FROM "iacube.db::tables.Profile.Experience" AS a
 			INNER JOIN :profiles As b
 				ON a."ProfileId" = b."ProfileId"

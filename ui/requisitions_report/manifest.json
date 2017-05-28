@@ -99,17 +99,17 @@
 				"target": "home"				
 			},
 			{
-				"pattern"	: "requisition/{ind}",
+				"pattern"	: "requisition/{index}",
 	  			"name"		: "requisition",
 	  			"target"	: "requisition"
 			},
 			{
-				"pattern"	: "requisition/{ind}/candidates",
+				"pattern"	: "requisition/{reqId}/candidates",
 	  			"name"		: "candidates",
 	  			"target"	: "candidatesOverview"
 			},
 			{
-				"pattern"	: "requisition/{ind}/candidates/{ind2}",
+				"pattern"	: "requisition/{reqId}/candidates/{index2}",
 	  			"name"		: "candidate",
 	  			"target"	: "candidate"
 			}],

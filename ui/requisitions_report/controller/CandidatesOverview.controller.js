@@ -18,11 +18,11 @@ sap.ui.define([
 			
 		onRouteMatched: function(oEvent){		
 			if(oEvent.getParameter("name") === "candidates") {	
-				var ind = oEvent.getParameter("arguments").ind;	
-				//var iIndex = this.getModel("ui").getProperty("/requisitions").findIndex(function(r){return r.ReqId == ind});
-				var sPath = "/requisitions/" + ind;				
+				var reqId = oEvent.getParameter("arguments").reqId;	
+				var iIndex = this.getModel("ui").getProperty("/requisitions").findIndex(function(r){return r.ReqId == reqId});
+				var sPath = "/requisitions/" + iIndex;				
 				this.getView().bindElement("ui>" + sPath);
-				var reqId = this.getModel("ui").getProperty("/requisitions")[ind].ReqId;
+
 				this.loadCandidates(reqId, sPath);
 			}			
 		},
@@ -31,16 +31,6 @@ sap.ui.define([
 			var oModel = this.getModel("ui");			
 			DataHelper.getCandidates(ReqId).then(function(oData){
 				oModel.setProperty(sPath + "/candidates", Mapper.mapCandidates(oData.data));
-			});
-		},
-		
-		onCandidatePress: function(oEvent){
-			var sPath = oEvent.getSource().getBindingContext("ui").getPath();
-			var ind	= sPath.split("/")[2];
-			var ind2	= sPath.split("/")[4];
-			this.getRouter().navTo("candidate", {
-				ind: parseInt(ind),
-				ind2: parseInt(ind2)
 			});
 		},
 		
@@ -72,8 +62,6 @@ sap.ui.define([
 				console.log("ok");
 			});
 		}
-		
-
 
 	});
 

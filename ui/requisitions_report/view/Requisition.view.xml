@@ -3,7 +3,7 @@
 	controllerName="requisitions_report.controller.Requisition"
 	xmlns:layout="sap.ui.layout" xmlns:common="iacube.ui.common" xmlns:mc="sap.suite.ui.microchart"
 	xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page showNavButton="true" navButtonPress="onNavBack" title="Job Requisition">
+	<Page title="Job Requisition">
 		<content>
 			<uxap:ObjectPageLayout id="detObj"
 				showTitleInHeaderContent="false">

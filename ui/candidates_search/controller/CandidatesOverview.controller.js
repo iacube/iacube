@@ -1,8 +1,7 @@
 sap.ui.define([
-	"candidates_search/controller/BaseController",
-	"iacube/ui/common/dataHelper",
-	"iacube/ui/common/mapper"
-], function(Controller, DataHelper, Mapper) {
+	"requisitions_report/controller/BaseController",
+	"iacube/ui/common/dataHelper"
+], function(Controller, DataHelper) {
 	"use strict";
 
 	return Controller.extend("candidates_search.controller.CandidatesOverview", {
@@ -22,35 +21,27 @@ sap.ui.define([
 		 * @param {object} oEvent Event parameter
 		 * @public
 		 */
-		handleCandidatePress: function(oEvent){
-			var sPath = oEvent.getSource().getBindingContext("ui").getPath();
-			var CandId = this.getModel("ui").getProperty(sPath).CandidateId;
+		onRequisitionPress: function(oEvent){
+			var sPath 	= oEvent.getSource().getBindingContext("ui").getPath();
 			var iIndex	= sPath.split("/")[2];
-			this.getRouter().navTo("candidate", {
+			this.getRouter().navTo("requisition", {
 				index: parseInt(iIndex)
 			});
 		},
-		
-		onSearch :function(oEvent){
-			var oSearchTerm = oEvent.getSource().getValue;
-			var oModel = this.getModel("ui");
-			DataHelper.getCandidates(this).then(function(aCandidates){
-				oModel.setProperty("/candidates", Mapper.mapCandidates(aCandidates.data));
-			});
-		},
+
 		/**
 		 * Called when the View has been rendered (so its HTML is part of the document). Post-rendering manipulations of the HTML could be done here.
 		 * This hook is the same one that SAPUI5 controls get after being rendered.
 		 * @memberOf manage_vacancy.ui.requisitions_report.view.view.RequisitionsOverview
 		 */
-		onAfterRendering: function() {
-			this.loadCandidates();
-		},
+			onAfterRendering: function() {
+				//this.loadRequisitions();
+			},
 		
-		loadCandidates: function(){
+		loadRequisitions: function(){
 			var oModel = this.getModel("ui");
-			DataHelper.getCandidates(this).then(function(aCandidates){
-				oModel.setProperty("/candidates", Mapper.mapCandidates(aCandidates.data));
+			DataHelper.getRequisitions(this).then(function(aRequisitions){
+				oModel.setProperty("/requisitions", DataHelper.composeRequisitions(aRequisitions));
 			});
 		}
 
