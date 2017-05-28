@@ -2,7 +2,9 @@
 	xmlns="sap.m" xmlns:fb="sap.ui.comp.filterbar"
 	controllerName="requisitions_report.controller.CandidatesOverview"
 	xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page title="{i18n>cand.overview.page.title} {ui>/selectedRequisitionTitle}" id="page1">
+	<Page showNavButton="true" navButtonPress="onNavBack"
+		title="{i18n>cand.overview.page.title} {ui>/selectedRequisitionTitle}"
+		id="cand_overview_page">
 		<content>
 			<fb:FilterBar reset="onReset" search="onSearch"
 				showRestoreButton="true" showClearButton="true" useToolbar="true"
@@ -41,7 +43,9 @@
 				<Table id="req_report_candidatesTable" inset="false" items="{ui>candidates}">
 					<headerToolbar>
 						<Toolbar>
-							<Title text="{i18n>cand.overview.tab.header} ({= ${ui>candidates}.length})" level="H2" />
+							<Title
+								text="{i18n>cand.overview.tab.header} ({= ${ui>candidates}.length})"
+								level="H2" />
 						</Toolbar>
 					</headerToolbar>
 					<columns>
@@ -73,27 +77,27 @@
 					<items>
 						<ColumnListItem type="Navigation" press="onCandidatePress">
 							<cells>
-								<CheckBox selected="{ui>selected}"/>
+								<CheckBox selected="{ui>selected}" />
 								<Text text="{ui>FirstName}" />
 								<Text text="{ui>LastName}" />
 								<Text text="{ui>Location}" />
-								<core:Icon src="sap-icon://globe" color="#6495ED" press="onProfilesPopover"/>
-								<ProgressIndicator percentValue="{ui>Distance}" showValue="true" 
-										state="Success"
-									    width="80%" displayValue="{ui>Distance} %"/>
-								<ObjectNumber
-												class="sapUiSmallMarginBottom"
-												binding="{/ProductCollection/0}"
-												number="{
+								<core:Icon src="sap-icon://globe" color="#6495ED"
+									press="onProfilesPopover" />
+								<ProgressIndicator percentValue="{ui>Distance}"
+									showValue="true" state="Success" width="80%" displayValue="{ui>Distance} %" />
+								<ObjectNumber class="sapUiSmallMarginBottom"
+									binding="{/ProductCollection/0}"
+									number="{
 														parts:[{path:'Price'},{path:'CurrencyCode'}],
 														type: 'sap.ui.model.type.Currency',
 														formatOptions: {showMeasure: false}
 													}"
-												unit="{CurrencyCode}" />
+									unit="{CurrencyCode}" />
 								<HBox>
-									<core:Icon visible="{= ${ui>Requisitions}.length > 0}" src="sap-icon://document" press="onShowRequisPopover"/>
-									<Text text="({= ${ui>Candidates}.length})" class="sapUiTinyMarginBeginEnd"/>
-								</HBox>								
+									<core:Icon visible="{= ${ui>Requisitions}.length > 0}"
+										src="sap-icon://document" press="onShowRequisPopover" />
+									<Text text="({= ${ui>Candidates}.length})" class="sapUiTinyMarginBeginEnd" />
+								</HBox>
 							</cells>
 						</ColumnListItem>
 					</items>
@@ -103,7 +107,8 @@
 		<footer>
 			<Toolbar>
 				<ToolbarSpacer />
-				<Button text="{i18n>cand.overview.footer.button}" type="Emphasized" press="onAssignCandidates" />
+				<Button text="{i18n>cand.overview.footer.button}" type="Emphasized"
+					press="onAssignCandidates" />
 			</Toolbar>
 		</footer>
 	</Page>

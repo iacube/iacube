@@ -129,6 +129,7 @@ sap.ui.define([ "sap/m/MessageToast", "iacube/ui/common/serviceAccess" ],
 							LastName : c.LastName,
 							FirstName : c.FirstName,
 							Location : c.Location,
+							Photo: c.Photo,
 							salary: c.salary.map(function(s){
 								return{
 									CandidateId: s.CandidateId,
@@ -161,14 +162,16 @@ sap.ui.define([ "sap/m/MessageToast", "iacube/ui/common/serviceAccess" ],
 									Link: p.Link
 								}
 							}),
-							requisitions : [ {
-								CandidateId : 1,
-								ReqId : 7788,
-								Title : "SAP ABAP Developer",
-								StatusId : "APPROVED",
-								AssignedBy : "Cartman",
-								AssignedAt : "2017-02-23T01:00:00.000Z"
-							} ]
+							requisitions : c.requisitions.map(function(r){
+								return {
+									CandidateId : r.CandidateId,
+									ReqId : r.ReqId,
+									Title : r.Title,
+									StatusId : r.StatusId,
+									AssignedBy : r.AssignedBy,
+									AssignedAt : r.AssignedAt
+								} 
+							})
 						}
 					})
 				},

@@ -2,7 +2,7 @@
 	xmlns:uxap="sap.uxap" xmlns="sap.m" controllerName="requisitions_report.controller.Candidate"
 	xmlns:layout="sap.ui.layout" xmlns:common="iacube.ui.common" xmlns:mc="sap.suite.ui.microchart"
 	xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page title="{i18n>cand.page.title}">
+	<Page showNavButton="true" navButtonPress="onNavBack" title="{i18n>cand.page.title}">
 		<content>
 			<uxap:ObjectPageLayout id="candidatePage"
 				showTitleInHeaderContent="false">

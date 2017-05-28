@@ -46,7 +46,7 @@ sap.ui.define([
 		
 		onProfilesPopover: function(oEvent){
 			if( !this._oProfPopover ) {
-				this._oProfPopover = sap.ui.xmlfragment("requisitions_report.view.fragment.ProfPopover", this);
+				this._oProfPopover = sap.ui.xmlfragment("requisitions_report.view.fragment.ProfListPopover", this);
 				this.getView().addDependent(this._oProfPopover);
 			}
 			var oBinding = oEvent.getSource().getBindingContext("ui");			
