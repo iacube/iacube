@@ -103,7 +103,7 @@ context types {
 		Position	 : String(1000);
 		StartDate	 : date;
 		EndDate		 : date;
-		Description	 : LargeString;
+		Description	 :  String(5000); 
 	};
 	
 	type update_HHSkills{
@@ -124,7 +124,7 @@ context types {
 		Name			: name;	
 		Position		: String(1000);
 		Location		: String(100);
-		Summary			: LargeString;
+		Summary			: String(5000); 
 		Link			: String(1000);
 		Photo			: String(1000);
 	};
@@ -133,7 +133,7 @@ context types {
 		Company		 : String(1000); 	// ????key field
 		Position	 : String(1000);
 		Duration	 : String(100);
-		Description	 : LargeString;
+		Description	 : String(5000); 
 	};
 	
 	type update_INSkills{
@@ -182,8 +182,8 @@ context types {
 		UpdatedBy		: creator;
 		UpdatedAt		: datetime;
 		Language		: lang;
-		Keywords		: LargeString;
-		Description		: LargeString;
+		Keywords		: String(5000); 
+		Description		: String(5000); 
 		OpenedBy		: creator;
 		OpenedAt		: datetime;
 		DaysRemain		: Integer;
@@ -232,8 +232,8 @@ context types {
 		StatusCodeId	: statusCodeTypeId;
 		SubcategoryId 	: subcategoryId;
 		Language		: lang;
-		Keywords		: LargeString;
-		Description		: LargeString;
+		Keywords		: String(5000); 
+		Description		: String(5000); 
 		flag			: sflag;
 	};
 //	|

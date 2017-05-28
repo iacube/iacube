@@ -42,7 +42,9 @@ BEGIN
 				ON b."ProfileId" = c."ProfileId"
 			LEFT JOIN "iacube.db::tables.Requisition.Candidates" AS d
 				ON a."CandidateId" = d."CandidateId"
-			WHERE CONTAINS ((a."LastName",a."FirstName",a."Location"),:searchTerm, FUZZY(0.8))
+			--WHERE CONTAINS ((a."LastName",a."FirstName",a."Location"),:searchTerm, FUZZY(0.8))
+			WHERE CONTAINS (*,:searchTerm, FUZZY(0.8))
+	
 	;
 	
 	filtered = 
@@ -95,6 +97,7 @@ BEGIN
 			FROM :filtered AS a
 			LEFT JOIN :distance AS b
 				ON a."CandidateId" = b."CandidateId"
+			ORDER BY b."Distance", a."LastName", a."FirstName"
 	;
 	salary = 
 		SELECT 
@@ -117,6 +120,7 @@ BEGIN
 			FROM "iacube.db::tables.Candidate.Contacts" AS a
 			INNER JOIN :candidates AS b
 				ON a."CandidateId" = b."CandidateId"
+			ORDER BY a."ContactTypeId"
 	;
 	languages = 
 		SELECT
@@ -140,6 +144,7 @@ BEGIN
 				ON a."CandidateId" = b."CandidateId"
 			LEFT JOIN "iacube.db::tables.Requisition.Requisitions" AS c
 				ON a."ReqId" = c."ReqId"
+			ORDER BY "Title"
 	;
 
 	sites =
@@ -147,5 +152,6 @@ BEGIN
 				"Id" AS "id",
 				"Description" AS "name"
 			FROM "iacube.db::tables.Profile._dictionary.ProfileTypes"
+			ORDER BY "Id"
 	;
 END;

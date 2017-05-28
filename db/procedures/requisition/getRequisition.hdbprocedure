@@ -51,6 +51,7 @@ BEGIN
 				"Weight"
 			FROM "iacube.db::tables.Requisition.Skills"
 			WHERE "ReqId" = :reqId
+			ORDER BY "Skill"
 	;
 	candidates = 
 		SELECT
@@ -65,6 +66,7 @@ BEGIN
 			INNER JOIN "iacube.db::tables.Candidate.Candidates" AS b
 				ON a."CandidateId"  = b."CandidateId"
 			WHERE a."ReqId" = :reqId
+			ORDER BY "LastName", "FirstName" 
 	;
 	profiles = 
 		SELECT 
@@ -78,7 +80,7 @@ BEGIN
 				ON a."CandidateId" = b."CandidateId"
 			INNER JOIN "iacube.db::tables.Profile.Profiles" AS c
 				ON b."ProfileId" = c."ProfileId"
-			
+			ORDER BY "CandidateId", "ProfileTypeId" 
 	;
 	
 	experience = 
@@ -124,6 +126,7 @@ BEGIN
 				AND c."ReqId" 	 = :reqId
 			LEFT JOIN :experience AS d
 				ON  c."ProfileId" = d."ProfileId" 
+			ORDER BY a."LastName", a."FirstName" 
 	;		
 	comments = 
 		SELECT 
@@ -136,42 +139,49 @@ BEGIN
 				"CommentStatusId"
 			FROM "iacube.db::tables.Requisition.Comments"
 			WHERE "ReqId" = :reqId
+			ORDER BY "CommentId"
 	;
 	commentTypes =
 		SELECT 
 				"Id" AS "id",
 				"Name" AS "name"
 			FROM "iacube.db::tables.Requisition._dictionary.CommentTypes"
+			ORDER BY "Id"
 	;
 	commentStatusTypes =
 		SELECT 
 				"Id" AS "id",
 				"Name" AS "name"
 			FROM "iacube.db::tables.Requisition._dictionary.CommentStatusTypes"
+			ORDER BY "Id"
 	;
 	priorityTypes = 
 		SELECT 
 				"Id" AS "id",
 				"Name" AS "name"
 			FROM "iacube.db::tables.Requisition._dictionary.PriorityTypes"
+			ORDER BY "Id"
 	;
 	statusCodeTypes	=
 		SELECT 
 				"Id" AS "id",
 				"Name" AS "name"
 			FROM "iacube.db::tables.Requisition._dictionary.StatusCodeTypes"
+			ORDER BY "Id"
 	;
 	statusTypes = 
 		SELECT 
 				"Id" AS "id",
 				"Name" AS "name"
 			FROM "iacube.db::tables.Requisition._dictionary.StatusTypes"
+			ORDER BY "Id"
 	;
 	subcategoryTypes = 
 		SELECT 
 				"Id" AS "id",
 				"Name" AS "name"
 			FROM "iacube.db::tables.Requisition._dictionary.SubcategoryTypes"
+			ORDER BY "Id"
 	;
 
 END;
