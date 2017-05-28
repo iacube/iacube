@@ -4,6 +4,11 @@ sap.ui.define([
 	"use strict";
 
 	return Controller.extend("requisitions_report.controller.BaseController", {
+		
+		onNavBack: function(){
+			window.history.go(-1);
+		},
+	
 		/**
 		 * Convenience method for accessing the router in every controller of the application.
 		 * @public
@@ -43,4 +48,5 @@ sap.ui.define([
 			return this.getOwnerComponent().getModel("i18n").getResourceBundle();
 		}
 	});
+
 });

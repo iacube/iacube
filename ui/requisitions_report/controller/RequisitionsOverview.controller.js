@@ -32,7 +32,7 @@ sap.ui.define([
 			var ReqId = this.getModel("ui").getProperty(sPath).ReqId;
 			var iIndex	= sPath.split("/")[2];
 			this.getRouter().navTo("requisition", {
-				index: parseInt(iIndex)
+				ind: parseInt(iIndex)
 			});
 		},
 		

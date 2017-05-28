@@ -24,7 +24,7 @@ sap.ui.define([
 		 */
 		onRouteMatched: function(oEvent){		
 			if(oEvent.getParameter("name") === "requisition") {
-				var iIndex = oEvent.getParameter("arguments").index;				
+				var iIndex = oEvent.getParameter("arguments").ind;				
 				var sPath = "/requisitions/" + iIndex;				
 				this.getView().bindElement("ui>" + sPath);
 				
