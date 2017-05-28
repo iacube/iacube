@@ -36,10 +36,43 @@ sap.ui.define([
 			var oModel = this.getModel("ui");
 			DataHelper.getCandidate(CandidateId).then(function(oData){
 				var oCandidate = oModel.getProperty(sPath);
-				oModel.setProperty(sPath, jQuery.extend(true, oCandidate, Mapper.mapCandidate(oData.data)));
+				oModel.setProperty(sPath, jQuery.extend(true, oCandidate, Mapper.mapCandidate(oData)));
 			});
+		},
+		
+		onProfileSelectorShow: function(oEvent){
+			if (!this.oProfilesPopover) {
+				this.oProfilesPopover = sap.ui.xmlfragment("candidates_search.view.fragment.profilesPopover", this);
+				this.getView().addDependent(this.oProfilesPopover);
+			}
+			this.oProfilesPopover.openBy(oEvent.getParameter("domRef"));
+			//this.oProfilesPopover.setModel("ui",this.getModel("ui"));
+		},
+		
+		onProfileSelected: function(oEvent){
+			var oContext = this.getView().getBindingContext("ui");
+			var oList = sap.ui.getCore().byId("cand_page_popover_profiles_list");
+			var iIndex = oList.indexOfItem(oList.getSelectedItem());//index of selected profile
+			
+			var oInfoForm = this.getView().byId("cand_page_info_form");
+			oInfoForm.bindProperty("Link", {
+				model 	: "ui",
+				path	: "profiles/"+iIndex+"/Link"
+			}).bindProperty("Summary", {
+				model 	: "ui",
+				path	: "profiles/"+iIndex+"/Summary"
+			});
+			
+			var oSkillsForm = this.getView().byId("cand_page_skills_form");
+			oSkillsForm.bindProperty("skills", {
+				model 	: "ui",
+				path	: "profiles/"+iIndex+"/skills"
+			});
+			
+			var sSelectedHeadline = this.getModel("ui").getProperty(oContext.getPath()+"/profiles/"+iIndex+"/Headline");
+			var sSelectedLocation = this.getModel("ui").getProperty(oContext.getPath()+"/Location");
+			this.getModel("ui").setProperty(oContext.getPath()+"/selectedProfile", sSelectedLocation + " / " + sSelectedHeadline);
 		}
-
 		/**
 		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
 		 * (NOT before the first rendering! onInit() is used for that one!).

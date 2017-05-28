@@ -5,7 +5,6 @@
 			<fb:FilterBar reset="onReset" search="onSearch"
 				showRestoreButton="true" showClearButton="true" useToolbar="true"
 				id="cand_fb">
-				<SearchField search="onSearch"/>
 				<fb:filterItems>
 					<fb:FilterItem name="location" label="{i18n>cand.table.location}">
 						<fb:control>
@@ -21,7 +20,7 @@
 
 			</fb:FilterBar>
 			<VBox class="sapUiSmallMargin">
-				<Table id="idCandidates" items="{ui>/candidates}"  headerText="{i18n>candidates} ({ui>/candidates/length})">
+				<Table id="idCandidates" items="{ui>/candidates}"  headerText="{i18n>candidates} ({ui>/candidates/length})" visible="false">
 						<columns>
 							<Column hAlign="Left">
 								<Text text="{i18n>cand.table.fname}"/>
@@ -39,9 +38,6 @@
 								<Text text="{i18n>cand.table.rating}"/>
 							</Column>
 							<Column hAlign="Left">
-								<Text text="{i18n>cand.table.salary}"/>
-							</Column>
-							<Column hAlign="Left">
 								<Text text="{i18n>cand.table.job_req}"/>
 							</Column>
 						</columns>
@@ -55,7 +51,7 @@
 									<core:Icon src="sap-icon://globe" color="#6495ED" size="2rem"/>
 									<ProgressIndicator  showValue="true" 
 														 displayValue="100%"/>
-									<Text text="{ui>salary/Salary}"/>
+									
 									<core:Icon  src="sap-icon://employee" />
 								</cells>
 							</ColumnListItem>

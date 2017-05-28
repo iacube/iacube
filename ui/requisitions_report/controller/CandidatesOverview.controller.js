@@ -28,8 +28,10 @@ sap.ui.define([
 		},
 		
 		loadCandidates: function(ReqId, sPath){
-			var oModel = this.getModel("ui");			
-			DataHelper.getCandidates(ReqId).then(function(oData){
+			var oModel = this.getModel("ui");
+			var oFilter = {ReqId: ReqId};
+		//	aFilters.push({ReqId: ReqId});
+			DataHelper.getCandidates(this,oFilter).then(function(oData){
 				oModel.setProperty(sPath + "/candidates", Mapper.mapCandidates(oData.data));
 			});
 		},

@@ -13,7 +13,65 @@ sap.ui.define([
 		 * @memberOf manage_vacancy.ui.requisitions_report.view.view.RequisitionsOverview
 		 */
 		onInit: function() {
+			this.oFilterBar = sap.ui.getCore().byId("__xmlview1--cand_fb");
+			this.oFilterBar.setFilterBarExpanded(false);
+			this.oSearchField = this.oFilterBar.getBasicSearch();
+				if (!this.oSearchField) {
+					var oBasicSearch = new sap.m.SearchField({
+						showSearchButton: false
+					});}
+				this.oFilterBar.setBasicSearch(oBasicSearch);
+				var oVM = this.oFilterBar._oVariantManagement;
+				oVM.setVisible(true);
+				oVM.initialise = function() {
+					this.fireEvent("initialise");
+					this._setStandardVariant();
+		 
+					this._setSelectedVariant();
+				};
+		 
+				var nKey = 0;
+				var mMap = {};
+				var sCurrentVariantKey = null;
+				oVM._oVariantSet = {
+		 
+					getVariant: function(sKey) {
+						return mMap[sKey];
+					},
+					addVariant: function(sName) {
+						var sKey = "" + nKey++;
+		 
+						var oVariant = {
+							key: sKey,
+							name: sName,
+							getItemValue: function(s) {
+								return this[s];
+							},
+							setItemValue: function(s, oObj) {
+								this[s] = oObj;
+							},
+							getVariantKey: function() {
+								return this.key;
+							}
+						};
+						mMap[sKey] = oVariant;
+		 
+						return oVariant;
+					},
+					setCurrentVariantKey: function(sKey) {
+						sCurrentVariantKey = sKey;
+					},
+					getCurrentVariantKey: function() {
+						return sCurrentVariantKey;
+					},
+					delVariant: function(sKey) {
+						if (mMap[sKey]) {
+							delete mMap[sKey];
+						}
+					}
+		 
 				
+			}
 		},
 			
 		/**
@@ -32,10 +90,29 @@ sap.ui.define([
 		},
 		
 		onSearch :function(oEvent){
-			var oSearchTerm = oEvent.getSource().getValue;
+			var oSearchField = this.oFilterBar.getBasicSearch();
+			var sSearchTerm = sap.ui.getCore().byId(oSearchField).getValue()!="" ? sap.ui.getCore().byId(oSearchField).getValue(): null;
+			var oFilter = {};
+			var sValueLocation;
+			var sValueWebsite;
+			this.oFilterBar.getFilterItems().forEach(function(oFilterItem){
+				var oControl = this.oFilterBar.determineControlByFilterItem(oFilterItem);
+				if (oFilterItem.getName() == "location" && oControl.getValue()!=""){
+					sValueLocation = oControl.getValue();
+					oFilter.Location = sValueLocation;
+				}
+				if (oFilterItem.getName() == "website"  && oControl.getValue()!=""){
+					sValueWebsite = oControl.getValue();
+					oFilter.ProfileTypeId = sValueWebsite;
+					
+				}
+			}.bind(this));
+		
 			var oModel = this.getModel("ui");
-			DataHelper.getCandidates(this).then(function(aCandidates){
+			
+			DataHelper.getCandidates(this,oFilter,sSearchTerm).then(function(aCandidates){
 				oModel.setProperty("/candidates", Mapper.mapCandidates(aCandidates.data));
+				sap.ui.getCore().byId("__xmlview1--idCandidates").setVisible(true);
 			});
 		},
 		/**
@@ -49,9 +126,9 @@ sap.ui.define([
 		
 		loadCandidates: function(){
 			var oModel = this.getModel("ui");
-			DataHelper.getCandidates(this).then(function(aCandidates){
+		/*	DataHelper.getCandidates(this).then(function(aCandidates){
 				oModel.setProperty("/candidates", Mapper.mapCandidates(aCandidates.data));
-			});
+			});*/
 		}
 
 	});

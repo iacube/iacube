@@ -68,10 +68,24 @@ sap.ui.define([
 			
 			/*CANDIDATES*/
 			
-			getCandidates: function(requisitionId){
+			getCandidates: function(oEvent, oFilter,sSearchTm){
 				return new Promise(function(resolve, reject) {
-					var sPath = "/iacube/service/candidates?filter="+JSON.stringify({ReqId:requisitionId});
-					ServiceAccess.ajax({
+					
+					var sLink;
+					var sPath = "/iacube/service/candidates";
+					if (oFilter){
+						var sFilter = "filter="+ JSON.stringify(oFilter);
+						sPath = sPath + "?" + sFilter;
+					}
+					if (sSearchTm){
+						var sSearchTerm = "searchTerm="+sSearchTm;
+						sPath = sPath + "?" + sSearchTerm;
+					}
+					
+					if (sFilter && sSearchTerm){
+						sPath =  "/iacube/service/candidates" + "?" + sFilter + "&" + sSearchTerm;
+					}
+				ServiceAccess.ajax({
 						url: sPath,
 						success: function(data) {
 							resolve(data);
