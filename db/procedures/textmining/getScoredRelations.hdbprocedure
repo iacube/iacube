@@ -7,17 +7,18 @@ BEGIN
    DECLARE X INTEGER;
 
    X:=1;
+   X:=topN*2;
    lt_profBySumScore=SELECT T."EXTID", T.TOTAL_TERM_COUNT, T.SCORE
-                     FROM TM_GET_RELATED_DOCUMENTS ( DOCUMENT IN FULLTEXT INDEX WHERE "EXTID" = 1 AND "EXTTYPE" = 'P' AND "DOCDIM" = 'C'
+                     FROM TM_GET_RELATED_DOCUMENTS ( DOCUMENT IN FULLTEXT INDEX WHERE "EXTID" = :ReqId AND "EXTTYPE" = 'P' AND "DOCDIM" = 'C'
                                                      SEARCH "CONTENT" FROM "IACUBE"."iacube.db::tables.Document.Texts"
                                                      WHERE "EXTTYPE"='P' AND "DOCDIM" = 'C'
-                                                     RETURN TOP 10 "EXTID" ) AS T;
+                                                     RETURN TOP :X "EXTID" ) AS T;
 
    lt_profBySkillScore=SELECT T."EXTID", T.TOTAL_TERM_COUNT, T.SCORE
                        FROM TM_GET_RELATED_DOCUMENTS ( DOCUMENT IN FULLTEXT INDEX WHERE "EXTID" = :ReqId AND "EXTTYPE" = 'P' AND "DOCDIM" = 'S'
                                                        SEARCH "CONTENT" FROM "IACUBE"."iacube.db::tables.Document.Texts" 
                                                        WHERE "EXTTYPE"='P' AND "DOCDIM" = 'S'
-                                                       RETURN TOP 10 "EXTID" ) AS T;
+                                                       RETURN TOP :X "EXTID" ) AS T;
                                                        
  
    lt_scoredRelations=SELECT :reqId AS "ReqId","EXTID" AS "DocExtId","SCORE" AS "RelScore" ,'CC' AS "RelDim" 

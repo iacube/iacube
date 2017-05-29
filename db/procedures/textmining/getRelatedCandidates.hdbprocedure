@@ -24,6 +24,6 @@ BEGIN
                              ON A."ProfileId"=B."ProfileId"
                              ORDER BY A."TotalScore" DESC;
 
-   relatedCandidates=SELECT TOP 10 "ProfileId", "CandidateId", "score" FROM :lt_candidateProfileScored;
+   relatedCandidates=SELECT TOP :topN "ProfileId", "CandidateId", "score" FROM :lt_candidateProfileScored;
    
 END
