@@ -466,4 +466,26 @@ context tables{
               TEXT MINING on;
  	   };                 
  	};
+ 	context __TM{
+ 	   type docExtId        : hana.SMALLINT;			
+ 	   type relScore        : DecimalFloat;
+ 	   type relDim          : String(2);
+           type reqId           : Integer;
+ 	
+ 	   temporary entity Id{
+ 	      Id                : reqId;
+ 	   };
+ 	   
+ 	   temporary entity ScoredIds{
+ 	      Id                : reqId;           
+ 	   };
+	   entity ScoredRelations{
+		
+    	        DocExtId        : docExtId;
+ 	        RelScore        : relScore;
+ 	        RelDim          : relDim;
+                ReqId           : Integer;
+           };
+
+ 	};
 }
