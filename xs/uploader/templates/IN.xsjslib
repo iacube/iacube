@@ -21,7 +21,7 @@ var template = {
 			type:"string",
 			column:"Photo"
 		},
-		link:{
+		publicprofile:{
 			column:"Link",
 			type:"string"
 		},
