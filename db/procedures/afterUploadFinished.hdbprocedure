@@ -1,0 +1,11 @@
+PROCEDURE "IACUBE"."iacube.db.procedures::afterUploadFinished"(
+	OUT	errors "IACUBE"."iacube.db::types.error" DEFAULT EMPTY 
+)
+	LANGUAGE SQLSCRIPT
+	SQL SECURITY INVOKER 
+	DEFAULT SCHEMA IACUBE
+	AS
+BEGIN
+ 
+	--CALL "iacube.db.procedures.document::updateDocuments"();
+END;
