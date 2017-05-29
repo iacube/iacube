@@ -89,7 +89,7 @@
 								<!-- <DatePicker value="{ui>CreatedAt}" displayFormat="short" editable="false"/> -->
 								<Text
 									text="{model: 'ui', path: 'CreatedAt', type:'sap.ui.model.type.DateTime', formatOptions: {pattern:'dd/MM/yyyy hh:mm'}}" />
-								<Text text="{ui>RemainingDays}" />
+								<Text text="{ui>DaysRemain}" />
 								<ObjectStatus text="{model: 'ui', path: 'StatusCodeId', formatter: '.formatter.formatReqStatus'}" state="Success" />
 								<HBox>
 									<core:Icon visible="{= ${ui>candidates}.length > 0}" src="sap-icon://employee" press="onShowCandPopover"/>

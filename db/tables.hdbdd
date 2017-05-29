@@ -1,3 +1,4 @@
+
 namespace iacube.db;
 
 @Schema : 'IACUBE'
@@ -64,7 +65,7 @@ context tables{
 				Position	 : String(1000);
 				StartDate	 : date;
 				EndDate		 : date;
-				Description	 : String(5000); 
+				Description	 : LargeString;
 		};
 		
 		entity Skills{
@@ -132,7 +133,7 @@ context tables{
 				Name		: name;
 				Position	: String(1000);
 				Location	: String(100);
-				Summary		: String(5000);
+				Summary		: LargeString;
 				Link		: String(1000);
 				Photo		: String(1001);
 		};
@@ -142,7 +143,7 @@ context tables{
 			key Company		: String(100);
 			key Position	: String(1000);
 				Duration	: String(100);
-				Description	: String(5000); 
+				Description	: LargeString;
 		};
 		
 		entity Skills{
@@ -236,8 +237,8 @@ context tables{
 				ExternalId		: String(1001);
 				ProfileTypeId	: profileTypeId;
 				Link			: String(1000);
-				Headline		: String(5000); 
-				Summary			: String(5000); 
+				Headline		: LargeString;
+				Summary			: LargeString;
 				Language		: lang;
 		};
 		
@@ -264,8 +265,8 @@ context tables{
 		entity Experience{
 			key ProfileId	: profileId;
 			key Company		: String(1000);
-			key Position	: String(1000);
-				Description	:  String(5000); 
+				Position	: String(1000);
+				Description	: LargeString;
 				StartDate	: date;
 				EndDate		: date;
 				Duration	: Integer;
@@ -339,8 +340,8 @@ context tables{
 				UpdatedBy		: creator;
 				UpdatedAt		: datetime;
 				Language		: lang;
-				Keywords		: String(5000); 
-				Description		: String(5000); 
+				Keywords		: LargeString;
+				Description		: LargeString;
 				OpenedBy		: creator;
 				OpenedAt		: datetime;
 		};
@@ -440,27 +441,19 @@ context tables{
  	   };
  	   
  	   entity Texts{
-//--        Uppercase because of To enable TM_GET_RELATED_DPCUMENTS BUG 	   
- 	      key ID                : docId;
+ 	      key Id                : docId;
  	      DocId                 : docId;
- 	      LANGUAGE              : lang;
- 	      CONTENT               : docContent;
- 	      DOCDIM                : docDim; 
-//--        To enable TM_GET_RELATED_DPCUMENTS
- 	      
-              EXTID                 : docExtId;
-
- 	      EXTTYPE               : docExtType;
-
-//--
+ 	      Language              : lang;
+ 	      Content               : docContent;
+ 	      DocDim                : docDim; 
  	   }
  	   technical configuration {
-           fulltext index MYFTI1 on (CONTENT)
-              LANGUAGE COLUMN LANGUAGE
+           fulltext index MYFTI1 on (Content)
+              LANGUAGE COLUMN Language
               TEXT ANALYSIS on
               SEARCH ONLY off 
               FAST PREPROCESS off 
               TEXT MINING on;
  	   };                 
  	};
-}
+};

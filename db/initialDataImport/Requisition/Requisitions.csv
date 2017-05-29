@@ -1,6 +1,2 @@
 ReqId;Title;ProjectId;PriorityId;Location;StatusCodeId;SubcategoryId;CreatedBy;CreatedAt;Language;Keywords;Description;OpenedBy;OpenedAt
-7788;SAP ABAP Разработчик;BURB-SAP;VH;Орша, Беларусь;OPEN;1;Cartman;2017-02-22T00:00:00;EN;keyword1, keyword2;Some Description;Мечислав;2017-05-12T00:00:00
-7500;SAP ТОРО консультант;BURB-SAP;H;Хойники, Беларусь;OPEN;1;Cartman;2017-02-22T00:00:00;EN;keyword1, keyword2;Some Description;Сигизмунд;2017-05-12T00:00:00
-7600;SAP HANA разработчик;EPAM-TSAP;L;Фаниполь, Беларусь;OPEN;1;Cartman;2017-02-22T00:00:00;EN;keyword1, keyword2;Some Description;Ян;2017-05-12T00:00:00
-7700;SAP PP консультант;ACINO-SAP;L;Волковыск, Беларусь;OPEN;1;Cartman;2017-02-22T00:00:00;EN;keyword1, keyword2;Some Description;Фома;2017-05-12T00:00:00
-7800;SAP PI/XI инженер;SAP-IT;VH;Сморгонь, Беларусь;OPEN;1;Cartman;2017-02-22T00:00:00;EN;keyword1, keyword2;Some Description;Клара;2017-05-12T00:00:00
+7788;SAP ABAP Developer;BURB-SAP;VH;London, UK;OPEN;1;Cartman;2017-02-22T00:00:00;EN;keyword1, keyword2;Some Description;Timmy;2017-05-12T00:00:00

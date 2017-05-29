@@ -50,8 +50,7 @@ var call = {
 								ProfileId	  : responce.PROFILES[j].ProfileId,
 								ExternalId	  : responce.PROFILES[j].ExternalId,
 								ProfileTypeId : responce.PROFILES[j].ProfileTypeId,
-								Link		  : responce.PROFILES[j].Link,
-								Headline	  : responce.PROFILES[j].Headline
+								Link		  : responce.PROFILES[j].Link
 							});
 						}
 					}

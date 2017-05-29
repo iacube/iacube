@@ -1,8 +1,55 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:uxap="sap.uxap" xmlns="sap.m" controllerName="candidates_search.controller.Candidate"
 	xmlns:layout="sap.ui.layout" xmlns:common="iacube.ui.common" xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page title="{i18n>candidate}">
+	<Page title="{i18n>cand.page.title}">
 		<content>
-			
+			<uxap:ObjectPageLayout id="candidatePage"
+				showTitleInHeaderContent="false">
+				<uxap:headerTitle>
+					<uxap:ObjectPageHeader id="headerForTest"
+						headerDesign="Light" objectTitle="{ui>FirstName} {ui>LastName}"
+						showTitleSelector="true" titleSelectorPress="onProfileSelectorShow"
+						objectSubtitle="{ui>selectedProfile}" objectImageShape="Circle"
+						objectImageURI="{ui>Photo}">
+						<uxap:breadCrumbsLinks>
+							<Link text="{i18n>cand.page.breadcrumps} {ui>/selectedRequisitionTitle}" press="handleLink1Press" />
+						</uxap:breadCrumbsLinks>
+					</uxap:ObjectPageHeader>
+				</uxap:headerTitle>
+				<!-- <uxap:headerContent> <layout:VerticalLayout width="5%"></layout:VerticalLayout> 
+					<layout:VerticalLayout> <ObjectStatus title="{i18n>req.detail.location}" 
+					text="{ui>Location}" /> <ObjectStatus title="{i18n>req.detail.project}" text="{ui>ProjectId}" 
+					/> </layout:VerticalLayout> <layout:VerticalLayout width="40%"></layout:VerticalLayout> 
+					<layout:VerticalLayout> <ObjectStatus title="{i18n>req.detail.created}" text="{ui>CreatedAt}" 
+					/> <FlexBox alignContent="End" justifyContent="End"> <ObjectStatus text="{ui>StatusCodeId}" 
+					state="Success" /> </FlexBox> <layout:VerticalLayout></layout:VerticalLayout> 
+					<FlexBox alignContent="End" justifyContent="End"> <Select></Select> </FlexBox> 
+					</layout:VerticalLayout> </uxap:headerContent> -->
+				<uxap:sections>
+					<uxap:ObjectPageSection id="candInfo"
+						title="{i18n>cand.info.title}" titleUppercase="false">
+						<uxap:subSections>
+							<uxap:ObjectPageSubSection title="{i18n>cand.page.header.info}">
+								<uxap:blocks>
+									<common:candInfoForm id="cand_page_info_form"
+										FirstName="{ui>FirstName}" LastName="{ui>LastName}" ProfArea="{ui>ProfArea}"
+										Location="{ui>Location}" Link="{ui>profiles/0/Link}" Summary="{ui>profiles/0/Summary}" />
+								</uxap:blocks>
+							</uxap:ObjectPageSubSection>
+						</uxap:subSections>
+					</uxap:ObjectPageSection>
+					<uxap:ObjectPageSection id="candSkills"
+						title="{i18n>cand.skills.title}" titleUppercase="false">
+						<uxap:subSections>
+							<uxap:ObjectPageSubSection title="{i18n>cand.page.header.skills}">
+								<uxap:blocks>
+									<common:candSkillsForm id="cand_page_skills_form"
+										skills="{ui>profiles/0/skills}" />
+								</uxap:blocks>
+							</uxap:ObjectPageSubSection>
+						</uxap:subSections>
+					</uxap:ObjectPageSection>
+				</uxap:sections>
+			</uxap:ObjectPageLayout>
 		</content>
 	</Page>
 </mvc:View>

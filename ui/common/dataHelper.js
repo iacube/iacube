@@ -68,9 +68,39 @@ sap.ui.define([
 			
 			/*CANDIDATES*/
 			
-			getCandidates: function(requisitionId){
+			getCandidates: function(oEvent, oFilter,sSearchTm){
 				return new Promise(function(resolve, reject) {
-					var sPath = "/iacube/service/candidates?filter="+JSON.stringify({ReqId:requisitionId});
+					
+					var sLink;
+					var sPath = "/iacube/service/candidates";
+					if (oFilter){
+						var sFilter = "filter="+ JSON.stringify(oFilter);
+						sPath = sPath + "?" + sFilter;
+					}
+					if (sSearchTm){
+						var sSearchTerm = "searchTerm="+sSearchTm;
+						sPath = sPath + "?" + sSearchTerm;
+					}
+					
+					if (sFilter && sSearchTerm){
+						sPath =  "/iacube/service/candidates" + "?" + sFilter + "&" + sSearchTerm;
+					}
+				ServiceAccess.ajax({
+						url: sPath,
+						success: function(data) {
+							resolve(data);
+						},
+						error: function() {
+							MessageToast.show("Data retrieval error");
+							reject();
+						}
+					});
+				});
+			},
+			
+			getCandidate: function(CandId) {
+				return new Promise(function(resolve, reject) {
+					var sPath = "/iacube/service/candidate/"+CandId;
 					ServiceAccess.ajax({
 						url: sPath,
 						success: function(data) {
@@ -100,6 +130,7 @@ sap.ui.define([
 						}
 					});
 				});
+
 			}
 
 		};

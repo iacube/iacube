@@ -71,7 +71,7 @@ var call = {
 			filter.ProfileTypeId.values = [];
 			
 			for(i = 0; i < responce.SITES.length; i++){
-				filter.ProfileTypeId.values.push(responce.SITES[i]);
+				filter.ProfileTypeId.values.push(responce.SITES[i].id);
 			}
 			
 			return {

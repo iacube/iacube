@@ -46,18 +46,18 @@ BEGIN
 			FROM "iacube.db::tables._IN.Profiles" AS a
 			LEFT JOIN "iacube.db::tables.Profile.Profiles" AS d
 				ON a."ProfileId" = d."ExternalId"
-	; 
+	;
 	experience = 
 		SELECT 
 				c."ProfileId",
 				a."Company",
 				a."Position",
 				a."Description",
-				NULLIF(IFNULL(TO_INTEGER(SUBSTRING_REGEXPR( '\d+(?= year)' IN a."Duration")),0)*12 + 
-					IFNULL(TO_INTEGER(SUBSTRING_REGEXPR( '\d+(?= month)' IN a."Duration")),0),0) AS "Duration"
+				IFNULL(TO_INTEGER(SUBSTRING_REGEXPR( '\d+(?= year)' IN a."Duration")),0)*12 + 
+					IFNULL(TO_INTEGER(SUBSTRING_REGEXPR( '\d+(?= month)' IN a."Duration")),0) AS "Duration"
 			FROM "iacube.db::tables._IN.Experience" AS a
 			INNER JOIN :profiles AS c
-				ON a."ProfileId" = c."ExternalId"
+				ON a."ProfileId" = c."ProfileId"
 	;
 	skills = 
 		SELECT 
@@ -65,7 +65,7 @@ BEGIN
 				"Skill"
 			FROM "iacube.db::tables._IN.Skills" AS a
 			INNER JOIN :profiles AS c
-				ON a."ProfileId" = c."ExternalId"
+				ON a."ProfileId" = c."ProfileId"
 	;
 	UPSERT "iacube.db::tables.Profile.Profiles"
 		("ProfileId","ExternalId","ProfileTypeId","Link","Headline","Summary","Language")
@@ -115,6 +115,6 @@ BEGIN
 				b."ProfileId"
 			FROM :candidates AS a
 			LEFT JOIN :profiles AS b
-				ON a."ProfileId" = b."ExternalId"
+				ON a."ProfileId" = b."ProfileId"
 	;
 END;

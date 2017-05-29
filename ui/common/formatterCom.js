@@ -33,17 +33,26 @@ sap.ui.define([
 				}
 			},
 			
-			getPriorDescr: function (sPriorCode, sPriorLow, sPriorMedium, sPriorHigh) {
+			getPriorDescr: function (sPriorCode, sPriorL, sPriorMA, sPriorMI, sPriorH, sPriorN, sPriorVH) {
 				switch (sPriorCode) {
 					case "H":
-						return sPriorHigh;
+						return sPriorH;
 						break;
-					case "M":
-						return sPriorMedium;
+					case "MA":
+						return sPriorMA;
+						break;
+					case "MI":
+						return sPriorMI;
+						break;
+					case "N":
+						return sPriorN;
+						break;
+					case "VH":
+						return sPriorVH;
 						break;
 					case "L":
-						return sPriorLow;
-						break
+						return sPriorL;
+						break;
 						}
 			},
 			

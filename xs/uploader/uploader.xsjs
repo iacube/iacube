@@ -89,7 +89,6 @@ function upload(list){
 		var i;
 		var dbParameters;
 		var preparedData;
-		var loadedProcedure;
 		
 		for(i = 0; i < list.length; i++){
 		    
@@ -98,7 +97,7 @@ function upload(list){
 			
 			if(list[i].template.procedure){
 				//call procedure
-				loadedProcedure = connection.loadProcedure(constants.schema,list[i].template.procedure.replace(/\{(\w+)\}/g,replacer));
+				var loadedProcedure = connection.loadProcedure(constants.schema,list[i].template.procedure.replace(/\{(\w+)\}/g,replacer));
 				dbResult = dbResult.concat(loadedProcedure.apply(connection,dbParameters));
 			}else{
 				$.response.status = $.net.http.INTERNAL_SERVER_ERROR;
@@ -106,9 +105,6 @@ function upload(list){
 				return;
 			}
 		}
-		
-		loadedProcedure = connection.loadProcedure(constants.schema,"iacube.db.procedures::afterUploadFinished");
-		dbResult = dbResult.concat(loadedProcedure.apply(connection));
 		
 		if(serviceResponce(dbResult,{},message)){
 			//commit changes 
