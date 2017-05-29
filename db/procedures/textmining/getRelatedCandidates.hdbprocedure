@@ -2,8 +2,7 @@ PROCEDURE "IACUBE"."iacube.db.procedures.textmining::getRelatedCandidates" (IN r
    OUT relatedCandidates "IACUBE"."iacube.db::types.relatedCandidates" DEFAULT EMPTY)
    LANGUAGE SQLSCRIPT
    SQL SECURITY INVOKER
---   READS SQL DATA AS
-AS
+   READS SQL DATA AS
 BEGIN
    DECLARE lt_scoredRelations "IACUBE"."iacube.db::types.scoredRelations";
    CALL "IACUBE"."iacube.db.procedures.textmining::getScoredRelations" (:reqId,:topN,:lt_scoredRelations);
@@ -27,8 +26,4 @@ BEGIN
 
    relatedCandidates=SELECT TOP 10 "ProfileId", "CandidateId", "score" FROM :lt_candidateProfileScored;
    
---   relatedCandidates=SELECT 1 AS "ProfileId", 2 AS "CandidateId", 3 AS "score" FROM :xx;
---   relatedCandidates=SELECT 1 AS "ProfileId", 2 AS "CandidateId", 3 AS "score" FROM :lt_profFullTotalScore;
---   relatedCandidates=SELECT 1 AS "ProfileId", 2 AS "CandidateId", 3 AS "score" FROM :lt_profTotScore;
---   relatedCandidates=SELECT 1 AS "ProfileId", 2 AS "CandidateId", 3 AS "score" FROM :lt_candidateProfileScored;
 END
