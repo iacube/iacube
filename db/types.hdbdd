@@ -40,6 +40,8 @@ context types {
  	type docExtId        : hana.SMALLINT;			
  	type docExtType      : String(2);	
  	type docContent      : LargeString;			
+ 	type relScore        : DecimalFloat;
+ 	type relDim          : String(2);
 		
 	type error{
 		ERROR_CODE	: Integer;
@@ -380,10 +382,17 @@ context types {
 	type relatedCandidates{
 		
 		ProfileId	: profileId;
-
  		CandidateId	: candidateId;
+                score           : DecimalFloat;
 
-                score           : hana.SMALLINT;
         
        }
+	type scoredRelations{
+		
+    	        DocExtId        : docExtId;
+ 	        RelScore        : relScore;
+ 	        RelDim          : relDim;
+                ReqId           : Integer;
+       }
+
 };
