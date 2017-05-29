@@ -453,8 +453,8 @@ context tables{
 
  	   }
  	   technical configuration {
-           fulltext index MYFTI1 on (Content)
-              LANGUAGE COLUMN Language
+           fulltext index MYFTI1 on (CONTENT)
+              LANGUAGE COLUMN LANGUAGE
               TEXT ANALYSIS on
               SEARCH ONLY off 
               FAST PREPROCESS off 
