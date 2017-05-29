@@ -1,0 +1,34 @@
+PROCEDURE "IACUBE"."iacube.db.procedures.textmining::getRelatedCandidates" (IN reqId INTEGER , IN topN SMALLINT , 
+   OUT relatedCandidates "IACUBE"."iacube.db::types.relatedCandidates" DEFAULT EMPTY)
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY INVOKER
+--   READS SQL DATA AS
+AS
+BEGIN
+   DECLARE lt_scoredRelations "IACUBE"."iacube.db::types.scoredRelations";
+   CALL "IACUBE"."iacube.db.procedures.textmining::getScoredRelations" (:reqId,:topN,:lt_scoredRelations);
+   lt_profFullTotalScore=SELECT A."DocExtId" AS "SumProfile",A."RelScore" AS "SumScore",
+                                B."DocExtId" AS "SkillProfile",B."RelScore" AS "SkillScore" 
+                         FROM :lt_scoredRelations AS A 
+                         FULL OUTER JOIN :lt_scoredRelations AS B
+                         ON A."DocExtId"=B."DocExtId"
+                         WHERE A."RelDim"='CC' AND B."RelDim"='SS'; 
+                         
+  
+   lt_profTotScore=SELECT COALESCE(A."SumProfile",A."SkillProfile") AS "ProfileId",
+                          SQRT(POWER(IFNULL(A."SumScore",0),2)+POWER(IFNULL(A."SkillScore",0),2)) AS "TotalScore"
+                   FROM :lt_profFullTotalScore AS A;
+                   
+   lt_candidateProfileScored=SELECT A."ProfileId" AS "ProfileId", B."CandidateId" AS "CandidateId", A."TotalScore" AS "score"
+                             FROM :lt_profTotScore AS A 
+                             JOIN "IACUBE"."iacube.db::tables.Candidate.Profiles" AS B
+                             ON A."ProfileId"=B."ProfileId"
+                             ORDER BY A."TotalScore" DESC;
+
+   relatedCandidates=SELECT TOP 10 "ProfileId", "CandidateId", "score" FROM :lt_candidateProfileScored;
+   
+--   relatedCandidates=SELECT 1 AS "ProfileId", 2 AS "CandidateId", 3 AS "score" FROM :xx;
+--   relatedCandidates=SELECT 1 AS "ProfileId", 2 AS "CandidateId", 3 AS "score" FROM :lt_profFullTotalScore;
+--   relatedCandidates=SELECT 1 AS "ProfileId", 2 AS "CandidateId", 3 AS "score" FROM :lt_profTotScore;
+--   relatedCandidates=SELECT 1 AS "ProfileId", 2 AS "CandidateId", 3 AS "score" FROM :lt_candidateProfileScored;
+END
