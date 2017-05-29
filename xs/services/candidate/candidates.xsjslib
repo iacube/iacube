@@ -95,6 +95,12 @@ var call = {
 					StatusId : {
 						type: "string"
 					},
+					ProfileId : {
+						type: "integer"
+					},
+					Distance : {
+						type: "double"
+					},
 					flag :{
 						type:"string"
 					}

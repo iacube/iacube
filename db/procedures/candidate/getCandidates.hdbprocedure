@@ -22,7 +22,7 @@ BEGIN
 	DECLARE nOffset INTEGER := 0;
 	
 	prefiltered = 
-		SELECT DISTINCT
+		SELECT
 				a."CandidateId",
 				a."LastName",
 				a."FirstName",
@@ -33,14 +33,17 @@ BEGIN
 				c."ProfileTypeId",
 				c."Link",
 				a."Photo",
-				d."ReqId"
+				d."ReqId",
+				d."Distance",
+				c."Headline"
 			FROM "iacube.db::tables.Candidate.Candidates" AS a
 			INNER JOIN "iacube.db::tables.Candidate.Profiles" AS b
 				ON a."CandidateId" = b."CandidateId"
 			INNER JOIN "iacube.db::tables.Profile.Profiles" AS c
 				ON b."ProfileId" = c."ProfileId"
 			LEFT JOIN "iacube.db::tables.Requisition.Candidates" AS d
-				ON a."CandidateId" = d."CandidateId"
+				ON  a."CandidateId" = d."CandidateId"
+				AND b."ProfileId" = d."ProfileId"
 			WHERE CONTAINS ((a."LastName",a."FirstName",a."Location"),:searchTerm, FUZZY(0.8))
 	;
 	
@@ -65,22 +68,10 @@ BEGIN
 				"ProfileId",
 				"ExternalId",
 				"ProfileTypeId",
-				"Link"
+				"Link",
+				"Headline"
 			FROM :filtered AS a
 	;
-	distance = 
-		SELECT DISTINCT
-				b."CandidateId",
-				MAX(a."Distance") AS "Distance"
-			FROM "iacube.db::tables.Distance.Distances" AS a
-			INNER JOIN :filtered AS b
-				ON  a."ReqId"	  = b."ReqId"
-				AND a."ProfileId" = b."ProfileId"
-			GROUP BY 
-				--a."ReqId",
-				b."CandidateId"
-	;
-	
 	candidates = 
 		SELECT DISTINCT
 				a."CandidateId",
@@ -89,10 +80,15 @@ BEGIN
 				a."Location",
 				a."ProfArea",
 				a."Photo",
-				b."Distance"
+				MAX(a."Distance") AS "Distance"
 			FROM :filtered AS a
-			LEFT JOIN :distance AS b
-				ON a."CandidateId" = b."CandidateId"
+			GROUP BY 
+				a."CandidateId",
+				a."LastName",
+				a."FirstName",
+				a."Location",
+				a."ProfArea",
+				a."Photo"
 	;
 	salary = 
 		SELECT 
@@ -132,7 +128,11 @@ BEGIN
 				c."Title",
 				a."StatusId",
 				a."AssignedBy",
-				a."AssignedAt"
+				a."AssignedAt",
+				a."ChangedBy",
+				a."ChangedAt",
+				a."ProfileId",
+				a."Distance"
 			FROM "iacube.db::tables.Requisition.Candidates" AS a
 			INNER JOIN :candidates AS b
 				ON a."CandidateId" = b."CandidateId"

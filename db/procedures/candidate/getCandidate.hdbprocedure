@@ -10,7 +10,7 @@ PROCEDURE "IACUBE"."iacube.db.procedures.candidate::getCandidate"(
 	OUT schedules	 "IACUBE"."iacube.db::types.candidateSchedules"		DEFAULT EMPTY,
 	OUT skills		 "IACUBE"."iacube.db::types.candidateSkills"		DEFAULT EMPTY,
 	OUT requisitions "IACUBE"."iacube.db::types.candidateRequisitions"	DEFAULT EMPTY
-) 
+)
 	LANGUAGE SQLSCRIPT
 	SQL SECURITY INVOKER 
 	DEFAULT SCHEMA IACUBE

@@ -169,6 +169,10 @@ context types {
 			LastName	: name;
 			AssignedBy	: creator;
 			AssignedAt	: datetime;
+			ChangedBy	: creator;
+			ChangedAt	: datetime;
+			ProfileId	: profileId;
+			Distance	: BinaryFloat;
 		};
 
 
@@ -210,11 +214,16 @@ context types {
 		type requisitionCandidates{
 			CandidateId	: candidateId;
 			StatusId	: statusTypeId;
-			ChangedAt	: datetime;
 			FirstName	: name;
 			LastName	: name;
-			Experience	: Integer;
-			Distance	: Integer;	
+			AssignedBy	: creator;
+			AssignedAt	: datetime;
+			ChangedBy	: creator;
+			ChangedAt	: datetime;
+			ProfileId	: profileId;
+			Distance	: BinaryFloat;
+			Experience  : Integer;
+			Photo		: String(1000);
 		};
 //		|___
 			type requisitionProfiles{
@@ -223,6 +232,7 @@ context types {
 				ExternalId		: String(1000);
 				ProfileTypeId	: profileTypeId;
 				Link			: String(1000);
+				Headline		: String(1000);
 			};
 
 	type updateRequisitionDetails{
@@ -273,6 +283,7 @@ context types {
 		ExternalId		: String(1001);
 		ProfileTypeId	: profileTypeId;
 		Link			: String(1000);
+		Headline		: String(1000);
 	};
 	type searchCandidatesSalary{
 		CandidateId	: candidateId;
@@ -297,6 +308,10 @@ context types {
 		StatusId 	 : statusTypeId;
 		AssignedBy	 : creator;
 		AssignedAt	 : datetime;
+		ChangedBy	 : creator;
+		ChangedAt	 : datetime;
+		ProfileId	 : profileId;
+		Distance	 : BinaryFloat;
 	};
 
 	type candidate{
@@ -374,6 +389,8 @@ context types {
 		ReqId		: reqId;
 		CandidateId	: candidateId;
 		StatusId	: statusTypeId;
+		ProfileId	: profileId;
+		Distance	: BinaryFloat;
 		flag		: sflag;
 	};
 

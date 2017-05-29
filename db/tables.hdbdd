@@ -237,8 +237,8 @@ context tables{
 				ExternalId		: String(1001);
 				ProfileTypeId	: profileTypeId;
 				Link			: String(1000);
-				Headline		: LargeString;
-				Summary			: LargeString;
+				Headline		: String(5000);
+				Summary			: String(5000);
 				Language		: lang;
 		};
 		
@@ -266,7 +266,7 @@ context tables{
 			key ProfileId	: profileId;
 			key Company		: String(1000);
 			key Position	: String(1000);
-				Description	: LargeString;
+				Description	: String(5000);
 				StartDate	: date;
 				EndDate		: date;
 				Duration	: Integer;
@@ -340,8 +340,8 @@ context tables{
 				UpdatedBy		: creator;
 				UpdatedAt		: datetime;
 				Language		: lang;
-				Keywords		: LargeString;
-				Description		: LargeString;
+				Keywords		: String(5000);
+				Description		: String(5000);
 				OpenedBy		: creator;
 				OpenedAt		: datetime;
 		};
@@ -361,6 +361,8 @@ context tables{
 				ChangedAt	 : datetime;
 				AssignedBy	 : creator;
 				AssignedAt	 : datetime;
+				ProfileId	 : tables.Profile.profileId;
+				Distance 	 : BinaryFloat;
 		};
 		
 		entity Comments{
@@ -408,7 +410,7 @@ context tables{
 		};
 	};
 	
-	context Distance{
+	/*context Distance{
 		
 		type distanceTypeId : Integer;
 
@@ -425,7 +427,7 @@ context tables{
 					Description : String(100);
 			};
 		};
-	};
+	};*/
  	context Document{
         type docId           : hana.SMALLINT;
  	   type docExtId        : hana.SMALLINT;			

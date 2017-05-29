@@ -14,7 +14,7 @@ PROCEDURE "IACUBE"."iacube.db.procedures.requisition::getRequsitions"(
 	DEFAULT SCHEMA IACUBE
 	READS SQL DATA AS
 BEGIN
-	
+
 	DECLARE nLimit  INTEGER;
 	DECLARE nOffset INTEGER := 0;
 	
@@ -87,7 +87,11 @@ BEGIN
 				b."FirstName",
 				b."LastName",
 				a."AssignedBy",
-				a."AssignedAt"
+				a."AssignedAt",
+				a."ChangedBy",
+				a."ChangedAt",
+				a."ProfileId",
+				a."Distance"
 			FROM "iacube.db::tables.Requisition.Candidates"	AS a
 			INNER JOIN "iacube.db::tables.Candidate.Candidates" AS b
 				ON a."CandidateId"  = b."CandidateId"

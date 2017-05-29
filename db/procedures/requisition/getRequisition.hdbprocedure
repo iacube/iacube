@@ -1,17 +1,17 @@
 PROCEDURE "IACUBE"."iacube.db.procedures.requisition::getRequisition"(
-	IN 	reqId 		INTEGER,
-	OUT	details 	"IACUBE"."iacube.db::types.requisitionDetails"	  DEFAULT EMPTY,
-	OUT skills		"IACUBE"."iacube.db::types.requisitionSkills"	  DEFAULT EMPTY,
-	OUT candidates 	"IACUBE"."iacube.db::types.requisitionCandidates" DEFAULT EMPTY,
-	OUT profiles 	"IACUBE"."iacube.db::types.requisitionProfiles"	  DEFAULT EMPTY,
-	OUT comments 	"IACUBE"."iacube.db::types.requisitionComments"   DEFAULT EMPTY,
+	IN 	reqId 				INTEGER,
+	OUT	details 			"IACUBE"."iacube.db::types.requisitionDetails"	  DEFAULT EMPTY,
+	OUT skills				"IACUBE"."iacube.db::types.requisitionSkills"	  DEFAULT EMPTY,
+	OUT candidates 			"IACUBE"."iacube.db::types.requisitionCandidates" DEFAULT EMPTY,
+	OUT profiles 			"IACUBE"."iacube.db::types.requisitionProfiles"	  DEFAULT EMPTY,
+	OUT comments 			"IACUBE"."iacube.db::types.requisitionComments"   DEFAULT EMPTY,
 
-	OUT commentTypes	 "IACUBE"."iacube.db::types.idName"			  DEFAULT EMPTY,
-	OUT commentStatusTypes	 "IACUBE"."iacube.db::types.idName"		  DEFAULT EMPTY,
-	OUT priorityTypes	 "IACUBE"."iacube.db::types.idName"			  DEFAULT EMPTY,
-	OUT statusCodeTypes	 "IACUBE"."iacube.db::types.idName"			  DEFAULT EMPTY,
-	OUT statusTypes		 "IACUBE"."iacube.db::types.idName"			  DEFAULT EMPTY,
-	OUT subcategoryTypes "IACUBE"."iacube.db::types.idName"			  DEFAULT EMPTY
+	OUT commentTypes		 "IACUBE"."iacube.db::types.idName"				  DEFAULT EMPTY,
+	OUT commentStatusTypes	 "IACUBE"."iacube.db::types.idName"				  DEFAULT EMPTY,
+	OUT priorityTypes		 "IACUBE"."iacube.db::types.idName"				  DEFAULT EMPTY,
+	OUT statusCodeTypes		 "IACUBE"."iacube.db::types.idName"				  DEFAULT EMPTY,
+	OUT statusTypes			 "IACUBE"."iacube.db::types.idName"				  DEFAULT EMPTY,
+	OUT subcategoryTypes	 "IACUBE"."iacube.db::types.idName"				  DEFAULT EMPTY
 )
 	LANGUAGE SQLSCRIPT
 	SQL SECURITY INVOKER 
@@ -52,19 +52,57 @@ BEGIN
 			FROM "iacube.db::tables.Requisition.Skills"
 			WHERE "ReqId" = :reqId
 	;
+--proposed candidates
+	CALL "iacube.db.procedures.textmining::getRelatedCandidates"(:reqId,20,relatedCandidates);
+	
+	reqCandidates = 
+		SELECT 
+				:reqId 									AS "ReqId",
+				IFNULL(a."CandidateId",b."CandidateId") AS "CandidateId",
+				IFNULL(a."ProfileId",b."ProfileId")		AS "ProfileId",
+				IFNULL(a."score",b."Distance")			AS "Distance",
+				b."StatusId",
+				b."ChangedBy",
+				b."ChangedAt",
+				b."AssignedBy",
+				b."AssignedAt"
+			FROM :relatedCandidates AS a
+			FULL OUTER JOIN	"iacube.db::tables.Requisition.Candidates" AS b
+				ON  a."CandidateId" = b."CandidateId"
+				AND a."ProfileId"   = b."ProfileId"
+				AND b."ReqId" = :reqId
+	;
 	candidates = 
 		SELECT
 				a."CandidateId",
 				a."StatusId",
-				a."ChangedAt",
 				b."FirstName",
 				b."LastName",
-				null AS "Experience",
-				null AS "Distance"
-			FROM "iacube.db::tables.Requisition.Candidates"	AS a
-			INNER JOIN "iacube.db::tables.Candidate.Candidates" AS b
+				a."AssignedBy",
+				a."AssignedAt",
+				a."ChangedBy",
+				a."ChangedAt",
+				a."ProfileId",
+				a."Distance",
+				SUM(c."Duration") / 12 AS "Experience",
+				b."Photo"
+			FROM  :reqCandidates AS a
+			LEFT JOIN  "iacube.db::tables.Candidate.Candidates" AS b
 				ON a."CandidateId"  = b."CandidateId"
-			WHERE a."ReqId" = :reqId
+			LEFT JOIN "iacube.db::tables.Profile.Experience" AS c
+				ON a."ProfileId" = c."ProfileId"
+			GROUP BY 
+				a."CandidateId",
+				a."StatusId",
+				b."FirstName",
+				b."LastName",
+				a."AssignedBy",
+				a."AssignedAt",
+				a."ChangedBy",
+				a."ChangedAt",
+				a."ProfileId",
+				a."Distance",
+				b."Photo"
 	;
 	profiles = 
 		SELECT 
@@ -72,58 +110,15 @@ BEGIN
 				b."ProfileId",
 				c."ExternalId",
 				c."ProfileTypeId",
-				c."Link"
+				c."Link",
+				c."Headline"
 			FROM :candidates AS a
 			INNER JOIN "iacube.db::tables.Candidate.Profiles" AS b
 				ON a."CandidateId" = b."CandidateId"
 			INNER JOIN "iacube.db::tables.Profile.Profiles" AS c
 				ON b."ProfileId" = c."ProfileId"
-			
 	;
 	
-	experience = 
-		SELECT 
-				a."ProfileId",
-				SUM(YEARS_BETWEEN (a."StartDate",a."EndDate")) AS "Experience"
-			FROM "iacube.db::tables.Profile.Experience" AS a
-			INNER JOIN :profiles As b
-				ON a."ProfileId" = b."ProfileId"
-			GROUP BY 
-				a."ProfileId"
-	;
-	
-	distance = 
-		SELECT 
-				b."CandidateId",
-				MAX(a."Distance") AS "Distance"
-			FROM "iacube.db::tables.Distance.Distances" AS a
-			INNER JOIN :profiles AS b
-				ON  a."ProfileId" = b."ProfileId"
-				--AND a."ReqId" 	  = b."ReqId" 
-				AND a."ReqId" 	  = :reqId
-			GROUP BY 
-				--a."ReqId",
-				b."CandidateId"
-	;
-			
-	candidates = 
-		SELECT 	
-				a."CandidateId",
-				a."StatusId",
-				a."ChangedAt",
-				a."FirstName",
-				a."LastName",
-				d."Experience",
-				b."Distance"	
-			FROM :candidates AS a
-			LEFT JOIN :distance AS b
-				ON  a."CandidateId" = b."CandidateId"
-			LEFT JOIN "iacube.db::tables.Distance.Distances" AS c
-				ON  b."Distance" = c."Distance" 
-				AND c."ReqId" 	 = :reqId
-			LEFT JOIN :experience AS d
-				ON  c."ProfileId" = d."ProfileId" 
-	;		
 	comments = 
 		SELECT 
 				"CommentId",

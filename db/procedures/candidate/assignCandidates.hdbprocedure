@@ -24,6 +24,8 @@ BEGIN
 				a."ReqId",
 				a."CandidateId",
 				a."StatusId",
+				a."ProfileId",
+				a."Distance",
 				b."ReqId" 		AS "existedReq",
 				c."CandidateId" AS "existedCandidate",
 				d."Id" 			AS "existedStatus"
@@ -46,13 +48,15 @@ BEGIN
 			AND   "existedStatus"	 IS NOT NULL
 	;
 	UPSERT "iacube.db::tables.Requisition.Candidates"
-		("ReqId","CandidateId","StatusId","ChangedBy","ChangedAt")
+		("ReqId","CandidateId","StatusId","ChangedBy","ChangedAt","ProfileId","Distance")
 		SELECT 
 				"ReqId",
 				"CandidateId",
 				"StatusId",
 				SESSION_USER 		AS "ChangedBy",
-				CURRENT_TIMESTAMP 	AS "ChangedAt"
+				CURRENT_TIMESTAMP 	AS "ChangedAt",
+				"ProfileId",
+				"Distance"
 			FROM :checked
 	;
 	UPDATE a

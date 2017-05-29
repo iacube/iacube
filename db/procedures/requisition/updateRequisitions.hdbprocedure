@@ -197,7 +197,6 @@ BEGIN
 				AND s."CommentId" = p."CommentId"
 				AND p."flag" = 'D')
 	;
-	
 	preparedComments = 
 		SELECT
 				a."ReqId",
@@ -240,6 +239,8 @@ BEGIN
 				"CommentStatusId"
 			FROM :checkedComments
 	;
+	
+	--CALL "iacube.db.procedures.document::updateDocuments"();
 	
 	errors = 
 		SELECT 
