@@ -101,8 +101,8 @@ sap.ui.define([
 					sValueLocation = oControl.getValue();
 					oFilter.Location = sValueLocation;
 				}
-				if (oFilterItem.getName() == "website"  && oControl.getValue()!=""){
-					sValueWebsite = oControl.getValue();
+				if (oFilterItem.getName() == "website"  && oControl.getSelectedKey()!=""){
+					sValueWebsite = oControl.getSelectedKey();
 					oFilter.ProfileTypeId = sValueWebsite;
 					
 				}
@@ -121,11 +121,14 @@ sap.ui.define([
 		 * @memberOf manage_vacancy.ui.requisitions_report.view.view.RequisitionsOverview
 		 */
 		onAfterRendering: function() {
-			this.loadCandidates();
+				this.loadProfiles();
 		},
 		
-		loadCandidates: function(){
+		loadProfiles: function(){
 			var oModel = this.getModel("ui");
+			DataHelper.getCandidates(this).then(function(aProfiles){
+				oModel.setProperty("/profileTypes", Mapper.mapProfilesFilter(aProfiles.filter.ProfileTypeId.values));
+			});
 		/*	DataHelper.getCandidates(this).then(function(aCandidates){
 				oModel.setProperty("/candidates", Mapper.mapCandidates(aCandidates.data));
 			});*/
