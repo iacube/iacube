@@ -240,7 +240,7 @@ BEGIN
 			FROM :checkedComments
 	;
 	
-	--CALL "iacube.db.procedures.document::updateDocuments"();
+	CALL "iacube.db.procedures.document::updateDocuments"();
 	
 	errors = 
 		SELECT 
