@@ -66,7 +66,7 @@ sap.ui.define([
 				path	: "profiles/"+iIndex+"/Summary"
 			});
 			
-			var oSkillsForm = this.getView().byId("cand_page_skills_form");
+		var oSkillsForm = this.getView().byId("cand_page_skills_form");
 			oSkillsForm.bindProperty("skills", {
 				model 	: "ui",
 				path	: "profiles/"+iIndex+"/skills"
@@ -75,6 +75,21 @@ sap.ui.define([
 			var sSelectedHeadline = this.getModel("ui").getProperty(oContext.getPath()+"/profiles/"+iIndex+"/Headline");
 			var sSelectedLocation = this.getModel("ui").getProperty(oContext.getPath()+"/Location");
 			this.getModel("ui").setProperty(oContext.getPath()+"/selectedProfile", sSelectedLocation + " / " + sSelectedHeadline);
+		},
+		
+		onCandidateAssign: function(){
+			var sCandId = this.getView().getBindingContext("ui").getProprty("CandidateId");
+			var sReqId = this.getModel("ui").getProperty("/selectedRequisition");
+			var aSelectedCandidates = [{
+					ReqId: sReqId,
+					CandidateId	: sCandId,
+					StatusId : "OPEN",
+					flag: "I"
+				}];
+			DataHelper.assignCandidatesToRequisitions(aSelectedCandidates).then(function(){
+				console.log("ok");
+			});
+
 		}
 		
 

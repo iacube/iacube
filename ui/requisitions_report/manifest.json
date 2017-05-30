@@ -38,6 +38,9 @@
 	},
 
 	"sap.ui5": {
+		"config": {
+			"sapFiori2Adaptation": true
+		},		
 		"rootView": {
 			"viewName": "requisitions_report.view.Main",
 			"type": "XML"
