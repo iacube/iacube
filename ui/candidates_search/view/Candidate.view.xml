@@ -15,15 +15,6 @@
 						</uxap:breadCrumbsLinks>
 					</uxap:ObjectPageHeader>
 				</uxap:headerTitle>
-				<!-- <uxap:headerContent> <layout:VerticalLayout width="5%"></layout:VerticalLayout> 
-					<layout:VerticalLayout> <ObjectStatus title="{i18n>req.detail.location}" 
-					text="{ui>Location}" /> <ObjectStatus title="{i18n>req.detail.project}" text="{ui>ProjectId}" 
-					/> </layout:VerticalLayout> <layout:VerticalLayout width="40%"></layout:VerticalLayout> 
-					<layout:VerticalLayout> <ObjectStatus title="{i18n>req.detail.created}" text="{ui>CreatedAt}" 
-					/> <FlexBox alignContent="End" justifyContent="End"> <ObjectStatus text="{ui>StatusCodeId}" 
-					state="Success" /> </FlexBox> <layout:VerticalLayout></layout:VerticalLayout> 
-					<FlexBox alignContent="End" justifyContent="End"> <Select></Select> </FlexBox> 
-					</layout:VerticalLayout> </uxap:headerContent> -->
 				<uxap:sections>
 					<uxap:ObjectPageSection id="candInfo"
 						title="{i18n>cand.info.title}" titleUppercase="false">
