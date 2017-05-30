@@ -44,7 +44,7 @@ BEGIN
 			LEFT JOIN "iacube.db::tables.Requisition.Candidates" AS d
 				ON  a."CandidateId" = d."CandidateId"
 				AND b."ProfileId" = d."ProfileId"
-			WHERE CONTAINS ((a."LastName",a."FirstName",a."Location"),:searchTerm, FUZZY(0.8))
+			WHERE CONTAINS (*,:searchTerm, FUZZY(0.8))
 	;
 	
 	filtered = 
