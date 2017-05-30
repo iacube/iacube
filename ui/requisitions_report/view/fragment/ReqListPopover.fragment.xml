@@ -1,0 +1,4 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core"
+	xmlns:common="iacube.ui.common">
+	<common:requisitionsListPopover requisitions="{ui>requisitions}" />
+</core:FragmentDefinition>

@@ -65,29 +65,14 @@ sap.ui.define([
 						new Image({src: {model: 'local', path:'ProfileTypeId',
 							formatter:function(type){
 								if(type == "HH"){
-									return "/iacube/ui/common/img/Logo-2C-14px.png"
+									return "/iacube/ui/common/img/logo-hh.png"
 								}
-								return "/iacube/ui/common/img/Logo-2C-14px.png";
+								return "/iacube/ui/common/img/logo-linkedin.png";
 							}
 						}, height:"1rem"}).addStyleClass("sapUiTinyMarginBegin")
 					]
 				}).addStyleClass("sapUiLargeMarginBeginEnd")
 			);
-			
-//			var oList = new List({
-//				id: "profiles_popover_items_list"
-//			}).bindAggregation("items", "local>/profiles",
-//				new CustomListItem({
-//					content: [
-//						new HBox({
-//							items: [
-//								new Link({text:"{local>Link}", target:"{local>Link}", press:"handleLinkPress"}),
-//								new Image({src: "{local>/ProfileTypeId}", width: "3rem", height:"3rem"})
-//							]
-//						})
-//					]
-//				})
-//			);
 
 			this.addContent(oHBox).addContent(oVBox);
 		},
