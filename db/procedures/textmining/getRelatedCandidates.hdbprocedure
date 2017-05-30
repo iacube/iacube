@@ -5,7 +5,12 @@ PROCEDURE "IACUBE"."iacube.db.procedures.textmining::getRelatedCandidates" (IN r
    READS SQL DATA AS
 BEGIN
    DECLARE lt_scoredRelations "IACUBE"."iacube.db::types.scoredRelations";
-   CALL "IACUBE"."iacube.db.procedures.textmining::getScoredRelations" (:reqId,:topN,:lt_scoredRelations);
+   DECLARE X INTEGER;
+
+   X:=1;
+   X:=topN*2;
+   
+   CALL "IACUBE"."iacube.db.procedures.textmining::getScoredRelations" (:reqId,:X,:lt_scoredRelations);
    lt_profFullTotalScore=SELECT A."DocExtId" AS "SumProfile",A."RelScore" AS "SumScore",
                                 B."DocExtId" AS "SkillProfile",B."RelScore" AS "SkillScore" 
                          FROM :lt_scoredRelations AS A 

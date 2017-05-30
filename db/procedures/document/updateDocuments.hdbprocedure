@@ -1,10 +1,10 @@
-PROCEDURE "IACUBE"."iacube.db.procedures.document::updateDocuments" ( )
+create PROCEDURE "IACUBE"."iacube.db.procedures.document::updateDocuments" ( )
    LANGUAGE SQLSCRIPT
    SQL SECURITY DEFINER
    AS
 BEGIN
 
- /*    DECLARE CURSOR lc_req FOR SELECT "ReqId","Language" FROM "IACUBE"."iacube.db::tables.Requisition.Requisitions" AS "A"
+    DECLARE CURSOR lc_req FOR SELECT "ReqId","Language" FROM "IACUBE"."iacube.db::tables.Requisition.Requisitions" AS "A"
                                                     WHERE EXISTS(SELECT NULL FROM "IACUBE"."iacube.db::tables.Requisition.Skills" AS "B"
                                                                              WHERE "A"."ReqId"="B"."ReqId");
    DECLARE CURSOR lc_req_skill(p_req_id SMALLINT) FOR SELECT "Weight","Skill" FROM "IACUBE"."iacube.db::tables.Requisition.Skills" 
@@ -149,6 +149,5 @@ BEGIN
          WHERE A."DocId"=(SELECT B."Id" FROM "IACUBE"."iacube.db::tables.Document.Documents" AS B 
                           WHERE  B."ExtId"=ls_prof."ProfileId" AND B."ExtType"='P') AND A."DOCDIM"='C';  
       END IF;
-   END FOR; */
+   END FOR; 
 END
-;
