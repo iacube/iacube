@@ -9,8 +9,9 @@ sap.ui.define([
 	"sap/m/Toolbar",
 	"sap/m/Button",
 	"sap/m/Title",
-	"sap/m/ToolbarSpacer"
-], function(Table, Column, Text, Slider, ObjectNumber, ColumnListItem, Input, Toolbar, Button, Title, ToolbarSpacer) {
+	"sap/m/ToolbarSpacer",
+	"sap/ui/model/json/JSONModel"
+], function(Table, Column, Text, Slider, ObjectNumber, ColumnListItem, Input, Toolbar, Button, Title, ToolbarSpacer, JSONModel) {
 	"use strict";
 
 	return Table.extend("iacube.ui.common.SkillsTable", {
@@ -126,13 +127,25 @@ sap.ui.define([
 		},
 		
 		_onSkillDelete: function(oEvent) {
-			// delete skill
+			var oModel = this.getModel("ui");
+			
 			var path = oEvent.getParameter("listItem").getBindingContext("ui").getPath();
-            var index = parseInt(path.substring(path.lastIndexOf('/') +1));
-            var dataPath = path.substring(0, path.lastIndexOf('/'));
-            var oModel = this.getModel("ui");
-            var skills = oModel.getProperty(dataPath);
-            skills.splice(index, 1);
+			var dataPath = path.substring(0, path.lastIndexOf('/'));
+			var sMode = oModel.getProperty("/Mode");
+			var skills = oModel.getProperty(dataPath);
+			var index = parseInt(path.substring(path.lastIndexOf('/') +1));
+			
+			if(sMode == "U"){
+				var skill = skills[index];
+				// set new node for deleted skills
+				var aDelSkills = [];
+				var delSkill = skill;
+				delSkill.flag = "D";
+				aDelSkills.push(delSkill);
+				oModel.setProperty("/DeletedSkills", aDelSkills)
+			}
+			// delete skill
+            skills.splice(index, 1);         
             oModel.setData(skills, true);
 		},
 		
@@ -144,8 +157,13 @@ sap.ui.define([
 			var skills = oModel.getProperty(path).skills;
 			
 			var oNewSkill = {
-					Skill: "",
+					Skill: "", 
 					Weight: 100
+			}
+			
+			var sMode = oModel.getProperty("/Mode");
+			if(sMode == "U"){
+				oNewSkill.flag = "I"
 			}
 			
 			skills.push(oNewSkill);

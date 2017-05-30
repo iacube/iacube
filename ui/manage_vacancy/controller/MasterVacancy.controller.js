@@ -18,21 +18,12 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 			this.loadRequisitions();
 		},
 
-		loadRequisitions : function(isReload, sPath) {
+		loadRequisitions : function() {
 			var oModel = this.getModel("ui");
-			var that = this;
 			DataHelper.getRequisitions(this).then(
 					function(aRequisitions) {
 						oModel.setProperty("/JobRequisCollection", Mapper
-								.mapRequisitions(aRequisitions.data));
-						if(isReload){
-							//refresh model and set new selection
-							oModel.refresh();
-							that._setNewSelection("0");
-							var index = parseInt(sPath
-									.substring(sPath.lastIndexOf('/') + 1));
-							that._setNewSelection(index);		
-						}		
+								.mapRequisitions(aRequisitions.data));		
 					});
 		},
 
@@ -40,6 +31,7 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 			// reset additional properties in case selection was changed
 			var oModel = this.getModel("ui");
 			oModel.setProperty("/RequisEditable", false);
+			oModel.setProperty("/RequisReadOnly", true);
 			oModel.setProperty("/TableMode", sap.m.ListMode.None);
 			var oListItem = oEvent.getParameter("listItem");
 			if (!oListItem) {
@@ -52,10 +44,6 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 				from : "master",
 				index : selPath.substr(("/JobRequisCollection/").length)
 			}, false);
-		},
-		
-		onRequisSave: function(sView, oEvent, sPath){
-			this.loadRequisitions(true, sPath);
 		},
 
 		// Requisition search
@@ -75,6 +63,8 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 		},
 
 		onRequisCreate : function(oEvent) {
+			var oModel = this.getModel("ui");
+			oModel.setProperty("/Mode", "C");
 			this._createNewRequis();
 		},
 
@@ -119,6 +109,7 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 			this._setNewSelection(index);
 			// set property editable
 			oModel.setProperty("/RequisEditable", true);
+			oModel.setProperty("/RequisReadOnly", false);
 			oModel.setProperty("/TableMode", sap.m.ListMode.Delete);
 			this.getRouter().navTo("detail", {
 				from : "master",
