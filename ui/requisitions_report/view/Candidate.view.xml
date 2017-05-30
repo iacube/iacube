@@ -21,7 +21,7 @@
 				</uxap:headerTitle>
 				<uxap:sections>
 					<uxap:ObjectPageSection id="candInfo"
-						title="{i18n>cand.info.title}" titleUppercase="false">
+						titleUppercase="false">
 						<uxap:subSections>
 							<uxap:ObjectPageSubSection title="{i18n>cand.page.header.info}">
 								<uxap:blocks>
@@ -33,12 +33,24 @@
 						</uxap:subSections>
 					</uxap:ObjectPageSection>
 					<uxap:ObjectPageSection id="candSkills"
-						title="{i18n>cand.skills.title}" titleUppercase="false">
+						titleUppercase="false">
 						<uxap:subSections>
 							<uxap:ObjectPageSubSection title="{i18n>cand.page.header.skills}">
 								<uxap:blocks>
 									<common:candSkillsForm id="cand_page_skills_form"
 										skills="{ui>profiles/0/skills}" />
+								</uxap:blocks>
+							</uxap:ObjectPageSubSection>
+						</uxap:subSections>
+					</uxap:ObjectPageSection>
+					<uxap:ObjectPageSection id="candExp"
+						titleUppercase="false">
+						<uxap:subSections>
+							<uxap:ObjectPageSubSection
+								title="{i18n>cand.page.header.experience} ({= ${ui>profiles/0/experience}.length })">
+								<uxap:blocks>
+									<common:candExperienceTable id="cand_page_exp_table"
+										experience="{ui>profiles/0/experience}" />
 								</uxap:blocks>
 							</uxap:ObjectPageSubSection>
 						</uxap:subSections>

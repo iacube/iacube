@@ -31,6 +31,7 @@ sap.ui.define([
 				
 				var CandId = this.getModel("ui").getProperty(sPath+"/CandidateId");
 				this.loadCandidate(CandId, sPath);
+				
 			}
 		},
 		
@@ -40,7 +41,9 @@ sap.ui.define([
 				//We don't want to overwrite existing candidate data, just extend
 				var oCandidate = oModel.getProperty(sPath);
 				oModel.setProperty(sPath, jQuery.extend({}, oCandidate, Mapper.mapCandidate(oData)));
-			});
+				
+				this.setSelectedProfileText(sPath, 0);
+			}.bind(this));
 		},
 		
 		onProfileSelectorShow: function(oEvent){
@@ -66,15 +69,13 @@ sap.ui.define([
 				path	: "profiles/"+iIndex+"/Summary"
 			});
 			
-		var oSkillsForm = this.getView().byId("cand_page_skills_form");
+			var oSkillsForm = this.getView().byId("cand_page_skills_form");
 			oSkillsForm.bindProperty("skills", {
 				model 	: "ui",
 				path	: "profiles/"+iIndex+"/skills"
 			});
 			
-			var sSelectedHeadline = this.getModel("ui").getProperty(oContext.getPath()+"/profiles/"+iIndex+"/Headline");
-			var sSelectedLocation = this.getModel("ui").getProperty(oContext.getPath()+"/Location");
-			this.getModel("ui").setProperty(oContext.getPath()+"/selectedProfile", sSelectedLocation + " / " + sSelectedHeadline);
+			this.setSelectedProfileText(oContext.getPath(), iIndex);
 		},
 		
 		onCandidateAssign: function(){
@@ -90,6 +91,12 @@ sap.ui.define([
 				console.log("ok");
 			});
 
+		},
+		
+		setSelectedProfileText: function(sPath, iIndex){
+			var sSelectedHeadline = this.getModel("ui").getProperty(sPath+"/profiles/"+iIndex+"/Headline");
+			var sSelectedLocation = this.getModel("ui").getProperty(sPath+"/Location");
+			this.getModel("ui").setProperty(sPath+"/selectedProfile", sSelectedLocation + " / " + sSelectedHeadline);
 		}
 		
 
