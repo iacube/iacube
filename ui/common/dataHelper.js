@@ -47,8 +47,8 @@ sap.ui.define([
 					});
 				});
 			},
-			
-			createRequisition: function(oRequisition) {
+			 
+			updateRequisitions: function(oRequisition) {
 				return new Promise(function(resolve, reject) {
 					var sPath = "/iacube/service/requisitions";
 					ServiceAccess.ajax({
@@ -65,7 +65,7 @@ sap.ui.define([
 					});
 				});
 			},
-			
+			 
 			/*CANDIDATES*/
 			
 			getCandidates: function(oEvent, oFilter,sSearchTm){

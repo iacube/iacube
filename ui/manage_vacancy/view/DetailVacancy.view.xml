@@ -31,7 +31,9 @@
 																	}"/>
 						</m:FlexBox>
 						<m:FlexBox alignContent="End" justifyContent="End" class="statusCSS">
-							<m:ObjectStatus text="{ui>StatusCodeId}" state="{path: 'ui>StatusCodeId', formatter: 'manage_vacancy.util.formatter.formatReqStatus'}"/>
+							<m:ObjectStatus text="{parts: [{path:'ui>StatusCodeId'}, {path:'i18n>reqOpen'}, {path:'i18n>reqClose'}, {path:'i18n>reqNew'}], 
+			    											formatter: 'manage_vacancy.util.formatter.getReqStatusText'}"
+											state="{path: 'ui>StatusCodeId', formatter: 'manage_vacancy.util.formatter.formatReqStatus'}"/>
 					    </m:FlexBox>
 					    
 					    <m:FlexBox alignContent="End" justifyContent="End" class="languageCSS">
@@ -56,7 +58,7 @@
 					</ObjectPageSection>
 					<ObjectPageSection id="detSkills" title="{i18n>skills}" titleUppercase="false">
 						<subSections>
-							<ObjectPageSubSection title="{i18n>skills}">
+							<ObjectPageSubSection title="{i18n>skills}"> 
 								<blocks>
 									<skills:Skills id="skills"/>
 								</blocks>
@@ -84,11 +86,13 @@
 				</sections>
 			</ObjectPageLayout>
 		</semantic:content>
-		<semantic:saveAction>
-			<semantic:SaveAction id="idReqSave" press="onRequisSave" visible="{ui>/RequisEditable}"/>
-		</semantic:saveAction>
-		<semantic:cancelAction>
-			<semantic:CancelAction id="idReqCancel" press="onRequisCancel" visible="{ui>/RequisEditable}"/>
-		</semantic:cancelAction>
+
+		<semantic:customFooterContent>
+			<m:Button text="{i18n>save}" press="onRequisSave" visible="{ui>/RequisEditable}" type="Emphasized"/>
+			<m:Button text="{i18n>cancel}" press="onRequisCancel" visible="{ui>/RequisEditable}"/>
+			<m:Button text="{i18n>edit}" press="onRequisEdit" visible="{ui>/RequisReadOnly}" type="Emphasized"/>
+			<m:Button text="{i18n>close}" press="onRequisClose" visible="{ui>/RequisReadOnly}"/>
+			<m:Button text="{i18n>copy}" press="onRequisCopy" visible="{ui>/RequisReadOnly}"/>
+		</semantic:customFooterContent>
 	</semantic:DetailPage>
 </mvc:View>

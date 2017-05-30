@@ -10,8 +10,8 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 			this.getRouter().getRoute("detail").attachPatternMatched(
 					this._onPatternMatched, this);
 		},
-		
-		onAfterRendering: function() {
+
+		onAfterRendering : function() {
 			var oModel = this.getModel("ui");
 		},
 
@@ -34,12 +34,22 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 			var oModel = this.getModel("ui");
 			DataHelper.getRequisition(ReqId).then(
 					function(oData) {
-						var oRequisition = oModel.getProperty(sPath);
-						oModel.setProperty(sPath, jQuery
-								.extend(true, oRequisition, Mapper
-										.mapRequisition(oData.data)));
+						var oRequisition = Mapper.mapRequisition(oData.data);
+						oModel.setProperty(sPath, oRequisition);
 					});
 		},
+		
+		reLoadRequisitions : function(sPath) {
+			var oModel = this.getModel("ui");
+			var that = this;
+			DataHelper.getRequisitions(this).then(
+					function(aRequisitions) {
+						oModel.setProperty("/JobRequisCollection", Mapper
+								.mapRequisitions(aRequisitions.data));
+						oModel.refresh();
+						var ReqId = oModel.getProperty(sPath).ReqId;
+						that.loadRequisition(ReqId, sPath);				
+					})},
 
 		onRequisSave : function(oEvent) {
 			var error = this._validateRequiredFields();
@@ -49,49 +59,80 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 						.getPath();
 				var ReqId = oModel.getProperty(sPath).ReqId;
 				var that = this;
-				var oResBundleModel = this.getModel("i18n");
+				var sMode = oModel.getProperty("/Mode");
 
-				if (ReqId === "") {
+				if (sMode == "C") {
 					// add requisition creation comment during save
 					var oRequisition = this._addCreateComment(oEvent);
-					DataHelper.createRequisition(
+					DataHelper.updateRequisitions(
 							Mapper.composeRequisitionForCreate(oRequisition))
 							.then(
 									function(oData) {
-										var aErrors = oData.ERRORS;
-										
-										var isSuccess = false;
-										if (aErrors.length === 0){
-											isSuccess = true;
-										}
-										else {
-											// get errors
-											var errDetails = that._getErrorDetails(aErrors, "DETAILS", "Blank skill", "STATUS", "E");
-											if(!errDetails){
-												isSuccess = true;
-											}
-										}
-										if (isSuccess) {
-											// load Requisition Collection
-											var oEventBus = sap.ui.getCore()
-													.getEventBus();
-											oEventBus.publish("DetailVacancy",
-													"RequisSave", sPath);
-											oModel.setProperty(
-													"/RequisEditable", false);
-										} else {
-											var message = oResBundleModel.getResourceBundle().getText("saveError");
-											MessageToast.show(message); 
-										}
-									});			
-				};
+										that._checkSaveError(sMode, oData, that,
+												sPath, oModel, ReqId)
+									});
+				} else if (sMode == "U") {
+					// requisition in update mode
+					var oRequisition = oModel.getProperty(sPath);
+					var skills = oRequisition.skills;
+					oRequisition.candidates = [];
+					//add deleted skills if needed
+					var aDelSkills = oModel.getProperty("/DeletedSkills");
+					if(aDelSkills && aDelSkills.length != "0"){
+						for (var i = 0; i < aDelSkills.length; i++)
+							oRequisition.skills.push(aDelSkills[i]);
+					}
+					DataHelper.updateRequisitions(
+							Mapper.composeRequisitionForUpdate(oRequisition))
+							.then(
+									function(oData) {
+										that._checkSaveError(sMode, oData, that,
+												sPath, oModel, ReqId);
+									});
+				}
 			}
 		},
-		
-		_getErrorDetails: function(aErrors, propName, propValue, status, statusValue){
-			 for (var i=0; i < aErrors.length; i++)
-				    if (aErrors[i][propName] !== propValue && aErrors[i][status] == statusValue)
-				      return aErrors[i];
+
+		_checkSaveError : function(sMode, oData, that, sPath, oModel, ReqId) {
+			var aErrors = oData.ERRORS;
+
+			var isSuccess = false;
+			if (!aErrors || aErrors.length == 0) {
+				isSuccess = true;
+			} else {
+				// get errors
+				var errDetails = that._getErrorDetails(aErrors, "DETAILS",
+						"Blank skill", "STATUS", "E");
+				if (!errDetails) {
+					isSuccess = true;
+				}
+			}
+			if (isSuccess) {
+				// load Requisition Collection
+				if(sMode == "C") {
+					that.reLoadRequisitions(sPath);
+				}
+					
+				else if (sMode == "U"){
+					that.loadRequisition(ReqId, sPath); 
+				}
+				oModel.setProperty("/RequisEditable", false);
+				oModel.setProperty("/RequisReadOnly", true);
+				oModel.setProperty("/TableMode", sap.m.ListMode.None);
+			} else {
+				var oResBundleModel = that.getModel("i18n");
+				var message = oResBundleModel.getResourceBundle().getText(
+						"saveError");
+				MessageToast.show(message);
+			}
+		},
+
+		_getErrorDetails : function(aErrors, propName, propValue, status,
+				statusValue) {
+			for (var i = 0; i < aErrors.length; i++)
+				if (aErrors[i][propName] !== propValue
+						&& aErrors[i][status] == statusValue)
+					return aErrors[i];
 		},
 
 		onRequisCancel : function(oEvent) {
@@ -110,6 +151,9 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 			}
 			// requisition in edit mode
 			else {
+				oModel.setProperty("/RequisEditable", false);
+				oModel.setProperty("/RequisReadOnly", true);
+				oModel.setProperty("/TableMode", sap.m.ListMode.None);
 				this.loadRequisition(ReqId, sPath);
 			}
 		},
@@ -150,12 +194,89 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 			var oModel = this.getModel("ui");
 			var sPath = oEvent.getSource().getBindingContext("ui").getPath();
 			var Title = oModel.getProperty(sPath).Title;
+			var oResBundleModel = this.getModel("i18n");
 			var sComment = oModel.getProperty(sPath + "/comments/0");
-			sComment.CommTitle = "created Job Requisition";
-			sComment.Text = "Requisition " + Title + " created";
+			sComment.CommTitle = oResBundleModel.getResourceBundle().getText(
+			"commReqCreated");
+			var textReq = oResBundleModel.getResourceBundle().getText(
+			"title");
+			var textCreated = oResBundleModel.getResourceBundle().getText(
+			"created");
+			sComment.Text = textReq + Title + textCreated;
 			var aComments = oModel.getProperty(sPath).comments;
 			aComments.splice(0, 1, sComment);
 			return oModel.getProperty(sPath);
+		},
+
+		onRequisEdit : function(oEvent) {
+			var context = oEvent.getSource().getBindingContext("ui");
+			if (!context) {
+				this._checkRequisSelected();
+			} else {
+				// set new model for update
+				var oModel = this.getModel("ui");
+				var reqStatusCode = oModel.getProperty(context.getPath()).StatusCodeId;
+				if(reqStatusCode != "CLOSED"){
+				
+					oModel.setProperty("/RequisEditable", true);
+					oModel.setProperty("/RequisReadOnly", false);
+					oModel.setProperty("/TableMode", sap.m.ListMode.Delete);
+					oModel.setProperty("/Mode", "U");
+				// add update flag for skills
+					var aSkills = oModel.getProperty(context.getPath()).skills;
+					for (var i = 0; i < aSkills.length; i++)
+						aSkills[i].flag = "U"
+				}
+				else{
+					var oResBundleModel = this.getModel("i18n");
+					var message = oResBundleModel.getResourceBundle().getText(
+							"reqClosed");
+					MessageToast.show(message);
+				}
+			}
+		},
+		
+		onRequisClose: function(oEvent) {
+			var context = oEvent.getSource().getBindingContext("ui");
+			if (!context) {
+				this._checkRequisSelected();
+			} else {
+				var oModel = this.getModel("ui");
+				var oRequisition = oModel.getProperty(context.getPath());
+				var oResBundleModel = this.getModel("i18n");
+				var that = this;
+				
+				if (oRequisition.StatusCodeId != "CLOSED"){
+					oRequisition.StatusCodeId = "CLOSED";
+					oRequisition.skills = [];
+					oRequisition.comments = [];
+					oRequisition.candidates = [];
+					DataHelper.updateRequisitions(
+							Mapper.composeRequisitionForUpdate(oRequisition))
+							.then(
+									function(oData) {
+										if (!oData.ERRORS || oData.ERRORS.length == 0){
+											that.loadRequisition(oRequisition.ReqId, context.getPath()); 
+											var message = oResBundleModel.getResourceBundle().getText(
+											"closedReq");
+											MessageToast.show(message);
+										}
+										else {
+											var message = oResBundleModel.getResourceBundle().getText(
+													"saveError");
+											MessageToast.show(message);
+										}
+									});
+					
+				}
+			}
+		},
+		
+		_checkRequisSelected: function(){
+			var oResBundleModel = this.getModel("i18n");
+			var message = oResBundleModel.getResourceBundle().getText(
+					"editError");
+			MessageToast.show(message);
 		}
 
 	});

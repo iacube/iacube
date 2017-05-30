@@ -14,6 +14,8 @@ sap.ui.define([ "sap/ui/model/json/JSONModel", "sap/ui/Device" ], function(
 			var oModel = new JSONModel({
 				"TableMode": sap.m.ListMode.None,
 				"RequisEditable": false,
+				"RequisReadOnly": true,
+				"Mode": "",
 
 				"AvailablePriorities" : [ {
 					"PriorityCode" : "H"
@@ -30,7 +32,7 @@ sap.ui.define([ "sap/ui/model/json/JSONModel", "sap/ui/Device" ], function(
 				},
 				],
 				"AvailableLanguages" : [ {
-					"SlsLang" : "EN"
+					"SlsLang" : "EN" 
 				}, {
 					"SlsLang" : "RU"
 				} ],
