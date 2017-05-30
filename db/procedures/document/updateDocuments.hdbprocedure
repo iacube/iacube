@@ -1,4 +1,4 @@
-create PROCEDURE "IACUBE"."iacube.db.procedures.document::updateDocuments" ( )
+PROCEDURE "IACUBE"."iacube.db.procedures.document::updateDocuments" ( )
    LANGUAGE SQLSCRIPT
    SQL SECURITY DEFINER
    AS
