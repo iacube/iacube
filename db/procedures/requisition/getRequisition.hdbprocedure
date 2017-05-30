@@ -67,10 +67,20 @@ BEGIN
 				b."AssignedBy",
 				b."AssignedAt"
 			FROM :relatedCandidates AS a
-			FULL OUTER JOIN	"iacube.db::tables.Requisition.Candidates" AS b
+			FULL OUTER JOIN	(
+				SELECT DISTINCT
+						"CandidateId",
+						"StatusId",
+						"ChangedBy",
+						"ChangedAt",
+						"AssignedBy",
+						"AssignedAt",
+						"ProfileId",
+						"Distance" 
+					FROM "iacube.db::tables.Requisition.Candidates"
+					WHERE "ReqId" = :reqId) AS b
 				ON  a."CandidateId" = b."CandidateId"
 				AND a."ProfileId"   = b."ProfileId"
-				AND b."ReqId" = :reqId
 	;
 	candidates = 
 		SELECT

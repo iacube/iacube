@@ -19,7 +19,7 @@ var call = {
 						type: "string"
 					},
 					ProfileTypeId:{
-						type: "list"
+						type: "string"
 					},
 					ReqId:{
 						type:"integer"
