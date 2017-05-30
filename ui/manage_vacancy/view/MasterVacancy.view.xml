@@ -39,7 +39,8 @@
 			        			state = "{None}"/>
 			    		</firstStatus>
 			    		<secondStatus>
-			    			<ObjectStatus text = "{ui>StatusCodeId}"
+			    			<ObjectStatus text = "{parts: [{path:'ui>StatusCodeId'}, {path:'i18n>reqOpen'}, {path:'i18n>reqClose'}, {path:'i18n>reqNew'}], 
+			    											formatter: 'manage_vacancy.util.formatter.getReqStatusText'}"
 			    						  state = "{path: 'ui>StatusCodeId',
 													formatter: 'manage_vacancy.util.formatter.formatReqStatus'}"/>
 			    		</secondStatus>

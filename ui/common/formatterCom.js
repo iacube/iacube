@@ -24,15 +24,21 @@ sap.ui.define([
 				}
 			},
 			
-			getCommentType: function(sCommId, sCommCall, sCommNote){
+			getCommentType: function(sCommId, sCommCall, sCommNote, sCommEmail, sCommOther){
 				if(sCommId === "CALL"){
 					return sCommCall;
 				}
 				else if(sCommId === "NOTE"){
 					return sCommNote;
 				}
+				else if(sCommId === "EMAIL"){
+					return sCommEmail;  
+				}
+				else if(sCommId === "OTHER"){
+					return sCommOther;
+				}
 			},
-			
+			 
 			getPriorDescr: function (sPriorCode, sPriorL, sPriorMA, sPriorMI, sPriorH, sPriorN, sPriorVH) {
 				switch (sPriorCode) {
 					case "H":

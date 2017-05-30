@@ -29,18 +29,20 @@
 		<items>
 			<ColumnListItem type="Navigation" vAlign="Middle" press="handleCandidatePress" tap="handleCandidateTap">
 				<cells>
-					<Image src="{ui>Image}" width="2rem" height="2rem"/>
+					<Image src="{ui>Photo}" height="3rem"/>
 					<Text text="{ui>FirstName}" />
 					<Text text="{ui>LastName}"/>
 					<Text text="{ui>Experience}"/>
 					<core:Icon src="sap-icon://globe" color="#6495ED" press="handleIconPress" size="2rem"/>
 					<ProgressIndicator percentValue="{ui>Distance}" showValue="true" 
-										state="Success"
+										state= "{ path: 'ui>Distance',
+								  		   formatter: 'manage_vacancy.util.formatter.formatCandDistance'}"
 									    height="1.5rem" width="80%" displayValue="{ui>Distance} %"/>
-					<ObjectStatus text="{ui>StatusId}"
+					<ObjectStatus text="{parts: [{path:'ui>StatusId'}, {path:'i18n>proposed'}, {path:'i18n>assigned'}, {path:'i18n>approved'}, {path:'i18n>rejected'} ], 
+			    											formatter: 'manage_vacancy.util.formatter.getCandStatusText'}"
 								  state="{ path: 'ui>StatusId',
 								  		   formatter: 'manage_vacancy.util.formatter.formatCandStatus'}"/>
-					<Text text= "{ path: 'ui>CChangedAt',
+					<Text text= "{ path: 'ui>ChangedAt',
 								   formatter: 'manage_vacancy.util.formatter.formatDate'}"/>
 				</cells>
 			</ColumnListItem>
