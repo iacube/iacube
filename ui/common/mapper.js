@@ -123,6 +123,16 @@ sap.ui.define([ "sap/m/MessageToast", "iacube/ui/common/serviceAccess" ],
 					})
 				}) 
 			},
+			mapProfilesFilter: function(aProfiles){
+					return aProfiles.map(function(p){
+						return{
+							Id : p.id,
+							value: p.name 
+						}
+
+                                        })
+                         },
+
 			
 			composeRequisitionForUpdate: function(oReq){
 				return JSON.stringify({
