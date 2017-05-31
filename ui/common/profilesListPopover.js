@@ -65,9 +65,9 @@ sap.ui.define([
       new Image({src: {model: 'local', path:'ProfileTypeId',
        formatter:function(type){
         if(type == "HH"){
-         return "/iacube/ui/common/img/Logo-2C-14px.png"
-        }
-        return "/iacube/ui/common/img/Logo-2C-14px.png";
+         return "/iacube/ui/common/img/logo-hh.png"		 
+ 								}		       
+ 								return "/iacube/ui/common/img/logo-linkedin.png";
        }
       }, height:"1rem"}).addStyleClass("sapUiTinyMarginBegin")
      ]
