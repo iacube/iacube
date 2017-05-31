@@ -48,8 +48,8 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 
 		// Requisition search
 		onRequisSearch : function(oEvent) {
-			var query = oEvent.getParameter("query");
-			this._doSearch(query);
+			var newValue = oEvent.getParameter("newValue");
+			this._doSearch(newValue);
 		},
 
 		_doSearch : function(val) {
@@ -71,6 +71,8 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 		_createNewRequis : function(isCopy, oRequisition) {
 			// create new requisition entity
 			var oModel = this.getModel("ui");
+			oModel.setProperty("/MessagePageVisible", false)
+			oModel.setProperty("/CandidatesVisible", false)
 			var oRequisitions = oModel.getProperty("/JobRequisCollection");
 			
 			if (isCopy && oRequisition) {
@@ -79,6 +81,9 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 				oNewRequisition.StatusCodeId = "NEW";
 				oNewRequisition.Title = oRequisition.Title + this.getResourceBundle().getText("copyTitle");
 				oNewRequisition.comments = [];
+				if (!oNewRequisition.Language || oNewRequisition.Language == ""){
+					oNewRequisition.Language = "RU"
+				}
 				var oNewComment = {
 						CommentId : "",
 						CommentTypeId : "OPEN",
@@ -103,7 +108,7 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 					SubcategoryName : "",
 					CreatedBy : "",
 					CreatedAt : "",
-					Language : "",
+					Language : "RU",
 					Keywords : "",
 					Description : "",
 					skills : [ {
