@@ -140,7 +140,7 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 			var oModel = this.getModel("ui");
 			var sPath = oEvent.getSource().getBindingContext("ui").getPath();
 			var ReqId = oModel.getProperty(sPath).ReqId;
-			if (ReqId === "") {
+			if (ReqId == "") {
 				var index = parseInt(sPath
 						.substring(sPath.lastIndexOf('/') + 1));
 				var aRequisitions = oModel.getProperty("/JobRequisCollection");
@@ -211,7 +211,7 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 		onRequisEdit : function(oEvent) {
 			var context = oEvent.getSource().getBindingContext("ui");
 			if (!context) {
-				this._checkRequisSelected();
+				this._errRequisSelected();
 			} else {
 				// set new model for update
 				var oModel = this.getModel("ui");
@@ -228,8 +228,7 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 						aSkills[i].flag = "U"
 				}
 				else{
-					var oResBundleModel = this.getModel("i18n");
-					var message = oResBundleModel.getResourceBundle().getText(
+					var message = this.getResourceBundle().getText(
 							"reqClosed");
 					MessageToast.show(message);
 				}
@@ -239,11 +238,10 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 		onRequisClose: function(oEvent) {
 			var context = oEvent.getSource().getBindingContext("ui");
 			if (!context) {
-				this._checkRequisSelected();
+				this._errRequisSelected();
 			} else {
 				var oModel = this.getModel("ui");
 				var oRequisition = oModel.getProperty(context.getPath());
-				var oResBundleModel = this.getModel("i18n");
 				var that = this;
 				
 				if (oRequisition.StatusCodeId != "CLOSED"){
@@ -257,12 +255,12 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 									function(oData) {
 										if (!oData.ERRORS || oData.ERRORS.length == 0){
 											that.loadRequisition(oRequisition.ReqId, context.getPath()); 
-											var message = oResBundleModel.getResourceBundle().getText(
+											var message = that.getResourceBundle().getText(
 											"closedReq");
 											MessageToast.show(message);
 										}
 										else {
-											var message = oResBundleModel.getResourceBundle().getText(
+											var message = that.getResourceBundle().getText(
 													"saveError");
 											MessageToast.show(message);
 										}
@@ -272,11 +270,22 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 			}
 		},
 		
-		_checkRequisSelected: function(){
-			var oResBundleModel = this.getModel("i18n");
-			var message = oResBundleModel.getResourceBundle().getText(
+		_errRequisSelected: function(){
+			var message = this.getResourceBundle().getText(
 					"editError");
 			MessageToast.show(message);
+		},
+		
+		onRequisCopy: function(oEvent) {
+			var context = oEvent.getSource().getBindingContext("ui");
+			if (!context) {
+				this._errRequisSelected();
+			} else {
+				var sPath = oEvent.getSource().getBindingContext("ui").getPath();
+				var oRequisition = this.getModel("ui").getProperty(sPath);
+				var oEventBus = sap.ui.getCore().getEventBus();
+				oEventBus.publish("DetailVacancy", "RequisCopy", oRequisition);
+			}
 		}
 
 	});
