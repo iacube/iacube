@@ -4,8 +4,7 @@
 		<VBox class="sapUiTinyMargin" items="{ui>candidates}">
 			<HBox>
 				<Link text="{ui>FirstName} {ui>LastName}:" />
-				<Text text="{model: 'ui', path: 'AssignedAt', type:'sap.ui.model.type.DateTime', formatOptions: {pattern:'dd/MM/yyyy'}}"
-					class="sapUiTinyMarginBeginEnd" />
+				<Text text="{model: 'ui', path: 'AssignedAt', type:'sap.ui.model.type.DateTime', formatOptions: {pattern:'dd/MM/yyyy'}}" class="sapUiTinyMarginBeginEnd" />
 				<Link text="/ {ui>AssignedBy}"/>
 			</HBox>
 		</VBox>
