@@ -147,7 +147,7 @@ BEGIN
 	;
 	UPSERT "iacube.db::tables.Profile.Profiles"
 		("ProfileId","ExternalId","ProfileTypeId","Link","Headline","Summary","Language")
-		SELECT DISTINCT
+		SELECT
 				"ProfileId",
 				"ExternalId",
 				"ProfileTypeId",
