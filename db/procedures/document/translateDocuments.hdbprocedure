@@ -1,0 +1,9 @@
+PROCEDURE "IACUBE"."iacube.db.procedures.document::translateDocuments" (IN texts "IACUBE"."iacube.db::types.translatedTexts" 
+   DEFAULT EMPTY)
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY DEFINER
+   AS
+BEGIN
+   UPDATE "IACUBE"."iacube.db::tables.Document.Texts" A
+   SET "CONTENT"=(SELECT "Content" FROM :texts B WHERE A."ID"=B."DestTextId"); 
+END
