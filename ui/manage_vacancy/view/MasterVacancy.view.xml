@@ -10,7 +10,7 @@
 					<SearchField
 							id="searchVac"
 							width="100%"
-							search="onRequisSearch"
+							liveChange="onRequisSearch"
 							showRefreshButton="true">
 					</SearchField>
 				</contentLeft>
