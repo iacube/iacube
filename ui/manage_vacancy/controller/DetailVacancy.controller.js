@@ -25,6 +25,7 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 				var oModel = this.getModel("ui");
 				var ReqId = oModel.getProperty(sPath).ReqId;
 				if (ReqId != "") {
+					oModel.setProperty("/MessagePageVisible", false)
 					this.loadRequisition(ReqId, sPath);
 				}
 			}
@@ -118,6 +119,7 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 				}
 				oModel.setProperty("/RequisEditable", false);
 				oModel.setProperty("/RequisReadOnly", true);
+				oModel.setProperty("/CandidatesVisible", true)
 				oModel.setProperty("/TableMode", sap.m.ListMode.None);
 			} else {
 				var oResBundleModel = that.getModel("i18n");
@@ -138,6 +140,7 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 		onRequisCancel : function(oEvent) {
 			// check if requisition in create mode
 			var oModel = this.getModel("ui");
+			oModel.setProperty("/CandidatesVisible", true)
 			var sPath = oEvent.getSource().getBindingContext("ui").getPath();
 			var ReqId = oModel.getProperty(sPath).ReqId;
 			if (ReqId == "") {
@@ -184,6 +187,13 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 			var reqLocationVal = oReqLocation.getValue();
 			if (reqLocationVal === "") {
 				oReqLocation.setValueState("Error").focus();
+				error = true;
+			}
+			
+			var oReqLangu = this.byId("reqLangu");
+			var reqLanguVal = oReqLocation.getValue();
+			if (reqLanguVal === "") {
+				oReqLangu.setValueState("Error").focus();
 				error = true;
 			}
 

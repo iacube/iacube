@@ -12,6 +12,8 @@ sap.ui.define([ "sap/ui/model/json/JSONModel", "sap/ui/Device" ], function(
 
 		createUiModel : function() {
 			var oModel = new JSONModel({
+				"CandidatesVisible": true,
+				"MessagePageVisible": true,
 				"TableMode": sap.m.ListMode.None,
 				"RequisEditable": false,
 				"RequisReadOnly": true,
