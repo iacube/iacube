@@ -1,0 +1,11 @@
+PROCEDURE "IACUBE"."iacube.db.procedures.document::getDocumentsForTranslation" (IN originLang NVARCHAR(10), IN toLang NVARCHAR(10),
+   OUT texts "IACUBE"."iacube.db::types.translatedTexts" DEFAULT EMPTY)               
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY DEFINER
+   READS SQL DATA AS
+BEGIN
+   texts=SELECT A."ID" AS "TextId",B."ID" AS "DestTextId",A."CONTENT" AS "Content"  
+         FROM "IACUBE"."iacube.db::tables.Document.Texts" A JOIN "iacube.db::tables.Document.Texts" B
+         ON A."DocId"=B."DocId" AND A."DOCDIM"=B."DOCDIM" AND A."LANGUAGE"<> B."LANGUAGE"
+         WHERE A."LANGUAGE"=:originLang AND B."LANGUAGE"=:toLang AND A."CONTENT" IS NOT NULL AND B."CONTENT" IS NULL; 
+END
