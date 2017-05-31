@@ -35,6 +35,7 @@ context tables{
 				LastChanged		: datetime;
 				Language		: lang;
 				Photo			: String(1000);
+				Summary			: String(5000);
 		};
 
 		entity Contacts{

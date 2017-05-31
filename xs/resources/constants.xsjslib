@@ -18,6 +18,7 @@ var constants = {
 	uploaderPath		: root + ".xs.uploader",
 	uploadConnectionsPath : root + ".xs.uploader.connections",
 	uploadTemplatesPath	: root + ".xs.uploader.templates",
+	translatorPath		: root + ".xs.translator",
 	
 	requisitionPath		: root + ".xs.services.requisition",
 	candidatePath		: root + ".xs.services.candidate"

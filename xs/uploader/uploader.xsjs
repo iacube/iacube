@@ -70,7 +70,6 @@ function transformForDb(requestData,transformation){
     			case "timestamp":
     				convertObject = new Date(requestData);
     				break;
-    			//TODO: add time and date
     			default:
     				convertObject = requestData;
 	        }
