@@ -22,6 +22,10 @@ delete from "IACUBE"."iacube.db::tables._HH.Skills";
 delete from "IACUBE"."iacube.db::tables._HH.Language";
 
 
+delete from "IACUBE"."iacube.db::tables._IN.Experience";
+delete from "IACUBE"."iacube.db::tables._IN.Profiles";
+delete from "IACUBE"."iacube.db::tables._IN.Skills";
+
 
 delete from "IACUBE"."iacube.db::tables.Requisition.Candidates";
 delete from "IACUBE"."iacube.db::tables.Requisition.Requisitions";

@@ -1,4 +1,4 @@
-var template = {
+/*var template = {
 	procedure:"iacube.db.procedures.HH::update_HH_Dictionary",
 	parameters:{
  
@@ -12,13 +12,13 @@ var template = {
 		client.request(req, dest);
 		var response = client.getResponse();
 		
-        /*var body;
+        var body;
         if (response.body) {
             body = response.body.asString();
-        }*/
+        }
 		return [];
 	},
 	transformation: function(data){
 	    return [];
 	}
-};
+};*/
