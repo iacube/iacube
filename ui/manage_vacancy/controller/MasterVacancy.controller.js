@@ -10,8 +10,8 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 			var oEventBus = sap.ui.getCore().getEventBus();
 			oEventBus.subscribe("DetailVacancy", "RequisCancel",
 					this.onRequisCancel, this);
-			oEventBus.subscribe("DetailVacancy", "RequisSave",
-					this.onRequisSave, this);
+			oEventBus.subscribe("DetailVacancy", "RequisCopy",
+					this.onRequisCopy, this);
 		},
 
 		onAfterRendering : function() {
@@ -68,38 +68,58 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 			this._createNewRequis();
 		},
 
-		_createNewRequis : function(oEvent) {
+		_createNewRequis : function(isCopy, oRequisition) {
 			// create new requisition entity
 			var oModel = this.getModel("ui");
 			var oRequisitions = oModel.getProperty("/JobRequisCollection");
-
-			var oNewRequisition = {
-				ReqId : "",
-				Title : "",
-				ProjectId : "",
-				PriorityId : "",
-				Location : "",
-				StatusCodeId : "NEW",
-				SubcategoryId : "",
-				SubcategoryName : "",
-				CreatedBy : "",
-				CreatedAt : "",
-				Language : "",
-				Keywords : "",
-				Description : "",
-				skills : [ {
-					Skill : "",
-					Weight : 100
-				} ],
-				comments : [ {
-					CommentId : "",
-					CommentTypeId : "OPEN",
-					CommCreatedAt : "",
-					CommCreatedBy : "",
-					CommTitle : "",
-					Text : ""
-				} ]
-			};
+			
+			if (isCopy && oRequisition) {
+				var oNewRequisition = oRequisition;
+				oNewRequisition.ReqId = "";
+				oNewRequisition.StatusCodeId = "NEW";
+				oNewRequisition.Title = oRequisition.Title + this.getResourceBundle().getText("copyTitle");
+				oNewRequisition.comments = [];
+				var oNewComment = {
+						CommentId : "",
+						CommentTypeId : "OPEN",
+						CommCreatedAt : "",
+						CommCreatedBy : "",
+						CommTitle : "",
+						Text : ""
+					}
+				oNewRequisition.comments.push(oNewComment);
+				oNewRequisition.candidates = [];
+			}
+			else {
+	
+				var oNewRequisition = {
+					ReqId : "",
+					Title : "",
+					ProjectId : "",
+					PriorityId : "",
+					Location : "",
+					StatusCodeId : "NEW",
+					SubcategoryId : "",
+					SubcategoryName : "",
+					CreatedBy : "",
+					CreatedAt : "",
+					Language : "",
+					Keywords : "",
+					Description : "",
+					skills : [ {
+						Skill : "",
+						Weight : 100
+					} ],
+					comments : [ {
+						CommentId : "",
+						CommentTypeId : "OPEN",
+						CommCreatedAt : "",
+						CommCreatedBy : "",
+						CommTitle : "",
+						Text : ""
+					} ]
+				};
+			}
 
 			oRequisitions.push(oNewRequisition);
 			oModel.setProperty("/JobRequisCollection", oRequisitions);
@@ -131,6 +151,11 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 			var oNewItem = oList.getItems()[sIndex];
 			oList.setSelectedItem(oNewItem, true);
 			oList.fireSelectionChange(oNewItem, true);
+		},
+		
+		onRequisCopy: function(sView, oEvent, oRequisition) { //borrowed from Details
+			this.getModel("ui").setProperty("/Mode", "C");
+			this._createNewRequis(true, oRequisition); //isCopy = true
 		}
 
 	});
