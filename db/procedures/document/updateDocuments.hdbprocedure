@@ -52,6 +52,11 @@ BEGIN
             FROM "IACUBE"."iacube.db::tables.Document.Documents" A
             WHERE EXISTS(SELECT NULL FROM "IACUBE"."iacube.db::tables.Requisition.Requisitions" B 
                          WHERE A."ExtId"=B."ReqId" AND IFNULL(LENGTH(B."Description"),0) <> 0) AND A."ExtType"='R'
+            UNION ALL             
+            SELECT "Id",'H' AS "DocDim", 'A' AS "Class", "ExtId", "ExtType","Language" 
+            FROM "IACUBE"."iacube.db::tables.Document.Documents" A
+            WHERE EXISTS(SELECT NULL FROM "IACUBE"."iacube.db::tables.Requisition.Requisitions" B 
+                         WHERE A."ExtId"=B."ReqId" AND IFNULL(LENGTH(B."Title"),0) <> 0) AND A."ExtType"='R'                         
             UNION ALL
             SELECT "Id" AS "Id",'S' AS "DocDim", 'A' AS "Class", "ExtId", "ExtType","Language" 
             FROM "IACUBE"."iacube.db::tables.Document.Documents" A
@@ -74,6 +79,16 @@ BEGIN
 -- Texts
    INSERT INTO "IACUBE"."iacube.db::tables.Document.Texts"("DocId","DOCDIM","ID","EXTID","EXTTYPE","LANGUAGE")
    SELECT "Id","DocDim",(row_number() OVER(PARTITION BY "Class"))*2,"ExtId","ExtType","Language" FROM :lt_keyT;
+
+-- Requisition headline
+
+   UPDATE "IACUBE"."iacube.db::tables.Document.Texts" AS A
+   SET "CONTENT"= (SELECT B."Title" FROM "IACUBE"."iacube.db::tables.Requisition.Requisitions" AS B
+                   JOIN "IACUBE"."iacube.db::tables.Document.Documents" AS C
+                   ON B."ReqId"=C."ExtId"
+                   WHERE C."ExtType"='R' AND A."DocId"=C."Id")
+   WHERE A."DocId"=(SELECT B."Id" FROM "IACUBE"."iacube.db::tables.Document.Documents" AS B 
+                    WHERE A."DocId"=B."Id" AND B."ExtType"='R') AND A."DOCDIM"='H'; 
 
 -- Requisition summary
 
