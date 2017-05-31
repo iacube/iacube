@@ -42,6 +42,7 @@ context types {
  	type docContent      : LargeString;			
  	type relScore        : DecimalFloat;
  	type relDim          : String(2);
+ 	type textId          : hana.SMALLINT;
 		
 	type error{
 		ERROR_CODE	: Integer;
@@ -81,6 +82,7 @@ context types {
 		LastChanged		: UTCTimestamp;
 		Language		: lang;
 		Photo			: String(1000);
+		Summary			: String(5000);
 	};
 	
 	type update_HHContacts{
@@ -400,14 +402,24 @@ context types {
  		CandidateId	: candidateId;
                 score           : DecimalFloat;
 
-        
-       }
+       };
+
 	type scoredRelations{
 		
     	        DocExtId        : docExtId;
  	        RelScore        : relScore;
  	        RelDim          : relDim;
                 ReqId           : Integer;
-       }
+       };
+
+       type translatedTexts{
+       
+         TextId          : textId;
+        
+        DestTextId      : textId;
+
+                Content         : docContent;
+    
+       };
 
 };

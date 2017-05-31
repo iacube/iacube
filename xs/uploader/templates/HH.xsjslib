@@ -165,6 +165,7 @@ var template = {
 			    type:"string"
 	        }
         },
+        
         photo:{
         	reduce:{
         		40:{
@@ -172,6 +173,10 @@ var template = {
         		}
         	},
         	column:"Photo"
+        },
+        skills:{
+        	type: "string",
+        	column:"Summary"
         }
 		
 	},

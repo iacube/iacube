@@ -87,7 +87,7 @@ BEGIN
 				'HH' AS "ProfileTypeId",
 				a."Link",
 				a."Title" AS "Headline",
-				null AS "Summary",
+				a."Summary",
 				null AS "DesiredPosition",
 				null AS "CareerStarter",
 				a."Salary",

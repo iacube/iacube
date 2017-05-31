@@ -1,10 +1,10 @@
-create PROCEDURE "IACUBE"."iacube.db.procedures.document::updateDocuments" ( )
+PROCEDURE "IACUBE"."iacube.db.procedures.document::updateDocuments" ( )
    LANGUAGE SQLSCRIPT
    SQL SECURITY DEFINER
    AS
 BEGIN
 
-    DECLARE CURSOR lc_req FOR SELECT "ReqId","Language" FROM "IACUBE"."iacube.db::tables.Requisition.Requisitions" AS "A"
+   DECLARE CURSOR lc_req FOR SELECT "ReqId","Language" FROM "IACUBE"."iacube.db::tables.Requisition.Requisitions" AS "A"
                                                     WHERE EXISTS(SELECT NULL FROM "IACUBE"."iacube.db::tables.Requisition.Skills" AS "B"
                                                                              WHERE "A"."ReqId"="B"."ReqId");
    DECLARE CURSOR lc_req_skill(p_req_id SMALLINT) FOR SELECT "Weight","Skill" FROM "IACUBE"."iacube.db::tables.Requisition.Skills" 
@@ -73,7 +73,7 @@ BEGIN
 
 -- Texts
    INSERT INTO "IACUBE"."iacube.db::tables.Document.Texts"("DocId","DOCDIM","ID","EXTID","EXTTYPE","LANGUAGE")
-   SELECT "Id","DocDim",row_number() OVER(PARTITION BY "Class"),"ExtId","ExtType","Language" FROM :lt_keyT;
+   SELECT "Id","DocDim",(row_number() OVER(PARTITION BY "Class"))*2,"ExtId","ExtType","Language" FROM :lt_keyT;
 
 -- Requisition summary
 
@@ -91,7 +91,7 @@ BEGIN
       lv_skillSet='';
 
       FOR ls_req_skill AS lc_req_skill(ls_req."ReqId") DO
-         lv_weight=IFNULL(ls_req_skill."Weight",0);
+         lv_weight=IFNULL(ls_req_skill."Weight",0)/20;
          IF lv_weight < 0 THEN
             lv_weight=0;
          END IF;
@@ -149,5 +149,12 @@ BEGIN
          WHERE A."DocId"=(SELECT B."Id" FROM "IACUBE"."iacube.db::tables.Document.Documents" AS B 
                           WHERE  B."ExtId"=ls_prof."ProfileId" AND B."ExtType"='P') AND A."DOCDIM"='C';  
       END IF;
-   END FOR; 
+   END FOR;
+   
+   DELETE FROM "IACUBE"."iacube.db::tables.Document.Texts" WHERE "CONTENT" IS NULL;
+   
+   INSERT INTO "IACUBE"."iacube.db::tables.Document.Texts"("ID","DocId","LANGUAGE","CONTENT","DOCDIM","EXTID","EXTTYPE")
+   SELECT "ID"-1,"DocId",CASE "LANGUAGE" WHEN 'RU' THEN 'EN' ELSE 'RU' END ,NULL,"DOCDIM","EXTID","EXTTYPE" FROM "IACUBE"."iacube.db::tables.Document.Texts";
+
 END
+;
