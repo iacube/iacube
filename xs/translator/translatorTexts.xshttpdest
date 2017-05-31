@@ -1,0 +1,12 @@
+description = "Text Translation connection";
+host = "api.microsofttranslator.com";
+port = 443;
+pathPrefix = "/V2/Http.svc/TranslateArray";
+proxyType = http;
+proxyHost = "proxy";
+proxyPort = 8080;
+authType = none;
+useSSL = true;
+timeout = 0;
+sslHostCheck = true;
+sslAuth = client;

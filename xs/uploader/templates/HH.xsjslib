@@ -180,7 +180,7 @@ var template = {
         }
 		
 	},
-	getData : function(params,constants){
+	getData : function(params){
 		//for test
 		return params.items;
 	},

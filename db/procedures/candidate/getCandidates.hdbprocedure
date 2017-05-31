@@ -2,7 +2,8 @@ PROCEDURE "IACUBE"."iacube.db.procedures.candidate::getCandidates"(
 	IN 	searchTerm	  NVARCHAR(1000),
 	IN 	filter		  NVARCHAR(5000),
 	IN  paging		  "IACUBE"."iacube.db::types.paging"						DEFAULT EMPTY,
-
+	IN  reqId		  INTEGER,
+	
 	OUT candidates	  "IACUBE"."iacube.db::types.searchCandidatesCandidates"	DEFAULT EMPTY,
 	OUT profiles	  "IACUBE"."iacube.db::types.searchCandidatesProfiles"		DEFAULT EMPTY,
 	OUT salary		  "IACUBE"."iacube.db::types.searchCandidatesSalary"		DEFAULT EMPTY,
@@ -21,35 +22,84 @@ BEGIN
 	DECLARE nLimit  INTEGER;
 	DECLARE nOffset INTEGER := 0;
 	
-	prefiltered = 
-		SELECT
+--if reqId in filter is applyed	
+--probably better to use 
+	IF :reqId IS NOT NULL THEN
+		CALL "iacube.db.procedures.textmining::getRelatedCandidates"(:reqId,20,relatedCandidates);
+	
+		reqCandidates = 
+			SELECT DISTINCT
+					:reqId 									AS "ReqId",
+					IFNULL(a."CandidateId",b."CandidateId") AS "CandidateId",
+					IFNULL(a."ProfileId",b."ProfileId")		AS "ProfileId",
+					IFNULL(TO_INTEGER(a."score" * 100),b."Distance") AS "Distance",
+					b."StatusId"
+				FROM :relatedCandidates AS a
+				FULL OUTER JOIN	(
+					SELECT DISTINCT
+							"CandidateId",
+							"StatusId",
+							"ChangedBy",
+							"ChangedAt",
+							"AssignedBy",
+							"AssignedAt",
+							"ProfileId",
+							"Distance"
+						FROM "iacube.db::tables.Requisition.Candidates"
+						WHERE "ReqId" = :reqId) AS b
+					ON  a."CandidateId" = b."CandidateId"
+					AND a."ProfileId"   = b."ProfileId"
+		;
+	ELSE
+		reqCandidates = 
+			SELECT DISTINCT
+				d."ReqId",
 				a."CandidateId",
+				b."ProfileId",
+				TO_INTEGER(d."Distance" * 100) AS "Distance",
+				d."StatusId"
+			FROM "iacube.db::tables.Candidate.Candidates" AS a
+			INNER JOIN "iacube.db::tables.Candidate.Profiles" AS b
+				ON a."CandidateId" = b."CandidateId"
+			LEFT JOIN "iacube.db::tables.Requisition.Candidates" AS d
+				ON  a."CandidateId" = d."CandidateId"
+				AND b."ProfileId" = d."ProfileId"
+		;
+	END IF;	
+
+	prefiltered = 
+		SELECT DISTINCT
+				r."CandidateId",
 				a."LastName",
 				a."FirstName",
 				a."Location",
 				a."ProfArea",
-				b."ProfileId",
+				r."ProfileId",
+				
 				c."ExternalId",
 				c."ProfileTypeId",
 				c."Link",
 				a."Photo",
-				d."ReqId",
-				d."Distance",
-				c."Headline"
-			FROM "iacube.db::tables.Candidate.Candidates" AS a
+				r."ReqId",
+				r."Distance",
+				c."Headline",
+				r."StatusId"
+			FROM :reqCandidates AS r
+			LEFT JOIN "iacube.db::tables.Candidate.Candidates" AS a
+				ON r."CandidateId" = a."CandidateId"
 			INNER JOIN "iacube.db::tables.Candidate.Profiles" AS b
-				ON a."CandidateId" = b."CandidateId"
+				ON  r."CandidateId" = b."CandidateId"
+				AND r."ProfileId" = b."ProfileId"
 			INNER JOIN "iacube.db::tables.Profile.Profiles" AS c
 				ON b."ProfileId" = c."ProfileId"
-			LEFT JOIN "iacube.db::tables.Requisition.Candidates" AS d
-				ON  a."CandidateId" = d."CandidateId"
-				AND b."ProfileId" = d."ProfileId"
 			WHERE CONTAINS (*,:searchTerm, FUZZY(0.8))
 	;
 	
 	filtered = 
 		APPLY_FILTER (:prefiltered,:filter)
 	;
+
+	
 	SELECT TOP 1
 			"t","s"
 		INTO nLimit,nOffset
@@ -69,7 +119,8 @@ BEGIN
 				"ExternalId",
 				"ProfileTypeId",
 				"Link",
-				"Headline"
+				"Headline",
+				"StatusId"
 			FROM :filtered AS a
 	;
 	candidates = 

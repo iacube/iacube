@@ -60,7 +60,7 @@ BEGIN
 				:reqId 									AS "ReqId",
 				IFNULL(a."CandidateId",b."CandidateId") AS "CandidateId",
 				IFNULL(a."ProfileId",b."ProfileId")		AS "ProfileId",
-				IFNULL(a."score",b."Distance")			AS "Distance",
+				IFNULL(TO_INTEGER(a."score" * 100),b."Distance")	AS "Distance",
 				b."StatusId",
 				b."ChangedBy",
 				b."ChangedAt",
