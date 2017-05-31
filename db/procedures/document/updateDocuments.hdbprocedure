@@ -9,16 +9,18 @@ BEGIN
                                                                              WHERE "A"."ReqId"="B"."ReqId");
    DECLARE CURSOR lc_req_skill(p_req_id SMALLINT) FOR SELECT "Weight","Skill" FROM "IACUBE"."iacube.db::tables.Requisition.Skills" 
                                                       WHERE "ReqId"=:p_req_id AND "Skill" IS NOT NULL;
-   DECLARE CURSOR lc_prof FOR SELECT "ProfileId","Summary","Language" FROM "IACUBE"."iacube.db::tables.Profile.Profiles" AS "A" 
+   DECLARE CURSOR lc_prof FOR SELECT "ProfileId","Summary","Language","Headline" FROM "IACUBE"."iacube.db::tables.Profile.Profiles" AS "A" 
                           WHERE EXISTS(SELECT NULL FROM "IACUBE"."iacube.db::tables.Profile.Skills" AS "B"
                                                    WHERE "A"."ProfileId"="B"."ProfileId") OR
                                 EXISTS(SELECT NULL FROM "IACUBE"."iacube.db::tables.Profile.Experience" AS "C"
                                                    WHERE "A"."ProfileId"="C"."ProfileId") OR
-                                IFNULL(LENGTH(A."Summary"),0) <> 0;                   
+                                IFNULL(LENGTH(A."Summary"),0) <> 0 OR
+                                IFNULL(LENGTH(A."Headline"),0) <> 0;                   
    DECLARE CURSOR lc_prof_skill(p_prof_id SMALLINT) FOR SELECT "Skill" FROM "IACUBE"."iacube.db::tables.Profile.Skills" WHERE "ProfileId"=:p_prof_id AND "Skill" IS NOT NULL;                                                                      
-   DECLARE CURSOR lc_prof_exp(p_prof_id SMALLINT) FOR SELECT "EndDate","Description" FROM "IACUBE"."iacube.db::tables.Profile.Experience" WHERE "ProfileId"=:p_prof_id;                                                                      
+   DECLARE CURSOR lc_prof_exp(p_prof_id SMALLINT) FOR SELECT "EndDate","Description","Position" FROM "IACUBE"."iacube.db::tables.Profile.Experience" WHERE "ProfileId"=:p_prof_id;                                                                      
 
    DECLARE lv_skillSet NCLOB;
+   DECLARE lv_position NCLOB;   
    DECLARE lv_weight SMALLINT;
    DECLARE lv_i SMALLINT;
 
@@ -74,7 +76,16 @@ BEGIN
             SELECT "Id" AS "Id",'S' AS "DocDim", 'A' AS "Class", "ExtId", "ExtType","Language"
             FROM "IACUBE"."iacube.db::tables.Document.Documents" A
             WHERE EXISTS(SELECT NULL FROM "IACUBE"."iacube.db::tables.Profile.Skills" B 
-                         WHERE A."ExtId"="ProfileId" AND IFNULL(B."Skill",'') <> '') AND A."ExtType"='P';
+                         WHERE A."ExtId"="ProfileId" AND IFNULL(B."Skill",'') <> '') AND A."ExtType"='P'
+            UNION ALL             
+            SELECT "Id" AS "Id",'H' AS "DocDim", 'A' AS "Class", "ExtId", "ExtType","Language" 
+            FROM "IACUBE"."iacube.db::tables.Document.Documents" A
+            WHERE EXISTS(SELECT NULL FROM "IACUBE"."iacube.db::tables.Profile.Profiles" B
+                         JOIN "IACUBE"."iacube.db::tables.Profile.Experience" C
+                         ON B."ProfileId" = C."ProfileId"
+                         WHERE A."ExtId"=B."ProfileId" AND (IFNULL(LENGTH(B."Headline"),0) <> 0 OR
+                                                            IFNULL(LENGTH(C."Position"),0) <> 0)) AND A."ExtType"='P';
+                         
 
 -- Texts
    INSERT INTO "IACUBE"."iacube.db::tables.Document.Texts"("DocId","DOCDIM","ID","EXTID","EXTTYPE","LANGUAGE")
@@ -130,6 +141,8 @@ BEGIN
          WHERE A."EXTID"=ls_prof."ProfileId" AND A."EXTTYPE"='P' AND A."DOCDIM"='S';
       END IF;
 -- Profile experience
+      lv_skillSet='';
+      lv_position='';
       FOR ls_prof_exp AS lc_prof_exp(ls_prof."ProfileId") DO
          IF ls_prof_exp."EndDate" IS NULL THEN
             lv_weight=4;
@@ -145,6 +158,7 @@ BEGIN
          END IF;
          FOR lv_i IN 1..lv_weight DO
             lv_skillSet=lv_skillSet||' '||ls_prof_exp."Description";
+            lv_position=lv_position||' '||ls_prof_exp."Position";
          END FOR;
       END FOR;
       lv_skillSet=LTRIM(lv_skillSet);
@@ -155,8 +169,17 @@ BEGIN
          SET A."CONTENT"=LTRIM(COALESCE(ls_prof."Summary",'')||' '||COALESCE(lv_skillSet,''))
          WHERE A."EXTID"=ls_prof."ProfileId" AND A."EXTTYPE"='P' AND A."DOCDIM"='C';
       END IF;
+      lv_position=LTRIM(lv_position);
+      IF IFNULL(LENGTH(lv_position),0) <> 0 OR 
+         IFNULL(LENGTH(ls_prof."Headline"),0) <> 0 THEN 
+
+         UPDATE "IACUBE"."iacube.db::tables.Document.Texts" AS A      
+         SET A."CONTENT"=LTRIM(COALESCE(ls_prof."Headline",'')||' '||COALESCE(lv_position,''))
+         WHERE A."EXTID"=ls_prof."ProfileId" AND A."EXTTYPE"='P' AND A."DOCDIM"='H';
+      END IF;
+
    END FOR;
-   
+
    DELETE FROM "IACUBE"."iacube.db::tables.Document.Texts" WHERE "CONTENT" IS NULL;
    
    INSERT INTO "IACUBE"."iacube.db::tables.Document.Texts"("ID","DocId","LANGUAGE","CONTENT","DOCDIM","EXTID","EXTTYPE")
