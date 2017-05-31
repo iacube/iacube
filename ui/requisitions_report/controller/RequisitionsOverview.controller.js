@@ -71,6 +71,7 @@ sap.ui.define([
 			this._oCandPopover.setBindingContext(oBinding, "ui");
 			this._oCandPopover.openBy(oEvent.getSource());
 		},
+	
 		
 		onShowCandidates: function(oEvent){
 			var iIndex = this.getModel("ui").getProperty("/selectedRequisitionIndex");

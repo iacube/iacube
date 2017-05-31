@@ -26,6 +26,22 @@ sap.ui.define([
 					break;
 			}
 			return oBundle.getText(sText);
+		},
+		
+		formatSalary: function(sal){
+			return sal.map(function(s){return s.Salary}).join(",");
+		},
+		
+		formatDistanceState: function(dist){
+			if(dist >= 75 && dist <= 100){
+				return sap.ui.core.ValueState.Success;
+			}else if(dist >= 50 && dist < 75){
+				return sap.ui.core.ValueState.Warning;
+			}else if(dist > 0 && dist < 50){
+				return sap.ui.core.ValueState.Error;
+			}else{
+				return sap.ui.core.ValueState.None;
+			}
 		}
 	}
 
