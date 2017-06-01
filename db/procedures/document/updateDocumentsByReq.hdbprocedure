@@ -4,7 +4,7 @@ PROCEDURE "IACUBE"."iacube.db.procedures.document::updateDocumentsByReq" (reqId 
    AS
 BEGIN
 
-   DECLARE CURSOR lc_req_skill(p_req_id SMALLINT) FOR SELECT "Weight","Skill" FROM "IACUBE"."iacube.db::tables.Requisition.Skills" 
+   DECLARE CURSOR lc_req_skill(p_req_id INTEGER) FOR SELECT "Weight","Skill" FROM "IACUBE"."iacube.db::tables.Requisition.Skills" 
                                                       WHERE "ReqId"=:p_req_id AND "Skill" IS NOT NULL;
                                      
 
