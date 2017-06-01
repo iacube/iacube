@@ -36,13 +36,13 @@ context types {
 	type languageLevelId : String(10);
 	type languageId 	 : String(10);
 	type contactTypeId 	 : String(10);
- 	type docId           : hana.SMALLINT;
- 	type docExtId        : hana.SMALLINT;			
+ 	type docId           : Integer;
+ 	type docExtId        : Integer;			
  	type docExtType      : String(2);	
  	type docContent      : LargeString;			
  	type relScore        : DecimalFloat;
  	type relDim          : String(2);
- 	type textId          : hana.SMALLINT;
+ 	type textId          : Integer;
 	type distance		 : Integer;	
 	
 	
