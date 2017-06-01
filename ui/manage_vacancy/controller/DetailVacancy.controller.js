@@ -25,7 +25,6 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 				var oModel = this.getModel("ui");
 				var ReqId = oModel.getProperty(sPath).ReqId;
 				if (ReqId != "") {
-					oModel.setProperty("/MessagePageVisible", false)
 					this.loadRequisition(ReqId, sPath);
 				}
 			}

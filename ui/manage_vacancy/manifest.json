@@ -41,6 +41,15 @@
 		]
 	},
 	"sap.ui5": {
+		"config": {
+			"sapFiori2Adaptation": {
+                  "style": true,       
+                  "collapse": false,   
+                  "title": true,       
+                  "back": false,       
+                  "hierarchy": false   
+            }
+		},
 		"rootView": {
 			"viewName": "manage_vacancy.view.SplitApp",
 			"type": "XML"

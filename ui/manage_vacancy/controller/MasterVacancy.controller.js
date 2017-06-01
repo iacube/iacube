@@ -30,6 +30,7 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 		onReqSelected : function(oEvent) {
 			// reset additional properties in case selection was changed
 			var oModel = this.getModel("ui");
+			oModel.setProperty("/MessagePageVisible", false);
 			oModel.setProperty("/RequisEditable", false);
 			oModel.setProperty("/RequisReadOnly", true);
 			oModel.setProperty("/TableMode", sap.m.ListMode.None);
@@ -71,7 +72,7 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 		_createNewRequis : function(isCopy, oRequisition) {
 			// create new requisition entity
 			var oModel = this.getModel("ui");
-			oModel.setProperty("/MessagePageVisible", false)
+			oModel.setProperty("/MessagePageVisible", false);
 			oModel.setProperty("/CandidatesVisible", false)
 			var oRequisitions = oModel.getProperty("/JobRequisCollection");
 			
