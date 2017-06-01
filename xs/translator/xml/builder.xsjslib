@@ -32,7 +32,7 @@ function request(texts, from, to, appId){
 			textArray[textArray.length - 1].push(
 				element(
 					"string",
-					texts[i].Content.replace("&","&amp;"),
+					texts[i].Content.replace(/\&/g,"&amp;"),
 					" xmlns=\"http://schemas.microsoft.com/2003/10/Serialization/Arrays\""
 				)
 			);

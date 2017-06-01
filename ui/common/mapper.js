@@ -129,9 +129,8 @@ sap.ui.define([ "sap/m/MessageToast", "iacube/ui/common/serviceAccess" ],
 							Id : p.id,
 							value: p.name 
 						}
-
-                                        })
-                         },
+				})
+           },
 
 			
 			composeRequisitionForUpdate: function(oReq){

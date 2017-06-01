@@ -1,5 +1,5 @@
 Id;Name
-OTER;Другой сайт
+OTHER;Другой сайт
 MOI_CRUG;Мой круг
 LIVEJ;LiveJournal
 LINKEDIN;LinkedIn
@@ -11,3 +11,4 @@ CELL;Мобильный телефон
 PHONE;Домашний телефон
 EMAIL;Эл. почта
 PERSONAL;Другой сайт
+HOME;Домашний телефон

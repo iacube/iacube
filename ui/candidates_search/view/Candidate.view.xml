@@ -1,6 +1,6 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:uxap="sap.uxap" xmlns="sap.m" controllerName="candidates_search.controller.Candidate"
 	xmlns:layout="sap.ui.layout" xmlns:common="iacube.ui.common" xmlns:html="http://www.w3.org/1999/xhtml">
-	<Page title="{i18n>cand.page.title}">
+	<Page title="{i18n>cand.page.title}" showNavButton="true" navButtonPress="onNavBack">
 		<content>
 			<uxap:ObjectPageLayout id="candidatePage"
 				showTitleInHeaderContent="false">

@@ -91,23 +91,29 @@ function translate(connection){
 					builder(pair.texts,pair.from,pair.to,appId)
 						.forEach(function(request){
 							
-							translated = translated.concat(
+							var body = call({
+								destination:"translatorTexts",
+								method:"post",
+								headers:[{
+									name  : "Content-Type",
+									value : "application/xml"
+								}],
+								body:request
+							});
+							
+							if(body){
+							   translated = translated.concat(
 								parser(
-									call({
-										destination:"translatorTexts",
-										method:"post",
-										headers:[{
-											name  : "Content-Type",
-											value : "application/xml"
-										}],
-										body:request
-									}).asString()
+									body.asString()
 								)
-							);
+							); 
+							}
+							
+							
 					});
 
 					pair.texts.forEach(function(text,i){
-						text.Content = translated[i].replace("&","&amp;");
+						text.Content = translated[i].replace(/\&/g,"&amp;");
 					});
 					allTexts = allTexts.concat(pair.texts);
 				}
@@ -123,4 +129,5 @@ function translate(connection){
 	if(!errors){
 		connection.commit();
 	}
+	return error;
 }
