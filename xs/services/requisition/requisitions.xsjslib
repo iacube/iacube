@@ -19,7 +19,7 @@ var call = {
 						type:"list"
 					},
 					StatusCodeId:{
-						type:"integer"
+						type:"string"
 					}
 				}
 			},
