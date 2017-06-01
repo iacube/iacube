@@ -77,24 +77,31 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 			var oRequisitions = oModel.getProperty("/JobRequisCollection");
 			
 			if (isCopy && oRequisition) {
-				var oNewRequisition = oRequisition;
-				oNewRequisition.ReqId = "";
-				oNewRequisition.StatusCodeId = "NEW";
-				oNewRequisition.Title = oRequisition.Title + this.getResourceBundle().getText("copyTitle");
-				oNewRequisition.comments = [];
-				if (!oNewRequisition.Language || oNewRequisition.Language == ""){
-					oNewRequisition.Language = "RU"
-				}
-				var oNewComment = {
-						CommentId : "",
-						CommentTypeId : "OPEN",
-						CommCreatedAt : "",
-						CommCreatedBy : "",
-						CommTitle : "",
-						Text : ""
-					}
-				oNewRequisition.comments.push(oNewComment);
-				oNewRequisition.candidates = [];
+				var Title = oRequisition.Title + this.getResourceBundle().getText("copyTitle");
+				var oNewRequisition = {
+						ReqId : "",
+						Title : Title,
+						ProjectId : oRequisition.ProjectId,
+						PriorityId : oRequisition.PriorityId,
+						Location : oRequisition.Location,
+						StatusCodeId : "NEW",
+						SubcategoryId : oRequisition.SubcategoryId,
+						SubcategoryName : oRequisition.SubcategoryName,
+						CreatedBy : "",
+						CreatedAt : "",
+						Language : "RU",
+						Keywords : oRequisition.Keywords,
+						Description : oRequisition.Description,
+						skills : oRequisition.skills,
+						comments : [ {
+							CommentId : "",
+							CommentTypeId : "OPEN",
+							CommCreatedAt : "",
+							CommCreatedBy : "",
+							CommTitle : "",
+							Text : ""
+						} ]
+					};
 			}
 			else {
 	

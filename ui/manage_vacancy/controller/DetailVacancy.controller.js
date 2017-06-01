@@ -22,6 +22,12 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 				var iIndex = oEvent.getParameter("arguments").index;
 				var sPath = "/JobRequisCollection/" + iIndex;
 				this.getView().bindElement("ui>" + sPath);
+				// scroll to Information section
+				var oObjectPageLayout = this.getView().byId("detObj");
+				var aSections = oObjectPageLayout.getSections();
+				var sectionInfoId = aSections[0].sId;
+				oObjectPageLayout.scrollToSection(sectionInfoId);
+				
 				var oModel = this.getModel("ui");
 				var ReqId = oModel.getProperty(sPath).ReqId;
 				if (ReqId != "") {
@@ -211,7 +217,7 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 			"title");
 			var textCreated = oResBundleModel.getResourceBundle().getText(
 			"created");
-			sComment.Text = textReq + Title + textCreated;
+			sComment.Text = textReq +"\xa0" + Title + "\xa0" + textCreated;
 			var aComments = oModel.getProperty(sPath).comments;
 			aComments.splice(0, 1, sComment);
 			return oModel.getProperty(sPath);
@@ -230,11 +236,17 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 					oModel.setProperty("/RequisEditable", true);
 					oModel.setProperty("/RequisReadOnly", false);
 					oModel.setProperty("/TableMode", sap.m.ListMode.Delete);
-					oModel.setProperty("/Mode", "U");
+					var ReqId = oModel.getProperty(context.getPath()).ReqId;
+					if (ReqId == ""){
+						oModel.setProperty("/Mode", "C");
+					}
+					else {
+						oModel.setProperty("/Mode", "U");
 				// add update flag for skills
-					var aSkills = oModel.getProperty(context.getPath()).skills;
-					for (var i = 0; i < aSkills.length; i++)
-						aSkills[i].flag = "U"
+						var aSkills = oModel.getProperty(context.getPath()).skills;
+						for (var i = 0; i < aSkills.length; i++)
+							aSkills[i].flag = "U"
+					}
 				}
 				else{
 					var message = this.getResourceBundle().getText(
