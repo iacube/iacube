@@ -53,7 +53,7 @@ BEGIN
 			WHERE "ReqId" = :reqId
 	;
 --proposed candidates
-	CALL "iacube.db.procedures.textmining::getRelatedCandidates"(:reqId,20,relatedCandidates);
+	/*CALL "iacube.db.procedures.textmining::getRelatedCandidates"(:reqId,20,relatedCandidates);
 	
 	reqCandidates = 
 		SELECT 
@@ -114,6 +114,43 @@ BEGIN
 				a."Distance",
 				b."Photo"
 	;
+	*/
+	candidates = 
+		SELECT
+				
+				a."CandidateId",
+				a."StatusId",
+				b."FirstName",
+				b."LastName",
+				a."AssignedBy",
+				a."AssignedAt",
+				a."ChangedBy",
+				a."ChangedAt",
+				a."ProfileId",
+				a."Distance",
+				SUM(c."Duration") / 12 AS "Experience",
+				b."Photo"
+				
+			FROM "iacube.db::tables.Requisition.Candidates"	AS a
+			INNER JOIN "iacube.db::tables.Candidate.Candidates" AS b
+				ON a."CandidateId"  = b."CandidateId"
+			LEFT JOIN "iacube.db::tables.Profile.Experience" AS c
+				ON a."ProfileId" = c."ProfileId"
+			WHERE a."ReqId" = :reqId
+			GROUP BY 
+				a."CandidateId",
+				a."StatusId",
+				b."FirstName",
+				b."LastName",
+				a."AssignedBy",
+				a."AssignedAt",
+				a."ChangedBy",
+				a."ChangedAt",
+				a."ProfileId",
+				a."Distance",
+				b."Photo"
+	;
+	
 	profiles = 
 		SELECT 
 				a."CandidateId",

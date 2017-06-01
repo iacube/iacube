@@ -179,6 +179,7 @@ sap.ui.define([ "sap/m/MessageToast", "iacube/ui/common/serviceAccess" ],
 							LastName : c.LastName,
 							FirstName : c.FirstName,
 							Location : c.Location,
+							selected : false,
 							Photo : c.Photo,
 							Distance : c.Distance,
 							salary : c.salary.map(function(s) {
