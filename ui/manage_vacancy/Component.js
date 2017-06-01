@@ -17,6 +17,13 @@ sap.ui.define([
 		 * @public
 		 * @override
 		 */
+		// paths for Fiory 
+		constructor: function(){
+			   jQuery.sap.registerModulePath("iacube.ui.common", "/iacube/ui/common");	
+			   jQuery.sap.registerModulePath("manage_vacancy", "./");
+			   UIComponent.prototype.constructor.apply(this, arguments);
+			  },
+		
 		init: function() {
 			// call the base component's init function
 			UIComponent.prototype.init.apply(this, arguments);
