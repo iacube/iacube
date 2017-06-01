@@ -12,7 +12,7 @@ sap.ui.define([
 		},
 		
 		constructor: function(){
-			jQuery.sap.registerModulePath("iacube.ui.common", "../common");
+			jQuery.sap.registerModulePath("iacube.ui.common", "/ui/common");
 			UIComponent.prototype.constructor.apply(this, arguments);
 		},
 
