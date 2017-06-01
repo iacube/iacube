@@ -215,9 +215,7 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 			"commReqCreated");
 			var textReq = oResBundleModel.getResourceBundle().getText(
 			"title");
-			var textCreated = oResBundleModel.getResourceBundle().getText(
-			"created");
-			sComment.Text = textReq +"\xa0" + Title + "\xa0" + textCreated;
+			sComment.Text = oResBundleModel.getResourceBundle().getText("createdComment", [textReq, Title]);
 			var aComments = oModel.getProperty(sPath).comments;
 			aComments.splice(0, 1, sComment);
 			return oModel.getProperty(sPath);
