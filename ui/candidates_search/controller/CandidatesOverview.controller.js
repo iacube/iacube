@@ -13,8 +13,10 @@ sap.ui.define([
 		 * @memberOf manage_vacancy.ui.requisitions_report.view.view.RequisitionsOverview
 		 */
 		onInit: function() {
+			
 			this.oFilterBar = sap.ui.getCore().byId("__xmlview1--cand_fb");
 			this.oFilterBar.setFilterBarExpanded(false);
+			
 			this.oSearchField = this.oFilterBar.getBasicSearch();
 				if (!this.oSearchField) {
 					var oBasicSearch = new sap.m.SearchField({
@@ -113,7 +115,8 @@ sap.ui.define([
 			DataHelper.getCandidates(this,oFilter,sSearchTerm).then(function(aCandidates){
 				oModel.setProperty("/candidates", Mapper.mapCandidates(aCandidates.data));
 				sap.ui.getCore().byId("__xmlview1--idCandidates").setVisible(true);
-			});
+				this.getModel("ui").setProperty("/assignBtnVisible", true);
+			}.bind(this));
 		},
 		/**
 		 * Called when the View has been rendered (so its HTML is part of the document). Post-rendering manipulations of the HTML could be done here.
@@ -122,6 +125,49 @@ sap.ui.define([
 		 */
 		onAfterRendering: function() {
 				this.loadProfiles();
+				this.getModel("ui").setProperty("/assignBtnVisible", false);
+		},
+		
+		onButtonAssignPress: function(){
+			
+			this.loadRequisitions();
+		},
+		
+		loadRequisitions: function(){
+			var oModel = this.getModel("ui");
+			var oFilter = {"StatusCodeId":"OPEN"};
+			DataHelper.getRequisitions(this,oFilter).then(function(aRequisitions){
+				oModel.setProperty("/openRequisitions", Mapper.mapRequisitions(aRequisitions.data));
+				if (! this._oReqDialog) {
+					this._oReqDialog = sap.ui.xmlfragment("candidates_search.view.fragment.requsitionsDialog", this);
+					this.getView().addDependent(this._oReqDialog);
+					this._oReqDialog.setModel(oModel);
+				}
+	 
+				this._oReqDialog.setMultiSelect(true);
+	 
+				// clear the old search filter
+				this._oReqDialog.getBinding("items").filter([]);
+	 
+				// toggle compact style
+				jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._oReqDialog);
+				this._oReqDialog.open();
+			}.bind(this));
+		},
+		
+		handleReqSearch: function(oEvent){
+			var sValue = oEvent.getParameter("value");
+			var oFilter = new sap.ui.model.Filter("Title", sap.ui.model.FilterOperator.Contains, sValue);
+			var oBinding = oEvent.getSource().getBinding("items");
+			oBinding.filter([oFilter]);
+		},
+		onConfirmAssignment: function(oEvent){
+			var aCandidates = this.getModel("ui").getProperty("/candidates");
+		},
+		handleClose: function(){
+			if (this._oReqDialog) {
+				this._oReqDialog.destroy();
+			}
 		},
 		
 		loadProfiles: function(){

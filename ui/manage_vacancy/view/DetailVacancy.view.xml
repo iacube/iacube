@@ -51,7 +51,7 @@
 				<sections>
 					<ObjectPageSection id="detInfo" title="{i18n>info}" titleUppercase="false">
 						<subSections>
-							<ObjectPageSubSection title="">
+							<ObjectPageSubSection id="idInfoSub" title="">
 								<blocks>
 									<info:InfoBlock id="infoblock" columnLayout="2"/>
 								</blocks>
