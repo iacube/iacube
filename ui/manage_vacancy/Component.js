@@ -17,12 +17,15 @@ sap.ui.define([
 		 * @public
 		 * @override
 		 */
-		// paths for Fiory 
+		// paths for Fiori 
 		constructor: function(){
-			   jQuery.sap.registerModulePath("iacube.ui.common", "/iacube/ui/common");	
-			   jQuery.sap.registerModulePath("manage_vacancy", "./");
-			   UIComponent.prototype.constructor.apply(this, arguments);
-			  },
+			if(!(/^(https?):\/\/flpportal/.test(window.location.origin))){
+				jQuery.sap.registerModulePath("iacube.ui.common", "../common");
+			}else{
+				jQuery.sap.registerModulePath("iacube.ui.common", "/ui/common");
+			}
+			UIComponent.prototype.constructor.apply(this, arguments);
+		},
 		
 		init: function() {
 			// call the base component's init function

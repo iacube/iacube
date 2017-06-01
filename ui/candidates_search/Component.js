@@ -12,7 +12,11 @@ sap.ui.define([
 		},
 		
 		constructor: function(){
-			jQuery.sap.registerModulePath("iacube.ui.common","../common");
+			if(!(/^(https?):\/\/flpportal/.test(window.location.origin))){
+				jQuery.sap.registerModulePath("iacube.ui.common", "../common");
+			}else{
+				jQuery.sap.registerModulePath("iacube.ui.common", "/ui/common");
+			}
 			UIComponent.prototype.constructor.apply(this, arguments);
 		},
 
