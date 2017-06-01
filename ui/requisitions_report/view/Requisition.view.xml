@@ -47,7 +47,7 @@
 						<uxap:subSections>
 							<uxap:ObjectPageSubSection>
 								<uxap:blocks>
-									<Table id="req_details_cand_table" items="{ui>candidates}">
+									<Table id="req_details_cand_table" items="{ui>candidates}" class="sapUiCompact" >
 										<columns>
 											<Column hAlign="Left">
 											</Column>
