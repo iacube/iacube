@@ -34,16 +34,6 @@ sap.ui.define([
 			}			
 		},
 		
-//		onCandidatePress: function(oEvent){
-//			var sPath = oEvent.getSource().getBindingContext("ui").getPath();
-//			var ind	= sPath.split("/")[2];
-//			var ind2	= sPath.split("/")[4];
-//			this.getRouter().navTo("candidate", {
-//				ind: parseInt(ind),
-//				ind2: parseInt(ind2)
-//			});
-//		},
-		
 		loadCandidates: function(ReqId, sPath){
 			var oModel = this.getModel("ui");
 			if(!sPath){
@@ -56,26 +46,6 @@ sap.ui.define([
 				oModel.setProperty(sPath + "/candidates", Mapper.mapCandidates(oData.data));
 			});
 		},
-		
-//		onCandidatePress: function(oEvent){
-//			var sPath = oEvent.getSource().getBindingContext("ui").getPath();
-//			var ind	= sPath.split("/")[2];
-//			var ind2	= sPath.split("/")[4];
-//			this.getRouter().navTo("candidate", {
-//				ind: parseInt(ind),
-//				ind2: parseInt(ind2)
-//			});
-//		},
-		
-//		onProfilesPopover: function(oEvent){
-//			if( !this._oProfPopover ) {
-//				this._oProfPopover = sap.ui.xmlfragment("requisitions_report.view.fragment.ProfListPopover", this);
-//				this.getView().addDependent(this._oProfPopover);
-//			}
-//			var oBinding = oEvent.getSource().getBindingContext("ui");			
-//			this._oProfPopover.setBindingContext(oBinding, "ui");
-//			this._oProfPopover.openBy(oEvent.getSource());
-//		},
 		
 		onShowRequisPopover: function(oEvent){
 			if( !this._oRequisPopover ) {
@@ -115,12 +85,8 @@ sap.ui.define([
 			}else{
 				sap.m.MessageToast.show(oBundle.getText("cand.overview.assign.select"));
 			}
-
-
 		}
 		
-
-
 	});
 
 });

@@ -53,20 +53,7 @@ sap.ui.define([
 		
 		handleBreadcrumps: function(){
 			this.onNavBack();
-		},
-		
-//		onCandidatePress: function(oEvent){
-//			var sPath = oEvent.getSource().getBindingContext("ui").getPath();
-//			var ind	= sPath.split("/")[2];
-//			var ind2	= sPath.split("/")[4];
-//			this.getRouter().navTo("candidate", {
-//				ind: parseInt(ind),
-//				ind2: parseInt(ind2)
-//			});
-//		}
-		
-		
-
+		}		
 
 	});
 
