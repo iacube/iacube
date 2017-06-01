@@ -5,5 +5,6 @@ PROCEDURE "IACUBE"."iacube.db.procedures.document::translateDocuments" (IN texts
    AS
 BEGIN
    UPDATE "IACUBE"."iacube.db::tables.Document.Texts" A
-   SET "CONTENT"=(SELECT "Content" FROM :texts B WHERE A."ID"=B."DestTextId"); 
+   SET "CONTENT"=(SELECT "Content" FROM :texts B WHERE A."ID"=B."DestTextId")
+   WHERE EXISTS (SELECT NULL FROM :texts B WHERE A."ID"=B."DestTextId");
 END

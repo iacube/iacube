@@ -19,7 +19,7 @@ function transformForDb(requestData,transformation){
 		    //if it is an object 
 		    var key = "";
 		    	
-		    if(transformation.reduce){
+		    if(transformation.reduce && typeof requestData === "object"){
 		        
 		        convertObject = [];
 		        
@@ -112,11 +112,14 @@ function upload(list){
 		if(serviceResponce(dbResult,{},message)){
 			connection.commit();
 			
-			loadedProcedure = connection.loadProcedure(constants.schema,"iacube.db.procedures.document::updateDocuments");
+			/*loadedProcedure = connection.loadProcedure(constants.schema,"iacube.db.procedures.document::updateDocuments");
 			dbResult = dbResult.concat(loadedProcedure.apply(connection));
-			connection.commit();  
+			connection.commit(); */ 
 
-			translator(connection);
+			/*if(translator(connection)){
+				$.response.status = $.net.http.INTERNAL_SERVER_ERROR;
+				$.response.setBody("Translation error");
+			}*/
 		}
 		
 	}catch(error){

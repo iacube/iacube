@@ -107,8 +107,12 @@ var template = {
                 column:"ContactId"
             },
 			value:{
-				column:"Value",
-            	type:"string"
+			    reduce:{
+    				formatted:{
+                	    type:"string"
+    				}
+			    },
+			    column:"Value"
 			}
 		},
 		site: {
@@ -202,7 +206,7 @@ var template = {
         		if(item[entry]){
         			item[entry].forEach(function(entity){
             	        entity.ResumeId = item.ResumeId;
-            	        template[entry].push(entity);
+            	        template[entry === "site" ? "contact" : entry].push(entity);
             	    });
                     delete item[entry];
         		}

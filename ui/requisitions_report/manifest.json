@@ -39,7 +39,13 @@
 
 	"sap.ui5": {
 		"config": {
-			"sapFiori2Adaptation": true
+			"sapFiori2Adaptation": {
+                  "style": true,       
+                  "collapse": false,   
+                  "title": true,       
+                  "back": true,       
+                  "hierarchy": false   
+	            }
 		},		
 		"rootView": {
 			"viewName": "requisitions_report.view.Main",
@@ -87,14 +93,7 @@
 				"viewPath": "requisitions_report.view",
 				"controlId": "app",
 				"controlAggregation": "pages",
-				"async": true,
-	            "sapFiori2Adaptation": {
-	                  "style": true,       
-	                  "collapse": false,   
-	                  "title": true,       
-	                  "back": false,       
-	                  "hierarchy": false   
-	            }
+				"async": true
 			},
 			"routes": [{
 				"pattern": "",

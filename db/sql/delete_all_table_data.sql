@@ -3,7 +3,7 @@ delete from "IACUBE"."iacube.db::tables.Candidate.Contacts";
 delete from "IACUBE"."iacube.db::tables.Candidate.Languages";
 delete from "IACUBE"."iacube.db::tables.Candidate.Profiles";
 	
-delete from "IACUBE"."iacube.db::tables.Distance.Distances";
+--delete from "IACUBE"."iacube.db::tables.Distance.Distances";
 	
 delete from "IACUBE"."iacube.db::tables.Profile.Employments";
 delete from "IACUBE"."iacube.db::tables.Profile.Experience";
