@@ -1,0 +1,101 @@
+PROCEDURE "IACUBE"."iacube.db.procedures.document::updateDocumentsByReq" (reqId INTEGER)
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY DEFINER
+   AS
+BEGIN
+
+   DECLARE CURSOR lc_req_skill(p_req_id SMALLINT) FOR SELECT "Weight","Skill" FROM "IACUBE"."iacube.db::tables.Requisition.Skills" 
+                                                      WHERE "ReqId"=:p_req_id AND "Skill" IS NOT NULL;
+                                     
+
+   DECLARE lv_skillSet NCLOB;
+   DECLARE lv_weight SMALLINT;
+   DECLARE lv_i SMALLINT;
+   DECLARE lv_iD INTEGER;
+
+   DELETE FROM "IACUBE"."iacube.db::tables.Document.Texts" WHERE "EXTID"=:reqId AND "EXTTYPE"='R';
+   DELETE FROM "IACUBE"."iacube.db::tables.Document.Documents" WHERE "ExtId"=:reqId AND "ExtType"='R';
+
+-- Lock
+   SELECT MAX("Id")+1 INTO lv_iD FROM "IACUBE"."iacube.db::tables.Document.Documents";
+   INSERT INTO "IACUBE"."iacube.db::tables.Document.Documents"("ExtId","ExtType","Id")  VALUES(:reqId,'R',:lv_iD);
+-- Unlock   
+
+   
+-- Requisitions   
+   UPDATE "IACUBE"."iacube.db::tables.Document.Documents" AS A
+   SET "Language"= (SELECT "Language" FROM "IACUBE"."iacube.db::tables.Requisition.Requisitions" AS B
+                    WHERE A."ExtId"=B."ReqId" AND A."ExtType"='R')
+   WHERE A."ExtId"=reqId AND A."ExtType"='R';
+
+
+-- Keys - Texts
+   lt_keyT= SELECT "Id",'C' AS "DocDim", 'A' AS "Class", "ExtId", "ExtType","Language" 
+            FROM "IACUBE"."iacube.db::tables.Document.Documents" A
+            WHERE EXISTS(SELECT NULL FROM "IACUBE"."iacube.db::tables.Requisition.Requisitions" B 
+                         WHERE A."ExtId"=B."ReqId" AND IFNULL(LENGTH(B."Description"),0) <> 0) AND 
+                               A."ExtId"=:reqId AND A."ExtType"='R'
+            UNION ALL             
+            SELECT "Id",'H' AS "DocDim", 'A' AS "Class", "ExtId", "ExtType","Language" 
+            FROM "IACUBE"."iacube.db::tables.Document.Documents" A
+            WHERE EXISTS(SELECT NULL FROM "IACUBE"."iacube.db::tables.Requisition.Requisitions" B 
+                         WHERE A."ExtId"=B."ReqId" AND IFNULL(LENGTH(B."Title"),0) <> 0) AND 
+                               A."ExtId"=:reqId AND A."ExtType"='R'
+            UNION ALL
+            SELECT "Id" AS "Id",'S' AS "DocDim", 'A' AS "Class", "ExtId", "ExtType","Language" 
+            FROM "IACUBE"."iacube.db::tables.Document.Documents" A
+            WHERE EXISTS(SELECT NULL FROM "IACUBE"."iacube.db::tables.Requisition.Skills" B 
+                         WHERE A."ExtId"=B."ReqId" AND IFNULL(B."Skill",'') <> '') AND 
+                               A."ExtId"=:reqId AND A."ExtType"='R';
+
+
+-- Texts
+-- Lock
+   SELECT MAX("ID")+1 INTO lv_iD FROM "IACUBE"."iacube.db::tables.Document.Texts";
+   INSERT INTO "IACUBE"."iacube.db::tables.Document.Texts"("DocId","DOCDIM","ID","EXTID","EXTTYPE","LANGUAGE")
+   SELECT "Id","DocDim",((row_number() OVER(PARTITION BY "Class"))+:lv_iD)*2,"ExtId","ExtType","Language" FROM :lt_keyT;
+-- Unlock
+
+-- Requisition headline
+
+   UPDATE "IACUBE"."iacube.db::tables.Document.Texts" AS A
+   SET "CONTENT"= (SELECT B."Title" FROM "IACUBE"."iacube.db::tables.Requisition.Requisitions" AS B
+                   WHERE B."ReqId"=A."EXTID")
+   WHERE A."EXTID"=:reqId AND A."EXTTYPE"='R' AND A."DOCDIM"='H'; 
+
+-- Requisition summary
+
+   UPDATE "IACUBE"."iacube.db::tables.Document.Texts" AS A
+   SET "CONTENT"= (SELECT B."Description" FROM "IACUBE"."iacube.db::tables.Requisition.Requisitions" AS B
+                   WHERE B."ReqId"=A."EXTID")
+   WHERE A."EXTID"=:reqId AND A."EXTTYPE"='R' AND A."DOCDIM"='C'; 
+
+-- Requisition Skills 
+
+   lv_skillSet='';
+
+   FOR ls_req_skill AS lc_req_skill(reqId) DO
+      lv_weight=IFNULL(ls_req_skill."Weight",0)/20;
+      IF lv_weight < 0 THEN
+         lv_weight=0;
+      END IF;
+      FOR lv_i IN 1..lv_weight DO
+         lv_skillSet=lv_skillSet||' '||ls_req_skill."Skill";
+      END FOR;
+   END FOR;
+   lv_skillSet=LTRIM(lv_skillSet);
+   IF COALESCE(LENGTH(lv_skillSet),0) <> 0 THEN 
+      UPDATE "IACUBE"."iacube.db::tables.Document.Texts" AS A      
+      SET A."CONTENT"=lv_skillSet
+      WHERE A."EXTID"=:reqId AND A."EXTTYPE"='R' AND A."DOCDIM"='S';
+   END IF;
+
+   DELETE FROM "IACUBE"."iacube.db::tables.Document.Texts" A WHERE A."EXTID"=:reqId AND A."EXTTYPE"='R' AND 
+                                                                   A."CONTENT" IS NULL;
+   
+   INSERT INTO "IACUBE"."iacube.db::tables.Document.Texts"("ID","DocId","LANGUAGE","CONTENT","DOCDIM","EXTID","EXTTYPE")
+   SELECT A."ID"-1,A."DocId",CASE "LANGUAGE" WHEN 'RU' THEN 'EN' ELSE 'RU' END ,NULL,A."DOCDIM",A."EXTID",A."EXTTYPE" 
+   FROM "IACUBE"."iacube.db::tables.Document.Texts" A  WHERE A."EXTID"=:reqId AND A."EXTTYPE"='R';
+
+END
+;
