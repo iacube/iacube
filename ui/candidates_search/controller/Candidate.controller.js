@@ -40,6 +40,11 @@ sap.ui.define([
 			});
 		},
 		
+		onNavBack: function(oEvent){
+			this.getModel("ui").setProperty("/assignBtnVisible", true);
+			this.getOwnerComponent().getRouter().getTargets().display("home");
+		},
+		
 		onProfileSelectorShow: function(oEvent){
 			if (!this.oProfilesPopover) {
 				this.oProfilesPopover = sap.ui.xmlfragment("candidates_search.view.fragment.profilesPopover", this);
