@@ -107,8 +107,12 @@ var template = {
                 column:"ContactId"
             },
 			value:{
-				column:"Value",
-            	type:"string"
+			    reduce:{
+    				formatted:{
+                	    type:"string"
+    				}
+			    },
+			    column:"Value"
 			}
 		},
 		site: {

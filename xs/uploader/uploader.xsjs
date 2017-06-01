@@ -19,7 +19,7 @@ function transformForDb(requestData,transformation){
 		    //if it is an object 
 		    var key = "";
 		    	
-		    if(transformation.reduce){
+		    if(transformation.reduce && typeof requestData === "object"){
 		        
 		        convertObject = [];
 		        
@@ -116,7 +116,10 @@ function upload(list){
 			dbResult = dbResult.concat(loadedProcedure.apply(connection));
 			connection.commit();  
 
-			translator(connection);
+			/*if(translator(connection)){
+				$.response.status = $.net.http.INTERNAL_SERVER_ERROR;
+				$.response.setBody("Translation error");
+			}*/
 		}
 		
 	}catch(error){
