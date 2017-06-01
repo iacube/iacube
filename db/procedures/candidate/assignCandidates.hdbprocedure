@@ -72,19 +72,19 @@ BEGIN
 	errors = 
 		SELECT 
 				15001	AS error_code,
-				"ReqId" AS details
+				TO_NVARCHAR("ReqId") AS details
 			FROM :prepared
 			WHERE "existedReq" IS NULL
 		UNION
 		SELECT 
 				15002			   AS error_code,
-				"existedCandidate" AS details
+				TO_NVARCHAR("CandidateId") AS details
 			FROM :prepared
 			WHERE "existedCandidate" IS NULL
 		UNION
 		SELECT 
 				15003	 AS error_code,
-				"ReqId"  AS details
+				TO_NVARCHAR("ReqId")  AS details
 			FROM :prepared
 			WHERE "existedStatus" IS NULL
 	;
