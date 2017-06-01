@@ -87,7 +87,7 @@ BEGIN
 				'HH' AS "ProfileTypeId",
 				a."Link",
 				a."Title" AS "Headline",
-				null AS "Summary",
+				a."Summary",
 				null AS "DesiredPosition",
 				null AS "CareerStarter",
 				a."Salary",
@@ -147,7 +147,7 @@ BEGIN
 	;
 	UPSERT "iacube.db::tables.Profile.Profiles"
 		("ProfileId","ExternalId","ProfileTypeId","Link","Headline","Summary","Language")
-		SELECT DISTINCT
+		SELECT
 				"ProfileId",
 				"ExternalId",
 				"ProfileTypeId",

@@ -58,16 +58,8 @@ sap.ui.define([
 					}),
 					new Input("idProj", {
 						value: "{ui>ProjectId}",
-						showSuggestion: true,
-						showValueHelp: true,
-						editable: "{ui>/RequisEditable}",
-						events: [{
-							valueHelpRequest: "this._handleProjValueHelp"
-						}]
-					}).bindAggregation("suggestionItems", "ui>/JobRequisCollection",
-						new Item({
-							text: "{ui>ProjectId}"
-						})),
+						editable: "{ui>/RequisEditable}"
+					}),
 						
 					new Label({
 						text: "{i18nCom>priority}",

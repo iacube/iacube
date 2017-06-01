@@ -39,6 +39,18 @@
 							</uxap:ObjectPageSubSection>
 						</uxap:subSections>
 					</uxap:ObjectPageSection>
+					<uxap:ObjectPageSection id="candExp"
+						titleUppercase="false">
+						<uxap:subSections>
+							<uxap:ObjectPageSubSection
+								title="{i18n>cand.page.header.experience} ({= ${ui>profiles/0/experience}.length })">
+								<uxap:blocks>
+									<common:candExperienceTable id="cand_page_exp_table"
+										experience="{ui>profiles/0/experience}" />
+								</uxap:blocks>
+							</uxap:ObjectPageSubSection>
+						</uxap:subSections>
+					</uxap:ObjectPageSection>
 				</uxap:sections>
 			</uxap:ObjectPageLayout>
 		</content>

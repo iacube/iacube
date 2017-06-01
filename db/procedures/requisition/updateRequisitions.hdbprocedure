@@ -11,6 +11,8 @@ PROCEDURE "IACUBE"."iacube.db.procedures.requisition::updateRequisitions"(
 	AS
 BEGIN
 
+	DECLARE defaultLang NVARCHAR(2) := 'RU';
+
 -- delete requisitions and all dependent objects
 	DELETE 
 		FROM "iacube.db::tables.Requisition.Requisitions" AS s
@@ -65,7 +67,7 @@ BEGIN
 				a."Location",
 				a."StatusCodeId",
 				a."SubcategoryId",
-				a."Language",
+				IFNULL(a."Language",:defaultLang) AS "Language",
 				a."Keywords",
 				a."Description",
 				a."flag",

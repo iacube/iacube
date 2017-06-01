@@ -31,16 +31,22 @@ sap.ui.define([
 				
 				var CandId = this.getModel("ui").getProperty(sPath+"/CandidateId");
 				this.loadCandidate(CandId, sPath);
+				
 			}
 		},
 		
 		loadCandidate: function(CandId, sPath){
 			var oModel = this.getModel("ui");
+			if(!sPath){
+				sPath  = this.getView().getElementBinding("ui").getPath();
+			}
 			DataHelper.getCandidate(CandId).then(function(oData){
 				//We don't want to overwrite existing candidate data, just extend
 				var oCandidate = oModel.getProperty(sPath);
 				oModel.setProperty(sPath, jQuery.extend({}, oCandidate, Mapper.mapCandidate(oData)));
-			});
+				
+				this.setSelectedProfileText(sPath, 0);
+			}.bind(this));
 		},
 		
 		onProfileSelectorShow: function(oEvent){
@@ -49,7 +55,6 @@ sap.ui.define([
 				this.getView().addDependent(this.oProfilesPopover);
 			}
 			this.oProfilesPopover.openBy(oEvent.getParameter("domRef"));
-			//this.oProfilesPopover.setModel("ui",this.getModel("ui"));
 		},
 		
 		onProfileSelected: function(oEvent){
@@ -66,30 +71,41 @@ sap.ui.define([
 				path	: "profiles/"+iIndex+"/Summary"
 			});
 			
-		var oSkillsForm = this.getView().byId("cand_page_skills_form");
+			var oSkillsForm = this.getView().byId("cand_page_skills_form");
 			oSkillsForm.bindProperty("skills", {
 				model 	: "ui",
 				path	: "profiles/"+iIndex+"/skills"
 			});
 			
-			var sSelectedHeadline = this.getModel("ui").getProperty(oContext.getPath()+"/profiles/"+iIndex+"/Headline");
-			var sSelectedLocation = this.getModel("ui").getProperty(oContext.getPath()+"/Location");
-			this.getModel("ui").setProperty(oContext.getPath()+"/selectedProfile", sSelectedLocation + " / " + sSelectedHeadline);
+			this.setSelectedProfileText(oContext.getPath(), iIndex);
 		},
 		
 		onCandidateAssign: function(){
-			var sCandId = this.getView().getBindingContext("ui").getProprty("CandidateId");
+			var oCand = this.getView().getBindingContext("ui").getObject();
 			var sReqId = this.getModel("ui").getProperty("/selectedRequisition");
 			var aSelectedCandidates = [{
 					ReqId: sReqId,
-					CandidateId	: sCandId,
-					StatusId : "OPEN",
-					flag: "I"
+					CandidateId	: oCand.CandidateId,
+					StatusId : "ASSIGNED",
+					flag: "I",
+					ProfileId: oCand.profiles[0].ProfileId,
+					Distance: oCand.Distance
 				}];
-			DataHelper.assignCandidatesToRequisitions(aSelectedCandidates).then(function(){
-				console.log("ok");
-			});
+			DataHelper.assignCandidatesToRequisitions(aSelectedCandidates).then(function(response){
+				if(response.ERRORS.length == 0){
+					var oBundle = this.getResourceBundle();
+					var sRequisitionTitle = this.getModel("ui").getProperty("/selectedRequisitionTitle");
+					sap.m.MessageToast.show(oBundle.getText("cand.overview.assigned.toast", [aSelectedCandidates.length, sRequisitionTitle]));
+					this.loadCandidate(oCand.CandidateId);
+				}
+			}.bind(this));
 
+		},
+		
+		setSelectedProfileText: function(sPath, iIndex){
+			var sSelectedHeadline = this.getModel("ui").getProperty(sPath+"/profiles/"+iIndex+"/Headline");
+			var sSelectedLocation = this.getModel("ui").getProperty(sPath+"/Location");
+			this.getModel("ui").setProperty(sPath+"/selectedProfile", sSelectedLocation + " / " + sSelectedHeadline);
 		}
 		
 

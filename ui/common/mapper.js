@@ -180,13 +180,15 @@ sap.ui.define([ "sap/m/MessageToast", "iacube/ui/common/serviceAccess" ],
 							FirstName : c.FirstName,
 							Location : c.Location,
 							selected : false,
-							salary: c.salary.map(function(s){
-								return{
-									CandidateId: s.CandidateId,
-									ProfileId: s.ProfileId,
-									Salary: s.Salary,
-									SalaryCurr: s.SalaryCurr,
-									}
+							Photo : c.Photo,
+							Distance : c.Distance,
+							salary : c.salary.map(function(s) {
+								return {
+									CandidateId : s.CandidateId,
+									ProfileId : s.ProfileId,
+									Salary : s.Salary,
+									SalaryCurr : s.SalaryCurr,
+								}
 							}),
 							contacts: c.contacts.map(function(con) 	{
 								return{	
@@ -205,21 +207,24 @@ sap.ui.define([ "sap/m/MessageToast", "iacube/ui/common/serviceAccess" ],
 							
 							profiles : c.profiles.map(function(p) {
 								return {
-									CandidateId: p.CandidateId,
-									ProfileId: p.ProfileId,
-									ExternalId: p.ExternalId,
-									ProfileTypeId: p.ProfileTypeId,
-									Link: p.Link
+									CandidateId : p.CandidateId,
+									ProfileId : p.ProfileId,
+									ExternalId : p.ExternalId,
+									ProfileTypeId : p.ProfileTypeId,
+									Headline : p.Headline,
+									Link : p.Link
 								}
 							}),
-							requisitions : [ {
-								CandidateId : 1,
-								ReqId : 7788,
-								Title : "SAP ABAP Developer",
-								StatusId : "APPROVED",
-								AssignedBy : "Cartman",
-								AssignedAt : "2017-02-23T01:00:00.000Z"
-							} ]
+							requisitions : c.requisitions.map(function(r) {
+								return {
+									CandidateId : r.CandidateId,
+									ReqId : r.ReqId,
+									Title : r.Title,
+									StatusId : r.StatusId,
+									AssignedBy : r.AssignedBy,
+									AssignedAt : new Date(r.AssignedAt)
+								}
+							})
 						}
 					})
 				},
@@ -268,8 +273,8 @@ sap.ui.define([ "sap/m/MessageToast", "iacube/ui/common/serviceAccess" ],
 										Company:e.Company,
 										Position:e.Position,
 										Description:e.Description,
-										StartDate: e.StartDate,
-										EndDate: e.EndDate
+										StartDate: new Date(e.StartDate),
+										EndDate: new Date(e.EndDate)
 									}
 									
 								}),

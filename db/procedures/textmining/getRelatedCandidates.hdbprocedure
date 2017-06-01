@@ -6,21 +6,32 @@ PROCEDURE "IACUBE"."iacube.db.procedures.textmining::getRelatedCandidates" (IN r
 BEGIN
    DECLARE lt_scoredRelations "IACUBE"."iacube.db::types.scoredRelations";
    DECLARE X INTEGER;
+   DECLARE lang NVARCHAR(10);
 
    X:=topN*2;
-   
-   CALL "IACUBE"."iacube.db.procedures.textmining::getScoredRelations" (:reqId,:X,:lt_scoredRelations);
+   SELECT A."Language" INTO lang FROM "IACUBE"."iacube.db::tables.Document.Documents" A 
+   WHERE A."ExtId"=:reqId AND A."ExtType"='R';
+
+   CALL "IACUBE"."iacube.db.procedures.textmining::getScoredRelations" (:reqId,:lang,:X,:lt_scoredRelations);
    
    lt_profFullTotalScore=SELECT A."DocExtId" AS "SumProfile",A."RelScore" AS "SumScore",A."RelDim" AS "DimA",
-                                B."DocExtId" AS "SkillProfile",B."RelScore" AS "SkillScore" ,B."RelDim" AS "DimB"
+                                B."DocExtId" AS "SkillProfile",B."RelScore" AS "SkillScore" ,B."RelDim" AS "DimB",
+                                C."DocExtId" AS "HHProfile",C."RelScore" AS "HHScore" ,C."RelDim" AS "DimC",      
+                                D."DocExtId" AS "HCProfile",D."RelScore" AS "HCScore" ,D."RelDim" AS "DimD"      
                          FROM :lt_scoredRelations AS A 
                          LEFT OUTER JOIN :lt_scoredRelations AS B
-                         ON A."DocExtId"=B."DocExtId" AND A."RelDim" <> B."RelDim";
+                         ON A."DocExtId"=B."DocExtId" AND A."RelDim"<>B."RelDim"
+                         LEFT OUTER JOIN :lt_scoredRelations AS C
+                         ON A."DocExtId"=C."DocExtId" AND A."RelDim"<>B."RelDim" AND B."RelDim"<>C."RelDim"
+                         LEFT OUTER JOIN :lt_scoredRelations AS D
+                         ON A."DocExtId"=D."DocExtId" AND A."RelDim"<>D."RelDim" AND B."RelDim"<>D."RelDim" AND C."RelDim"<>D."RelDim";
 
-   lt_profTotScore=SELECT COALESCE(A."SumProfile",A."SkillProfile") AS "ProfileId",
-                          SQRT(POWER(IFNULL(A."SumScore",0),2)+POWER(IFNULL(A."SkillScore",0),2)) AS "TotalScore"
+   lt_profTotScore=SELECT COALESCE(A."SumProfile",A."SkillProfile",A."HHProfile",A."HCProfile") AS "ProfileId",
+                          SQRT(POWER(IFNULL(A."SumScore",0),2)+POWER(IFNULL(A."SkillScore",0),2)+
+                               POWER(IFNULL(A."HHScore",0),2)+POWER(IFNULL(A."HCScore",0),2)) AS "TotalScore"
                     FROM :lt_profFullTotalScore AS A
-                    WHERE IFNULL(A."DimA",'XX') IN ('XX','CC') AND IFNULL(A."DimB",'XX') IN ('XX','SS');                    
+                    WHERE IFNULL(A."DimA",'XX') IN ('XX','CC') AND IFNULL(A."DimB",'XX') IN ('XX','SS') AND
+                          IFNULL(A."DimC",'XX') IN ('XX','HH') AND IFNULL(A."DimD",'XX') IN ('XX','HC');                    
 
    lt_candidateProfileScored=SELECT A."ProfileId" AS "ProfileId", B."CandidateId" AS "CandidateId", A."TotalScore" AS "score"
                              FROM :lt_profTotScore AS A 

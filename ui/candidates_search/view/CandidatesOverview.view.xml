@@ -56,11 +56,13 @@
 									<Text text="{ui>FirstName}" />
 									<Text text="{ui>LastName}"/>
 									<Text text="{ui>Location}"/>
-									<core:Icon src="sap-icon://globe" color="#6495ED" size="2rem"/>
+									<core:Icon src="sap-icon://globe" color="#6495ED" size="2rem" press="onIconPress"/>
 									<ProgressIndicator  showValue="true" 
 														 displayValue="100%"/>
-									
-									<core:Icon  src="sap-icon://employee" />
+									<HBox>	
+										<core:Icon visible="{= ${ui>requisitions}.length > 0}" src="sap-icon://document" press="onRequisPress" />
+										<Text text="({= ${ui>requisitions}.length})" class="sapUiTinyMarginBeginEnd"/>
+									</HBox>
 								</cells>
 							</ColumnListItem>
 						</items>

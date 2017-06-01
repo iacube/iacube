@@ -5,7 +5,8 @@
 		  xmlns:candidates="manage_vacancy.SharedBlocks.candidates"
 		  xmlns:comments="manage_vacancy.SharedBlocks.comments">
 	<semantic:DetailPage id="detailvac" title="{i18n>title}" enableScrolling="false" floatingFooter="true">
-		<semantic:content >	
+		<semantic:content>	
+			<m:MessagePage showHeader="false" visible="{ui>/MessagePageVisible}" text="{i18n>noReqText}"/>
 			<ObjectPageLayout id="detObj" showTitleInHeaderContent="false">
 				<headerTitle>
 					<ObjectPageHeader objectImageURI="sap-icon://product" 
@@ -37,7 +38,8 @@
 					    </m:FlexBox>
 					    
 					    <m:FlexBox alignContent="End" justifyContent="End" class="languageCSS">
-					    	<m:Select forceSelection="false"
+					    	<m:Select id="reqLangu"
+					    			  forceSelection="false"
 					    			  selectedKey="{ui>Language}"
 					    			  items="{ui>/AvailableLanguages}"
 					    			  enabled="{ui>/RequisEditable}">
@@ -65,7 +67,7 @@
 							</ObjectPageSubSection>
 						</subSections>
 					</ObjectPageSection>
-					<ObjectPageSection id="detCandidates" title="{i18n>candidates}" titleUppercase="false">
+					<ObjectPageSection id="detCandidates" title="{i18n>candidates}" titleUppercase="false" visible="{ui>/CandidatesVisible}">
 						<subSections>
 							<ObjectPageSubSection title="">
 								<blocks>

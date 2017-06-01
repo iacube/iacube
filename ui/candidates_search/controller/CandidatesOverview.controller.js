@@ -178,6 +178,35 @@ sap.ui.define([
 		/*	DataHelper.getCandidates(this).then(function(aCandidates){
 				oModel.setProperty("/candidates", Mapper.mapCandidates(aCandidates.data));
 			});*/
+		},
+		
+		onIconPress: function (oEvent) {
+			// create popover
+			if (!this._oPopover) {
+				this._oPopover = sap.ui.xmlfragment("candidates_search.view.fragment.ProfPopover", this);
+				this.getView().addDependent(this._oPopover);
+			}
+			
+				var oIcon= oEvent.getSource();
+				var oContext = oIcon.getBindingContext("ui");
+				this._oPopover.setBindingContext(oContext, "ui");
+				jQuery.sap.delayedCall(0, this, function () {
+				this._oPopover.openBy(oIcon);
+			});
+		},
+		
+		onRequisPress: function(oEvent) {
+			if (!this._oRequisPopover) {
+				this._oRequisPopover = sap.ui.xmlfragment("candidates_search.view.fragment.RequisPopover", this);
+				this.getView().addDependent(this._oRequisPopover);
+			}
+			
+				var oIcon= oEvent.getSource();
+				var oContext = oIcon.getBindingContext("ui");
+				this._oRequisPopover.setBindingContext(oContext, "ui");
+				jQuery.sap.delayedCall(0, this, function () {
+				this._oRequisPopover.openBy(oIcon);
+			});
 		}
 
 	});

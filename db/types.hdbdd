@@ -42,7 +42,10 @@ context types {
  	type docContent      : LargeString;			
  	type relScore        : DecimalFloat;
  	type relDim          : String(2);
-		
+ 	type textId          : hana.SMALLINT;
+	type distance		 : Integer;	
+	
+	
 	type error{
 		ERROR_CODE	: Integer;
 		DETAILS : String(1000);
@@ -81,6 +84,7 @@ context types {
 		LastChanged		: UTCTimestamp;
 		Language		: lang;
 		Photo			: String(1000);
+		Summary			: String(5000);
 	};
 	
 	type update_HHContacts{
@@ -172,7 +176,7 @@ context types {
 			ChangedBy	: creator;
 			ChangedAt	: datetime;
 			ProfileId	: profileId;
-			Distance	: BinaryFloat;
+			Distance	: distance;
 		};
 
 
@@ -221,7 +225,7 @@ context types {
 			ChangedBy	: creator;
 			ChangedAt	: datetime;
 			ProfileId	: profileId;
-			Distance	: BinaryFloat;
+			Distance	: distance;
 			Experience  : Integer;
 			Photo		: String(1000);
 		};
@@ -275,15 +279,16 @@ context types {
 		Location	: String(1000);
 		ProfArea	: String(1000);
 		Photo		: String(1000);
-		Distance	: Integer;
+		Distance	: distance;
 	};
 	type searchCandidatesProfiles{
-		CandidateId	: candidateId;
+		CandidateId		: candidateId;
 		ProfileId		: profileId;
 		ExternalId		: String(1001);
 		ProfileTypeId	: profileTypeId;
 		Link			: String(1000);
 		Headline		: String(1000);
+		StatusId		: statusTypeId;
 	};
 	type searchCandidatesSalary{
 		CandidateId	: candidateId;
@@ -311,7 +316,7 @@ context types {
 		ChangedBy	 : creator;
 		ChangedAt	 : datetime;
 		ProfileId	 : profileId;
-		Distance	 : BinaryFloat;
+		Distance	 : distance;
 	};
 
 	type candidate{
@@ -390,7 +395,7 @@ context types {
 		CandidateId	: candidateId;
 		StatusId	: statusTypeId;
 		ProfileId	: profileId;
-		Distance	: BinaryFloat;
+		Distance	: distance;
 		flag		: sflag;
 	};
 
@@ -400,14 +405,24 @@ context types {
  		CandidateId	: candidateId;
                 score           : DecimalFloat;
 
-        
-       }
+       };
+
 	type scoredRelations{
 		
     	        DocExtId        : docExtId;
  	        RelScore        : relScore;
  	        RelDim          : relDim;
                 ReqId           : Integer;
-       }
+       };
+
+       type translatedTexts{
+       
+         TextId          : textId;
+        
+        DestTextId      : textId;
+
+                Content         : docContent;
+    
+       };
 
 };

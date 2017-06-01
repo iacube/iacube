@@ -20,10 +20,10 @@ var call = {
 					},
 					ProfileTypeId:{
 						type: "string"
-					},
+					}/*,
 					ReqId:{
 						type:"integer"
-					}
+					}*/
 				}
 			},
 			paging:{
