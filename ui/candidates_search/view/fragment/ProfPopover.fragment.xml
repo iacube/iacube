@@ -1,8 +1,12 @@
 <core:FragmentDefinition
 	xmlns="sap.m"
 	xmlns:core="sap.ui.core"
-	xmlns:f="sap.ui.layout.form" xmlns:layout="sap.ui.layout">
-	<Popover
+	xmlns:f="sap.ui.layout.form" xmlns:layout="sap.ui.layout" xmlns:common="iacube.ui.common">
+	<common:profilesListPopover FirstName = "{ui>FirstName}" 
+							    LastName = "{ui>LastName}"
+							    photoURL = "{ui>Photo}"
+							    profiles = "{ui>profiles}"/>
+	<!-- <Popover
 		title="{ui>FirstName} {ui>LastName} {i18n>Profiles}"
 		class="sapUiSizeCompact"
 		placement="Bottom">
@@ -23,5 +27,5 @@
 				</FlexBox>
 			</CustomListItem>
 		</List>
-	</Popover>
+	</Popover> -->
 </core:FragmentDefinition>

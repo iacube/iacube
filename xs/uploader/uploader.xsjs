@@ -6,6 +6,9 @@ var serviceResponce	 = $.import(constants.serviceProviderPath,"responce").prepar
 var message 	 = buildMessage.get;
 var replacer 	 = buildMessage.getReplacer(constants);
 
+var translator = $.import(constants.translatorPath,"translator").translate;
+
+
 function transformForDb(requestData,transformation){
 
 	var convertObject;
@@ -70,7 +73,6 @@ function transformForDb(requestData,transformation){
     			case "timestamp":
     				convertObject = new Date(requestData);
     				break;
-    			//TODO: add time and date
     			default:
     				convertObject = requestData;
 	        }
@@ -108,10 +110,13 @@ function upload(list){
 		}
 		
 		if(serviceResponce(dbResult,{},message)){
+			connection.commit();
+			
 			loadedProcedure = connection.loadProcedure(constants.schema,"iacube.db.procedures.document::updateDocuments");
 			dbResult = dbResult.concat(loadedProcedure.apply(connection));
-		//commit changes 
-			connection.commit();   
+			connection.commit();  
+
+			translator(connection);
 		}
 		
 	}catch(error){

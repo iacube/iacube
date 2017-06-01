@@ -91,7 +91,7 @@ BEGIN
 				a."ChangedBy",
 				a."ChangedAt",
 				a."ProfileId",
-				a."Distance"
+				TO_INTEGER(a."Distance" * 100) AS "Distance"
 			FROM "iacube.db::tables.Requisition.Candidates"	AS a
 			INNER JOIN "iacube.db::tables.Candidate.Candidates" AS b
 				ON a."CandidateId"  = b."CandidateId"

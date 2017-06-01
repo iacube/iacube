@@ -19,7 +19,7 @@ context tables{
 
 		entity Resumes{
 			key	ResumeId		: hhResumeId;
-				Title			: String(1001);	
+				Title			: String(5000);	
 				LastName		: name;	
 				FirstName		: name;	
 				MiddleName		: name;
@@ -31,10 +31,11 @@ context tables{
 				BusinessTripId	: hhSID;
 				Salary			: BinaryFloat;
 				SalaryCurr		: currency;	
-				Link			: String(1000);
+				Link			: String(5000);
 				LastChanged		: datetime;
 				Language		: lang;
 				Photo			: String(1000);
+				Summary			: LargeString;
 		};
 
 		entity Contacts{
@@ -62,7 +63,7 @@ context tables{
 		entity Experience{
 			key ResumeId	 : hhResumeId;
 			key Organization : String(1000); 	// ????key field
-			key Position	 : String(1000);
+			key Position	 : String(5000);
 				StartDate	 : date;
 				EndDate		 : date;
 				Description	 : LargeString;
@@ -132,16 +133,16 @@ context tables{
 			key ProfileId	: inSID;
 				Name		: name;
 				Position	: String(1000);
-				Location	: String(100);
+				Location	: String(1000);
 				Summary		: LargeString;
 				Link		: String(1000);
-				Photo		: String(1001);
+				Photo		: String(5000);
 		};
 		
 		entity Experience{
 			key ProfileId	: inSID;
 			key Company		: String(100);
-			key Position	: String(1000);
+			key Position	: String(5000);
 				Duration	: String(100);
 				Description	: LargeString;
 		};
@@ -238,7 +239,7 @@ context tables{
 				ProfileTypeId	: profileTypeId;
 				Link			: String(1000);
 				Headline		: String(5000);
-				Summary			: String(5000);
+				Summary			: LargeString;
 				Language		: lang;
 		};
 		
@@ -266,7 +267,7 @@ context tables{
 			key ProfileId	: profileId;
 			key Company		: String(1000);
 			key Position	: String(1000);
-				Description	: String(5000);
+				Description	: LargeString;
 				StartDate	: date;
 				EndDate		: date;
 				Duration	: Integer;
@@ -274,7 +275,7 @@ context tables{
 			
 		entity Skills{
 			key ProfileId : profileId;
-			key Skill	  : String(100);
+			key Skill	  : String(1000);
 		};
 		
 		/*entity Industries{

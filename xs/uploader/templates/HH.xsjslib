@@ -165,6 +165,7 @@ var template = {
 			    type:"string"
 	        }
         },
+        
         photo:{
         	reduce:{
         		40:{
@@ -172,10 +173,14 @@ var template = {
         		}
         	},
         	column:"Photo"
+        },
+        skills:{
+        	type: "string",
+        	column:"Summary"
         }
 		
 	},
-	getData : function(params,constants){
+	getData : function(params){
 		//for test
 		return params.items;
 	},

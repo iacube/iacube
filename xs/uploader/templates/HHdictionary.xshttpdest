@@ -1,16 +1,12 @@
-//this is an example of how to get data from outbound connection in the backend
-//required trust store configuration 
-//used in HHdictionaty.getData()
-
-description = "HH connection";
-host = "api.hh.ru";
-port = 443;
-pathPrefix = "/dictionaries";
-proxyType = http;
-proxyHost = "proxy";
-proxyPort = 8080;
-authType = none;
-useSSL = true;
-timeout = 0;
-sslHostCheck = true;
-sslAuth = client;
+//description = "HH connection";
+//host = "api.hh.ru";
+//port = 443;
+//pathPrefix = "/dictionaries";
+//proxyType = http;
+//proxyHost = "proxy";
+//proxyPort = 8080;
+//authType = none;
+//useSSL = true;
+//timeout = 0;
+//sslHostCheck = true;
+//sslAuth = client;
