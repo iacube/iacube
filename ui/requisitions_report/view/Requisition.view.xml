@@ -76,7 +76,7 @@
 										<items>
 											<ColumnListItem type="Navigation" press="onCandidatePress">
 												<cells>
-													<Image src="{ui>Photo}" />
+													<Image height="3rem" src="{ui>Photo}" />
 													<Text text="{ui>FirstName}" />
 													<Text text="{ui>LastName}" />
 													<Text text="{ui>Experience}" />
