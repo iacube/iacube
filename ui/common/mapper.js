@@ -179,6 +179,7 @@ sap.ui.define([ "sap/m/MessageToast", "iacube/ui/common/serviceAccess" ],
 							LastName : c.LastName,
 							FirstName : c.FirstName,
 							Location : c.Location,
+							selected : false,
 							salary: c.salary.map(function(s){
 								return{
 									CandidateId: s.CandidateId,
