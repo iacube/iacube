@@ -68,25 +68,23 @@ sap.ui.define([
 			 
 			/*CANDIDATES*/
 			
-			getCandidates: function(oEvent, oFilter,sSearchTm){
+			getCandidates: function(oEvent, oFilter, sSearchTm, freeParam){
 				return new Promise(function(resolve, reject) {
 					
-					var sLink;
+					var oParams = [];
 					var sPath = "/iacube/service/candidates";
-					if (oFilter){
-						var sFilter = "filter="+ JSON.stringify(oFilter);
-						sPath = sPath + "?" + sFilter;
+					if(oFilter){
+						oParams.push("filter="+ JSON.stringify(oFilter));
 					}
-					if (sSearchTm){
-						var sSearchTerm = "searchTerm="+sSearchTm;
-						sPath = sPath + "?" + sSearchTerm;
+					if(sSearchTm){
+						oParams.push("searchTerm="+sSearchTm);
 					}
-					
-					if (sFilter && sSearchTerm){
-						sPath =  "/iacube/service/candidates" + "?" + sFilter + "&" + sSearchTerm;
+					if(freeParam){
+						oParams.push(freeParam);
 					}
+					var sParams = oParams.join("&");
 				ServiceAccess.ajax({
-						url: sPath,
+						url: sPath + (sParams ? ("?"+sParams) : ""),
 						success: function(data) {
 							resolve(data);
 						},
@@ -119,7 +117,7 @@ sap.ui.define([
 					var sPath = "/iacube/service/candidates";
 					ServiceAccess.ajax({
 						type: "PUT",
-						data: oCandAssigned,
+						data: JSON.stringify(oCandAssigned),
 						url: sPath,
 						success: function(data) {
 							resolve(data);

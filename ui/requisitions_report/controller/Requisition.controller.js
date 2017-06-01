@@ -1,11 +1,14 @@
 sap.ui.define([
 	"requisitions_report/controller/BaseController",
 	"iacube/ui/common/dataHelper",
-	"iacube/ui/common/mapper"
-], function(Controller, DataHelper, Mapper) {
+	"iacube/ui/common/mapper",
+	"requisitions_report/utils/formatter"
+], function(Controller, DataHelper, Mapper, Formatter) {
 	"use strict";
 
 	return Controller.extend("requisitions_report.controller.Requisition", {
+		
+		formatter: Formatter,
 
 		/**
 		 * Called when a controller is instantiated and its View controls (if available) are already created.
@@ -14,6 +17,12 @@ sap.ui.define([
 		 */
 			onInit: function() {
 				this.getRouter().attachRouteMatched(this.onRouteMatched, this);
+			},
+			
+			
+			onAfterRendering(){
+				var oTable = this.getView().byId("req_details_cand_table");
+				oTable.getBinding("items").sort(new sap.ui.model.Sorter("Distance", true));
 			},
 			
 		/**
@@ -40,7 +49,23 @@ sap.ui.define([
 				var oRequisition = oModel.getProperty(sPath);
 				oModel.setProperty(sPath, jQuery.extend(true, oRequisition, Mapper.mapRequisition(oData.data)));
 			});
-		}
+		},
+		
+		handleBreadcrumps: function(){
+			this.onNavBack();
+		},
+		
+//		onCandidatePress: function(oEvent){
+//			var sPath = oEvent.getSource().getBindingContext("ui").getPath();
+//			var ind	= sPath.split("/")[2];
+//			var ind2	= sPath.split("/")[4];
+//			this.getRouter().navTo("candidate", {
+//				ind: parseInt(ind),
+//				ind2: parseInt(ind2)
+//			});
+//		}
+		
+		
 
 
 	});
