@@ -16,9 +16,13 @@ sap.ui.define([
 			 */
 			
 			/*REQUISITION*/
-			getRequisitions: function(oComp, aContents) {
+			getRequisitions: function(oEvent, oFilter) {
 				return new Promise(function(resolve, reject) {
 					var sPath = "/iacube/service/requisitions";
+					if (oFilter){
+						var sFilter = "filter="+ JSON.stringify(oFilter);
+						sPath = sPath + "?" + sFilter;
+					}
 					ServiceAccess.ajax({
 						url: sPath,
 						success: function(data) {

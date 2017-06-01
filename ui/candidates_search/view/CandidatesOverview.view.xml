@@ -52,7 +52,7 @@
 						<items>
 							<ColumnListItem type="Navigation" vAlign="Middle" press="handleCandidatePress">
 								<cells>
-									<CheckBox/>
+									<CheckBox selected ="{ui>selected}"/>
 									<Text text="{ui>FirstName}" />
 									<Text text="{ui>LastName}"/>
 									<Text text="{ui>Location}"/>
@@ -66,13 +66,13 @@
 								</cells>
 							</ColumnListItem>
 						</items>
-	</Table>
+		</Table>
 			</VBox>
 		</content>
 		<footer>
 			<Toolbar>
 				<ToolbarSpacer/>
-				<Button text="{i18n>cand.button.assign}"/>
+				<Button text="{i18n>cand.button.assign}" press="onButtonAssignPress" visible="{ui>/assignBtnVisible}"/>
 			</Toolbar>
 		</footer>
 	</Page>
