@@ -6,6 +6,26 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function(Controller) {
 		onNavBack : function() {
 			window.history.go(-1);
 		},
+		
+		onCandidatePress: function(oEvent){
+			var sPath = oEvent.getSource().getBindingContext("ui").getPath();
+			var ind	= sPath.split("/")[2];
+			var ind2	= sPath.split("/")[4];
+			this.getRouter().navTo("candidate", {
+				ind: parseInt(ind),
+				ind2: parseInt(ind2)
+			});
+		},
+		
+		onProfilesPopover: function(oEvent){
+			if( !this._oProfPopover ) {
+				this._oProfPopover = sap.ui.xmlfragment("requisitions_report.view.fragment.ProfListPopover", this);
+				this.getView().addDependent(this._oProfPopover);
+			}
+			var oBinding = oEvent.getSource().getBindingContext("ui");			
+			this._oProfPopover.setBindingContext(oBinding, "ui");
+			this._oProfPopover.openBy(oEvent.getSource());
+		},
 
 		/**
 		 * Convenience method for accessing the router in every controller of

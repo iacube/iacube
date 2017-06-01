@@ -37,6 +37,9 @@ sap.ui.define([
 		
 		loadCandidate: function(CandId, sPath){
 			var oModel = this.getModel("ui");
+			if(!sPath){
+				sPath  = this.getView().getElementBinding("ui").getPath();
+			}
 			DataHelper.getCandidate(CandId).then(function(oData){
 				//We don't want to overwrite existing candidate data, just extend
 				var oCandidate = oModel.getProperty(sPath);
@@ -52,7 +55,6 @@ sap.ui.define([
 				this.getView().addDependent(this.oProfilesPopover);
 			}
 			this.oProfilesPopover.openBy(oEvent.getParameter("domRef"));
-			//this.oProfilesPopover.setModel("ui",this.getModel("ui"));
 		},
 		
 		onProfileSelected: function(oEvent){
@@ -79,17 +81,24 @@ sap.ui.define([
 		},
 		
 		onCandidateAssign: function(){
-			var sCandId = this.getView().getBindingContext("ui").getProprty("CandidateId");
+			var oCand = this.getView().getBindingContext("ui").getObject();
 			var sReqId = this.getModel("ui").getProperty("/selectedRequisition");
 			var aSelectedCandidates = [{
 					ReqId: sReqId,
-					CandidateId	: sCandId,
-					StatusId : "OPEN",
-					flag: "I"
+					CandidateId	: oCand.CandidateId,
+					StatusId : "ASSIGNED",
+					flag: "I",
+					ProfileId: oCand.profiles[0].ProfileId,
+					Distance: oCand.Distance
 				}];
-			DataHelper.assignCandidatesToRequisitions(aSelectedCandidates).then(function(){
-				console.log("ok");
-			});
+			DataHelper.assignCandidatesToRequisitions(aSelectedCandidates).then(function(response){
+				if(response.ERRORS.length == 0){
+					var oBundle = this.getResourceBundle();
+					var sRequisitionTitle = this.getModel("ui").getProperty("/selectedRequisitionTitle");
+					sap.m.MessageToast.show(oBundle.getText("cand.overview.assigned.toast", [aSelectedCandidates.length, sRequisitionTitle]));
+					this.loadCandidate(oCand.CandidateId);
+				}
+			}.bind(this));
 
 		},
 		

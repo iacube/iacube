@@ -15,10 +15,6 @@ sap.ui.define([
 		 * @memberOf manage_vacancy.ui.requisitions_report.view.view.RequisitionsOverview
 		 */
 		 onInit: function() {
-			   var req_fb = sap.ui.getCore().byId("__xmlview1--req_fb");
-			   req_fb._oVariantManagement.addItem(new sap.ui.comp.variants.VariantItem({text:"Status: Opened", key:"1"}));
-			   req_fb._oVariantManagement.addItem(new sap.ui.comp.variants.VariantItem({text:"Account: BURB-SAP", key:"2"}));
-			   req_fb._oVariantManagement.setVisible(true);
 		 },
 			
 		/**
@@ -31,9 +27,10 @@ sap.ui.define([
 			var sPath = oEvent.getSource().getBindingContext("ui").getPath();
 			var ReqId = this.getModel("ui").getProperty(sPath).ReqId;
 			var iIndex	= sPath.split("/")[2];
+			this.getModel("ui").setProperty("/selectedRequisitionIndex", iIndex);
 			this.getRouter().navTo("requisition", {
 				ind: parseInt(iIndex)
-			});
+			});			
 		},
 		
 		onRequisitionSelect: function(oEvent){

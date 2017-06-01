@@ -17,6 +17,11 @@ sap.ui.define([
 		onInit: function() {
 			this.getRouter().attachRouteMatched(this.onRouteMatched, this);
 		},
+		
+		onAfterRendering(){
+			var oTable = this.getView().byId("req_report_candidatesTable");
+			oTable.getBinding("items").sort(new sap.ui.model.Sorter("Distance", true));
+		},
 			
 		onRouteMatched: function(oEvent){		
 			if(oEvent.getParameter("name") === "candidates") {	
@@ -29,44 +34,48 @@ sap.ui.define([
 			}			
 		},
 		
-		onCandidatePress: function(oEvent){
-			var sPath = oEvent.getSource().getBindingContext("ui").getPath();
-			var ind	= sPath.split("/")[2];
-			var ind2	= sPath.split("/")[4];
-			this.getRouter().navTo("candidate", {
-				ind: parseInt(ind),
-				ind2: parseInt(ind2)
-			});
-		},
+//		onCandidatePress: function(oEvent){
+//			var sPath = oEvent.getSource().getBindingContext("ui").getPath();
+//			var ind	= sPath.split("/")[2];
+//			var ind2	= sPath.split("/")[4];
+//			this.getRouter().navTo("candidate", {
+//				ind: parseInt(ind),
+//				ind2: parseInt(ind2)
+//			});
+//		},
 		
 		loadCandidates: function(ReqId, sPath){
 			var oModel = this.getModel("ui");
-			var oFilter = {ReqId: ReqId};
-		//	aFilters.push({ReqId: ReqId});
-			DataHelper.getCandidates(this,oFilter).then(function(oData){
+			if(!sPath){
+				sPath  = this.getView().getElementBinding("ui").getPath();
+			}
+			if(!ReqId){
+				ReqId = this.getModel("ui").getProperty("/selectedRequisition");
+			}
+			DataHelper.getCandidates(this, null, null,"ReqId="+ReqId).then(function(oData){
 				oModel.setProperty(sPath + "/candidates", Mapper.mapCandidates(oData.data));
 			});
 		},
 		
-		onCandidatePress: function(oEvent){
-			var sPath = oEvent.getSource().getBindingContext("ui").getPath();
-			var ind	= sPath.split("/")[2];
-			var ind2	= sPath.split("/")[4];
-			this.getRouter().navTo("candidate", {
-				ind: parseInt(ind),
-				ind2: parseInt(ind2)
-			});
-		},
+//		onCandidatePress: function(oEvent){
+//			var sPath = oEvent.getSource().getBindingContext("ui").getPath();
+//			var ind	= sPath.split("/")[2];
+//			var ind2	= sPath.split("/")[4];
+//			this.getRouter().navTo("candidate", {
+//				ind: parseInt(ind),
+//				ind2: parseInt(ind2)
+//			});
+//		},
 		
-		onProfilesPopover: function(oEvent){
-			if( !this._oProfPopover ) {
-				this._oProfPopover = sap.ui.xmlfragment("requisitions_report.view.fragment.ProfListPopover", this);
-				this.getView().addDependent(this._oProfPopover);
-			}
-			var oBinding = oEvent.getSource().getBindingContext("ui");			
-			this._oProfPopover.setBindingContext(oBinding, "ui");
-			this._oProfPopover.openBy(oEvent.getSource());
-		},
+//		onProfilesPopover: function(oEvent){
+//			if( !this._oProfPopover ) {
+//				this._oProfPopover = sap.ui.xmlfragment("requisitions_report.view.fragment.ProfListPopover", this);
+//				this.getView().addDependent(this._oProfPopover);
+//			}
+//			var oBinding = oEvent.getSource().getBindingContext("ui");			
+//			this._oProfPopover.setBindingContext(oBinding, "ui");
+//			this._oProfPopover.openBy(oEvent.getSource());
+//		},
 		
 		onShowRequisPopover: function(oEvent){
 			if( !this._oRequisPopover ) {
@@ -88,13 +97,26 @@ sap.ui.define([
 				return {
 					ReqId: sReqId,
 					CandidateId	: c2.CandidateId,
-					StatusId : "OPEN",
-					flag: "I"
+					StatusId : "ASSIGNED",
+					flag: "I",
+					ProfileId: c2.profiles[0].ProfileId,
+					Distance: c2.Distance
 				}
 			});
-			DataHelper.assignCandidatesToRequisitions(aSelectedCandidates).then(function(){
-				console.log("ok");
-			});
+			if(aSelectedCandidates.length > 0){
+				DataHelper.assignCandidatesToRequisitions(aSelectedCandidates).then(function(response){
+					if(response.ERRORS.length == 0){
+						var oBundle = this.getResourceBundle();
+						var sRequisitionTitle = this.getModel("ui").getProperty("/selectedRequisitionTitle");
+						sap.m.MessageToast.show(oBundle.getText("cand.overview.assigned.toast", [aSelectedCandidates.length, sRequisitionTitle]));
+						this.loadCandidates();
+					}
+				}.bind(this));
+			}else{
+				sap.m.MessageToast.show(oBundle.getText("cand.overview.assign.select"));
+			}
+
+
 		}
 		
 
