@@ -1,4 +1,4 @@
-var template = {
+/*var template = {
 	procedure:"iacube.db.procedures.HH::update_HH_Dictionary",
 	parameters:{
  
@@ -21,4 +21,4 @@ var template = {
 	transformation: function(data){
 	    return [];
 	}
-};
+};*/

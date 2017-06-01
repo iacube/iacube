@@ -1,4 +1,1 @@
-CandidateId;LastName;FirstName;MiddleName;BirthDate;GenderId;Location;ProfArea;Photo
-7000;Петрунов;Веселин;Стоян;1965-02-22T00:00:00;M;София, България; BI Консультант;https://sapui5.hana.ondemand.com/test-resources/sap/uxap/images/imageID_275314.png
-7001;Орлов;Святозар;Август;1960-02-22T00:00:00;M;Орша, Беларусь; BW Консультант;https://media.licdn.com/mpr/mpr/shrink_100_100/p/8/005/0b9/20f/0007caf.jpg
-7002;Понятовский;Станислав;Август;1732-01-17T00:00:00;M;Речь Посполитая; Король;http://emperfavour.narod.ru/poniatowski.PNG
+CandidateId;LastName;FirstName;MiddleName;BirthDate;GenderId;Location;ProfArea

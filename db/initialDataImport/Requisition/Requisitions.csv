@@ -1,4 +1,2 @@
 ReqId;Title;ProjectId;PriorityId;Location;StatusCodeId;SubcategoryId;CreatedBy;CreatedAt;Language;Keywords;Description;OpenedBy;OpenedAt
 7788;SAP ABAP Developer;BURB-SAP;VH;London, UK;OPEN;1;Cartman;2017-02-22T00:00:00;EN;keyword1, keyword2;Some Description;Timmy;2017-05-12T00:00:00
-5000;SAP ABAP Разработчик;BURB-SAP;VH;Фаниполь, Беларусь;OPEN;1;Иван;2017-02-22T00:00:00;EN;keyword1, keyword2;Some Description;Алла;2017-05-12T00:00:00
-6000;SAP BI консультант;BASF-SAP;H;Барановичи, Беларусь;OPEN;1;Пётр;2017-02-22T00:00:00;EN;keyword1, keyword2;Some Description;Ирина;2017-05-12T00:00:00
