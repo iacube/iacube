@@ -78,7 +78,7 @@ sap.ui.define([
 					var oParams = [];
 					var sPath = "/iacube/service/candidates";
 					if(oFilter){
-						oParams.push("filter="+ JSON.stringify(oFilter));
+						oParams.push("filter="+ encodeURI(JSON.stringify(oFilter)));
 					}
 					if(sSearchTm){
 						oParams.push("searchTerm="+sSearchTm);
