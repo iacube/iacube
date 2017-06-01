@@ -430,8 +430,8 @@ context tables{
 		};
 	};*/
  	context Document{
-        type docId           : hana.SMALLINT;
- 	   type docExtId        : hana.SMALLINT;			
+        type docId           : Integer;
+ 	   type docExtId        : Integer;			
  	   type docExtType      : String(2);	
  	   type docContent      : LargeString;
  	   type docDim          : String(1);

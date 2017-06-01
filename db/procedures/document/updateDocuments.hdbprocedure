@@ -7,7 +7,7 @@ BEGIN
    DECLARE CURSOR lc_req FOR SELECT "ReqId","Language" FROM "IACUBE"."iacube.db::tables.Requisition.Requisitions" AS "A"
                                                     WHERE EXISTS(SELECT NULL FROM "IACUBE"."iacube.db::tables.Requisition.Skills" AS "B"
                                                                              WHERE "A"."ReqId"="B"."ReqId");
-   DECLARE CURSOR lc_req_skill(p_req_id SMALLINT) FOR SELECT "Weight","Skill" FROM "IACUBE"."iacube.db::tables.Requisition.Skills" 
+   DECLARE CURSOR lc_req_skill(p_req_id INTEGER) FOR SELECT "Weight","Skill" FROM "IACUBE"."iacube.db::tables.Requisition.Skills" 
                                                       WHERE "ReqId"=:p_req_id AND "Skill" IS NOT NULL;
    DECLARE CURSOR lc_prof FOR SELECT "ProfileId","Summary","Language","Headline" FROM "IACUBE"."iacube.db::tables.Profile.Profiles" AS "A" 
                           WHERE EXISTS(SELECT NULL FROM "IACUBE"."iacube.db::tables.Profile.Skills" AS "B"
@@ -16,8 +16,8 @@ BEGIN
                                                    WHERE "A"."ProfileId"="C"."ProfileId") OR
                                 IFNULL(LENGTH(A."Summary"),0) <> 0 OR
                                 IFNULL(LENGTH(A."Headline"),0) <> 0;                   
-   DECLARE CURSOR lc_prof_skill(p_prof_id SMALLINT) FOR SELECT "Skill" FROM "IACUBE"."iacube.db::tables.Profile.Skills" WHERE "ProfileId"=:p_prof_id AND "Skill" IS NOT NULL;                                                                      
-   DECLARE CURSOR lc_prof_exp(p_prof_id SMALLINT) FOR SELECT "EndDate","Description","Position" FROM "IACUBE"."iacube.db::tables.Profile.Experience" WHERE "ProfileId"=:p_prof_id;                                                                      
+   DECLARE CURSOR lc_prof_skill(p_prof_id INTEGER) FOR SELECT "Skill" FROM "IACUBE"."iacube.db::tables.Profile.Skills" WHERE "ProfileId"=:p_prof_id AND "Skill" IS NOT NULL;                                                                      
+   DECLARE CURSOR lc_prof_exp(p_prof_id INTEGER) FOR SELECT "EndDate","Description","Position" FROM "IACUBE"."iacube.db::tables.Profile.Experience" WHERE "ProfileId"=:p_prof_id;                                                                      
 
    DECLARE lv_skillSet NCLOB;
    DECLARE lv_position NCLOB;   
