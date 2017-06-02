@@ -242,8 +242,16 @@ BEGIN
 			FROM :checkedComments
 	;
 	
-	CALL "iacube.db.procedures.document::updateDocuments"();
-	--CALL "iacube.db.procedures.document::updateDocumentsByReq"(reqId INTEGER) TODO: change inpup to table
+	--CALL "iacube.db.procedures.document::updateDocuments"();
+	--CALL "iacube.db.procedures.document::updateDocumentsByReq"(reqId INTEGER)
+	reqs = 
+		SELECT "ReqId" AS "Id"
+			FROM :details
+		UNION
+		SELECT "ReqId" AS "Id"
+			FROM :skills
+	;
+	CALL "iacube.db.procedures.document::updateDocumentsByReqs"(:reqs);
 	
 	errors = 
 		SELECT 
