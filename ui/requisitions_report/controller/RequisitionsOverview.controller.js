@@ -15,6 +15,13 @@ sap.ui.define([
 		 * @memberOf manage_vacancy.ui.requisitions_report.view.view.RequisitionsOverview
 		 */
 		 onInit: function() {
+			 this.getRouter().attachRouteMatched(this.onRouteMatched, this);
+		 },
+		 
+		 onRouteMatched: function(oEvent){		
+			 if(oEvent.getParameter("name") === "home") {	
+				this.loadRequisitions();
+			 }			
 		 },
 		 
 		 onSearch :function(oEvent){
@@ -72,7 +79,6 @@ sap.ui.define([
 		 */
 		onAfterRendering: function() {
 			this.getModel("ui").setProperty("/busy/requisitions", true);
-			this.loadRequisitions();
 			this.loadFilterBar();
 		},
 		

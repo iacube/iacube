@@ -161,7 +161,7 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 						"saveError");
 				MessageToast.show(message);
 			}
-		},
+		}, 
 
 		_getErrorDetails : function(aErrors, propName, propValue, status,
 				statusValue) {
