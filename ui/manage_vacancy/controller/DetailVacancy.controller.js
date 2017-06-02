@@ -81,7 +81,6 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 				} else if (sMode == "U") {
 					// requisition in update mode
 					var oRequisition = oModel.getProperty(sPath);
-					var setRequisition = oRequisition;
 					oRequisition.candidates = [];
 					var skills = oRequisition.skills;
 					var aOldSkills = oModel.getProperty("/OldSkills");
