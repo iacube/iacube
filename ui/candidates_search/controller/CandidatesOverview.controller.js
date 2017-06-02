@@ -69,7 +69,8 @@ sap.ui.define([
 		},
 		onAfterRendering: function() {
 				this.loadProfiles();
-				this.getModel("ui").setProperty("/assignBtnVisible", false);
+				var sVisible = this.getView().byId("idCandidates").getVisible();
+				this.getModel("ui").setProperty("/assignBtnVisible", sVisible);
 		},
 		
 		onButtonAssignPress: function(){
@@ -187,29 +188,34 @@ sap.ui.define([
 			
 			var aCandidates = this.getModel("ui").getProperty("/candidates");
 			var oSelectedReqContexts = oEvent.getParameter("selectedContexts");
-			for (var c=0; c<aCandidates.length; c++){
-					if (aCandidates[c].selected){
-						oSelectedCandidate.CandidateId = aCandidates[c].CandidateId;
-						oSelectedCandidate.ProfileId = aCandidates[c].profiles[0].ProfileId;
-						oSelectedCandidate.Distance=aCandidates[c].Distance;
-						oSelectedCandidate.StatusId = "ASSIGNED";
-					
-					for (var r=0;r<oSelectedReqContexts.length;r++){
-						var oSelReq=oSelectedReqContexts[r].oModel.getObject(oSelectedReqContexts[r].sPath);
-						oSelectedCandidate.ReqId = oSelReq.ReqId;
-						oSelectedCandidate.flag ="I";						
-						aSelectedCandidates.push($.extend({},oSelectedCandidate));
+			if(oSelectedReqContexts.length != "0"){
+				for (var c=0; c<aCandidates.length; c++){
+						if (aCandidates[c].selected){
+							oSelectedCandidate.CandidateId = aCandidates[c].CandidateId;
+							oSelectedCandidate.ProfileId = aCandidates[c].profiles[0].ProfileId;
+							oSelectedCandidate.Distance=aCandidates[c].Distance;
+							oSelectedCandidate.StatusId = "ASSIGNED";
+						
+						for (var r=0;r<oSelectedReqContexts.length;r++){
+							var oSelReq=oSelectedReqContexts[r].oModel.getObject(oSelectedReqContexts[r].sPath);
+							oSelectedCandidate.ReqId = oSelReq.ReqId;
+							oSelectedCandidate.flag ="I";						
+							aSelectedCandidates.push($.extend({},oSelectedCandidate));
+						}
 					}
-				}
-			};
-			var aSelCandidates= {"candidates": aSelectedCandidates};
-			DataHelper.assignCandidatesToRequisitions(aSelCandidates).then(function(response){
-				if(response.ERRORS.length == 0){
-					this.onSearch();
-					 this.getModel("ui").refresh(true);
-			     }
-			}.bind(this));
-			
+				};
+				var aSelCandidates= {"candidates": aSelectedCandidates};
+				DataHelper.assignCandidatesToRequisitions(aSelCandidates).then(function(response){
+					if(response.ERRORS.length == 0){
+						this.onSearch();
+						 this.getModel("ui").refresh(true);
+				     }
+				}.bind(this));
+			}
+			else{
+				var oBundle = this.getResourceBundle();
+				sap.m.MessageToast.show(oBundle.getText("cand.overview.noRequisitions"))
+			}
 		},
 		handleClose: function(){
 			if (this._oReqDialog) {

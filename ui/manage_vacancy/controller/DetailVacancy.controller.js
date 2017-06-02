@@ -60,6 +60,7 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 		onRequisSave : function(oEvent) {
 			var error = this._validateRequiredFields();
 			if (error === false) {
+				sap.ui.core.BusyIndicator.show(0);
 				var oModel = this.getModel("ui");
 				var sPath = oEvent.getSource().getBindingContext("ui")
 						.getPath();
@@ -75,18 +76,43 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 							.then(
 									function(oData) {
 										that._checkSaveError(sMode, oData, that,
-												sPath, oModel, ReqId)
+												sPath, oModel, ReqId);
+										sap.ui.core.BusyIndicator.hide();
 									});
 				} else if (sMode == "U") {
 					// requisition in update mode
 					var oRequisition = oModel.getProperty(sPath);
-					var skills = oRequisition.skills;
 					oRequisition.candidates = [];
+					var skills = oRequisition.skills;
+					var aOldSkills = oModel.getProperty("/OldSkills");
+					var addSkills = [];
+					if (skills.length != "0" && aOldSkills.length != "0") {
+						
+						// process skills need to be updated (should be removed after backend changes!!!)
+						for (var i = 0; i < skills.length; i++) {
+							if(skills[i].Skill != aOldSkills[i]){
+								skills[i].flag = "I";
+								var skill = {
+										Skill: "",
+										Weight: skills[i].Weight,
+										flag: "D"
+								};
+								skill.Skill = aOldSkills[i];
+								addSkills.push(skill);
+							}
+						};
+						if(addSkills.length != "0") {
+							for (var i = 0; i < addSkills.length; i++)
+								{skills.push(addSkills[i]);}
+						}
+						oRequisition.skills = skills;
+					}
 					//add deleted skills if needed
 					var aDelSkills = oModel.getProperty("/DeletedSkills");
 					if(aDelSkills && aDelSkills.length != "0"){
-						for (var i = 0; i < aDelSkills.length; i++)
-							oRequisition.skills.push(aDelSkills[i]);
+						for (var i = 0; i < aDelSkills.length; i++) {
+							oRequisition.skills.push(aDelSkills[i])	
+						}
 					}
 					DataHelper.updateRequisitions(
 							Mapper.composeRequisitionForUpdate(oRequisition))
@@ -94,6 +120,7 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 									function(oData) {
 										that._checkSaveError(sMode, oData, that,
 												sPath, oModel, ReqId);
+										sap.ui.core.BusyIndicator.hide();
 									});
 				}
 			}
@@ -117,10 +144,12 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 				// load Requisition Collection
 				if(sMode == "C") {
 					that.reLoadRequisitions(sPath);
+					oModel.refresh();
 				}
 					
 				else if (sMode == "U"){
 					that.loadRequisition(ReqId, sPath); 
+					oModel.refresh();
 				}
 				oModel.setProperty("/RequisEditable", false);
 				oModel.setProperty("/RequisReadOnly", true);
@@ -241,9 +270,14 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 					else {
 						oModel.setProperty("/Mode", "U");
 				// add update flag for skills
+						var aOldSkills = [];//should be removed after backend changes !!!
 						var aSkills = oModel.getProperty(context.getPath()).skills;
-						for (var i = 0; i < aSkills.length; i++)
-							aSkills[i].flag = "U"
+						for (var i = 0; i < aSkills.length; i++) {
+							aSkills[i].flag = "U";
+							aOldSkills.push(aSkills[i].Skill);
+						}
+				// remember skills - should be removed after backend changes !!!
+						oModel.setProperty("/OldSkills", aOldSkills)
 					}
 				}
 				else{
