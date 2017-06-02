@@ -30,6 +30,7 @@ sap.ui.define([
 				
 				var CandidateId = this.getModel("ui").getProperty(sPath).CandidateId;
 				this.loadCandidate(CandidateId, sPath);
+				this.getModel("ui").setProperty("/assignBtnVisible", true);
 			}			
 		},
 		loadCandidate: function(CandidateId, sPath){
@@ -41,8 +42,8 @@ sap.ui.define([
 		},
 		
 		onNavBack: function(oEvent){
-			this.getModel("ui").setProperty("/assignBtnVisible", true);
 			this.getOwnerComponent().getRouter().getTargets().display("home");
+			this.getModel("ui").setProperty("/assignBtnVisible", true);
 		},
 		
 		onProfileSelectorShow: function(oEvent){
@@ -77,7 +78,81 @@ sap.ui.define([
 			var sSelectedHeadline = this.getModel("ui").getProperty(oContext.getPath()+"/profiles/"+iIndex+"/Headline");
 			var sSelectedLocation = this.getModel("ui").getProperty(oContext.getPath()+"/Location");
 			this.getModel("ui").setProperty(oContext.getPath()+"/selectedProfile", sSelectedLocation + " / " + sSelectedHeadline);
-		}
+		},
+		
+		onButtonAssignPress: function(){
+			
+			this.loadRequisitions();
+		},
+		
+		loadRequisitions: function(oEvent){
+			var oModel = this.getModel("ui");			
+			var oFilter = {"StatusCodeId":"OPEN"};
+			DataHelper.getRequisitions(this,oFilter).then(function(aRequisitions){
+				oModel.setProperty("/openRequisitions", Mapper.mapRequisitions(aRequisitions.data));
+				if (! this._oReqDialog) {
+					this._oReqDialog = sap.ui.xmlfragment("candidates_search.view.fragment.requsitionsDialog", this);
+					this.getView().addDependent(this._oReqDialog);
+					this._oReqDialog.setModel(oModel);
+				}
+		 
+				this._oReqDialog.setMultiSelect(true);
+		 
+				// clear the old search filter
+				this._oReqDialog.getBinding("items").filter([]);
+		 
+				// toggle compact style
+				jQuery.sap.syncStyleClass("sapUiSizeCompact", this.getView(), this._oReqDialog);
+				this._oReqDialog.open();
+			}.bind(this));
+		},
+		
+		handleReqSearch: function(oEvent){
+			var sValue = oEvent.getParameter("value");
+			var oFilter = new sap.ui.model.Filter("Title", sap.ui.model.FilterOperator.Contains, sValue);
+			var oBinding = oEvent.getSource().getBinding("items");
+			oBinding.filter([oFilter]);
+		},
+		
+		onConfirmAssignment: function(oEvent){
+			var oBundle = this.getResourceBundle();
+			var oSelectedReqContexts = oEvent.getParameter("selectedContexts");
+			if(oSelectedReqContexts.length != "0"){
+				var aSelectedCandidates = [];
+				var oSelectedCandidate = {};
+				var sPath = this.getView().getBindingContext("ui").getPath();
+				var oCandidate = this.getModel("ui").getProperty(sPath);
+				
+				oSelectedCandidate.CandidateId = oCandidate.CandidateId;
+				oSelectedCandidate.ProfileId = oCandidate.profiles[0].ProfileId;
+				oSelectedCandidate.Distance=oCandidate.Distance;
+				oSelectedCandidate.StatusId = "ASSIGNED";
+					
+				for (var r=0;r<oSelectedReqContexts.length;r++){
+					var oSelReq=oSelectedReqContexts[r].oModel.getObject(oSelectedReqContexts[r].sPath);
+					oSelectedCandidate.ReqId = oSelReq.ReqId;
+					oSelectedCandidate.flag ="I";						
+					aSelectedCandidates.push($.extend({},oSelectedCandidate));
+					};
+	
+			var aSelCandidates= {"candidates": aSelectedCandidates};
+			DataHelper.assignCandidatesToRequisitions(aSelCandidates).then(function(response){
+				if(response.ERRORS.length == 0){
+					sap.m.MessageToast.show(oBundle.getText("cand.overview.candidateAssigned"));
+					this.getModel("ui").refresh(true);
+			     }
+			}.bind(this));
+			}
+			else{
+				sap.m.MessageToast.show(oBundle.getText("cand.overview.noRequisitions"))
+			}
+			
+		},
+		handleClose: function(){
+			if (this._oReqDialog) {
+				this._oReqDialog.destroy();
+			}
+		},
 		/**
 		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
 		 * (NOT before the first rendering! onInit() is used for that one!).

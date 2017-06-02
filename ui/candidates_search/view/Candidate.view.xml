@@ -54,5 +54,11 @@
 				</uxap:sections>
 			</uxap:ObjectPageLayout>
 		</content>
+		<footer>
+			<Toolbar>
+				<ToolbarSpacer/>
+				<Button text="{i18n>cand.button.assign}" press="onButtonAssignPress" visible="{ui>/assignBtnVisible}"/>
+			</Toolbar>
+		</footer>
 	</Page>
 </mvc:View>
