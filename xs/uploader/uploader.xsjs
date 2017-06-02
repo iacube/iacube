@@ -112,9 +112,9 @@ function upload(list){
 		if(serviceResponce(dbResult,{},message)){
 			connection.commit();
 			
-			/*loadedProcedure = connection.loadProcedure(constants.schema,"iacube.db.procedures.document::updateDocuments");
+			loadedProcedure = connection.loadProcedure(constants.schema,"iacube.db.procedures.document::updateDocuments");
 			dbResult = dbResult.concat(loadedProcedure.apply(connection));
-			connection.commit(); */ 
+			connection.commit(); 
 
 			/*if(translator(connection)){
 				$.response.status = $.net.http.INTERNAL_SERVER_ERROR;
