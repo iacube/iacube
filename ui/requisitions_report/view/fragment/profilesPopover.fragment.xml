@@ -1,10 +1,9 @@
 <core:FragmentDefinition xmlns="sap.m"
 	xmlns:core="sap.ui.core">
-	<Popover title="{i18n>cand.page.popover.title}"
-		placement="Bottom">
+	<Popover title="{i18n>cand.page.popover.title}" placement="Bottom">
 		<content>
-			<List id="cand_page_popover_profiles_list" mode="SingleSelectMaster" includeItemInSelection="true"
-				select="handleItemSelect" items="{ui>profiles}">
+			<List id="cand_page_popover_profiles_list" mode="SingleSelectMaster"
+				includeItemInSelection="true" select="handleItemSelect" items="{ui>profiles}">
 				<CustomListItem>
 					<HBox alignItems="Start" class="sapUiTinyMargin">
 						<Text width="100%" text="{ui>ProfileName}">
@@ -18,7 +17,7 @@
 								<FlexItemData growFactor="1" />
 							</layoutData>
 						</Text>
-						<Link width="100%" text="{ui>Link}">
+						<Link width="100%" text="{ui>Link}" target="_blank" href="{ui>Link}">
 							<layoutData>
 								<FlexItemData growFactor="1" />
 							</layoutData>
