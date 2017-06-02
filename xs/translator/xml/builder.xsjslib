@@ -24,13 +24,13 @@ function request(texts, from, to, appId){
 	
     var text = "";
 	var subText = "";
-	var tl;
+	
 	if(to){
 		for(i = 0; i < texts.length; i++){
 			
 			n++;
 			text = texts[i].Content;
-			tl = texts[i].Content.length;
+
 			do{
 			    subText = text.substring(0,maxStringLength);
 			    l += subText.length + tagsLength;
@@ -53,7 +53,7 @@ function request(texts, from, to, appId){
     			textArray[textArray.length - 1].ids.push(
     			    texts[i].id
     			);
-			}while(text.length > maxStringLength)
+			}while(text.length > maxStringLength);
 	
 		}
 		
@@ -68,7 +68,6 @@ function request(texts, from, to, appId){
 					element("To",to)
 			    )
 			});
-			requests[requests.length - 1].length  = requests[requests.length - 1].data.length;
 		});
 	}
 
