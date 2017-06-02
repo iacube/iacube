@@ -5,8 +5,8 @@ sap.ui.define([
 	"use strict";
 
 	return {		
-		formatReqStatus: function(sStatusCode){
-			var oBundle = this.getResourceBundle();
+		formatReqStatus: function(sStatusCode, bundle){
+			var oBundle = bundle || this.getResourceBundle();
 			var sText = "N/A";
 			switch (sStatusCode) {
 				case "OPEN":
@@ -23,6 +23,9 @@ sap.ui.define([
 					break
 				case "REJECT":
 					sText = "req.status.reject";
+					break;
+				case "NEW":
+					sText = "req.status.new";
 					break;
 			}
 			return oBundle.getText(sText);
@@ -45,6 +48,9 @@ sap.ui.define([
 					break
 				case "REJECT":
 					sText = "Error";
+					break;
+				case "NEW":
+					sText = "Success";
 					break;
 			}
 			return sText;

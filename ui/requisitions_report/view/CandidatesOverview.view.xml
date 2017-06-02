@@ -18,7 +18,7 @@
 				</attributes>
 			</ObjectHeader>
 			<VBox class="sapUiSmallMargin">
-				<Table id="req_report_candidatesTable" inset="false" items="{ui>candidates}">
+				<Table id="req_report_candidatesTable" inset="false" items="{ui>candidates}" busy="{ui>/busy/candidates}" busyIndicatorDelay="0">
 					<headerToolbar>
 						<Toolbar>
 							<Title
@@ -67,9 +67,9 @@
 									'ui', path: 'salary', formatter: '.formatter.formatSalary' }" unit="{ui>CurrencyCode}" 
 									/> -->
 								<HBox>
-									<core:Icon visible="{= ${ui>requisitions}.length > 0}"
+									<core:Icon visible="{= ${ui>requis}.length > 0}"
 										src="sap-icon://document" press="onShowRequisPopover" />
-									<Text text="({= ${ui>requisitions}.length})" class="sapUiTinyMarginBeginEnd" />
+									<Text text="({= ${ui>requis}.length})" class="sapUiTinyMarginBeginEnd" />
 								</HBox>
 							</cells>
 						</ColumnListItem>

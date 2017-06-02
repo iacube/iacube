@@ -138,15 +138,21 @@ sap.ui.define([
 			if(sMode == "U"){
 				var skill = skills[index];
 				// set new node for deleted skills
-				var aDelSkills = [];
+				oModel.getProperty("/DeletedSkills");
+				var aDelSkills = oModel.getProperty("/DeletedSkills");
+				if(!aDelSkills) {
+					aDelSkills = [];
+				}
 				var delSkill = skill;
 				delSkill.flag = "D";
 				aDelSkills.push(delSkill);
+				
 				oModel.setProperty("/DeletedSkills", aDelSkills)
 			}
 			// delete skill
             skills.splice(index, 1);         
             oModel.setData(skills, true);
+            oModel.refresh();
 		},
 		
 		_onSkillCreate: function(oEvent) {

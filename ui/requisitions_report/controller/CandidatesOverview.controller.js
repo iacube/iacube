@@ -30,6 +30,7 @@ sap.ui.define([
 				var sPath = "/requisitions/" + ind;				
 				this.getView().bindElement("ui>" + sPath);
 				var reqId = this.getModel("ui").getProperty("/requisitions")[ind].ReqId;
+				this.getModel("ui").setProperty("/busy/candidates", true);
 				this.loadCandidates(reqId, sPath);
 			}			
 		},
@@ -44,7 +45,8 @@ sap.ui.define([
 			}
 			DataHelper.getCandidates(this, null, null,"ReqId="+ReqId).then(function(oData){
 				oModel.setProperty(sPath + "/candidates", Mapper.mapCandidates(oData.data));
-			});
+				this.getModel("ui").setProperty("/busy/candidates", false);
+			}.bind(this));
 		},
 		
 		onShowRequisPopover: function(oEvent){
@@ -78,12 +80,13 @@ sap.ui.define([
 					if(response.ERRORS.length == 0){
 						var oBundle = this.getResourceBundle();
 						var sRequisitionTitle = this.getModel("ui").getProperty("/selectedRequisitionTitle");
-						sap.m.MessageToast.show(oBundle.getText("cand.overview.assigned.toast", [aSelectedCandidates.length, sRequisitionTitle]));
+						var sProjectId = this.getView().getBindingContext("ui").getObject().ProjectId;
+						sap.m.MessageToast.show(oBundle.getText("cand.overview.assigned.toast", [aSelectedCandidates.length, sRequisitionTitle, sProjectId]));
 						this.loadCandidates();
 					}
 				}.bind(this));
 			}else{
-				sap.m.MessageToast.show(oBundle.getText("cand.overview.assign.select"));
+				sap.m.MessageToast.show(this.getResourceBundle().getText("cand.overview.assign.select"));
 			}
 		}
 		

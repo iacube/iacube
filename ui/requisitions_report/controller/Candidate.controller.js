@@ -77,6 +77,13 @@ sap.ui.define([
 				path	: "profiles/"+iIndex+"/skills"
 			});
 			
+			var oExpTable = this.getView().byId("cand_page_exp_table");
+			oExpTable.bindProperty("experience", {
+				model 	: "ui",
+				path	: "profiles/"+iIndex+"/experience"
+			});
+			
+			
 			this.setSelectedProfileText(oContext.getPath(), iIndex);
 		},
 		
