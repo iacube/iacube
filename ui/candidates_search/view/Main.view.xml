@@ -1,5 +1,5 @@
 <mvc:View controllerName="candidates_search.controller.Main" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc"
-	displayBlock="true" xmlns="sap.m">
+	displayBlock="true" xmlns="sap.m" class="sapUiSizeCompact">
 	<App id="app">
 		<pages>
 		</pages>
