@@ -131,7 +131,24 @@ sap.ui.define([ "sap/m/MessageToast", "iacube/ui/common/serviceAccess" ],
 						}
 				})
            },
-
+           
+           mapSubcategoryIds: function(aItems){
+        	   return aItems.values.map(function(p){
+        		   return{
+        			   Id : p.id,
+        			   value: p.name 
+        		   }
+        	   })
+           },
+           
+           mapStatusCodes: function(aItems, formatter, bundle){
+        	   return aItems.values.map(function(p){
+        		   return{
+        			   Id : p,
+        			   value: formatter.formatReqStatus(p, bundle)
+        		   }
+        	   }.bind(this))
+           },
 			
 			composeRequisitionForUpdate: function(oReq){
 				return JSON.stringify({

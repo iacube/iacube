@@ -19,26 +19,25 @@
 							<Input type="Text" />
 						</fb:control>
 					</fb:FilterItem>
-					<fb:FilterItem name="req_account" label="{i18n>req.table.account}">
-						<fb:control>
-							<Input type="Text" />
-						</fb:control>
-					</fb:FilterItem>
 					<fb:FilterItem name="req_subcategory" label="{i18n>req.table.subcategory}">
 						<fb:control>
-							<Input type="Text" />
+							<ComboBox items="{ui>/subcategoryIds}">
+								<core:Item key="{ui>Id}" text="{ui>value}" />
+							</ComboBox>
 						</fb:control>
 					</fb:FilterItem>
 					<fb:FilterItem name="req_status" label="{i18n>req.table.status}">
 						<fb:control>
-							<Input type="Text" />
+							<ComboBox items="{ui>/statusCodes}">
+								<core:Item key="{ui>Id}" text="{ui>value}" />
+							</ComboBox>
 						</fb:control>
 					</fb:FilterItem>
 				</fb:filterItems>
 
 			</fb:FilterBar>
 			<VBox class="sapUiSmallMargin">
-				<Table id="idProductsTable" inset="false" items="{ui>/requisitions}">
+				<Table id="idProductsTable" inset="false" items="{ui>/requisitions}" busy="{ui>/busy/requisitions}" busyIndicatorDelay="0">
 					<headerToolbar>
 						<Toolbar>
 							<Title text="{i18n>req.table.title} ({= ${ui>/requisitions}.length})"
