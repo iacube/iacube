@@ -5,7 +5,7 @@ import = [
 		file   = "iacube.db.initialDataImport.Requisition.dictionary:StatusTypes.csv";
 		header = true;
 		delimField = ";";
-	},
+	}, 
 	{ 	
 		table  = "iacube.db::tables.Requisition._dictionary.PriorityTypes";
 		schema = "IACUBE";

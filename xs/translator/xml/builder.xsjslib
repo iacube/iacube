@@ -10,43 +10,65 @@ function element(name,data,properties){
 function request(texts, from, to, appId){
 	
 	var maxTextsPerRequest  = 2000;
-	var maxLEngthPreRequest = 10000;
+	var maxLengthPerRequest = 9000;
 	
+	var tagsLength = 100;
+	
+	var maxStringLength = maxLengthPerRequest - tagsLength;
+
 	var i;
 	var n = 0;
 	var l = 0;
-	var textArray = [[]];
+	var textArray = [{ids:[],data:[]}];
 	var requests = [];
 	
+    var text = "";
+	var subText = "";
+	var tl;
 	if(to){
 		for(i = 0; i < texts.length; i++){
 			
 			n++;
-			l += texts[i].Content.length;
-			
-			if(n > maxTextsPerRequest || l > maxLEngthPreRequest){
-				n = 0;
-				l = 0;
-				textArray.push([]);
-			}
-			textArray[textArray.length - 1].push(
-				element(
-					"string",
-					texts[i].Content.replace("&","&amp;"),
-					" xmlns=\"http://schemas.microsoft.com/2003/10/Serialization/Arrays\""
-				)
-			);
+			text = texts[i].Content;
+			tl = texts[i].Content.length;
+			do{
+			    subText = text.substring(0,maxStringLength);
+			    l += subText.length + tagsLength;
+			    
+			    text = text.slice(maxStringLength);
+			   
+			    if(n > maxTextsPerRequest || l > maxLengthPerRequest){
+    				n = 0;
+    				l = subText.length + tagsLength;
+    				textArray.push({ids:[],data:[]});
+    			}
+			   
+			    textArray[textArray.length - 1].data.push(
+    				element(
+    					"string",
+    					subText.replace(/\&/g,"&amp;"),
+    					" xmlns=\"http://schemas.microsoft.com/2003/10/Serialization/Arrays\""
+    				)
+    			);
+    			textArray[textArray.length - 1].ids.push(
+    			    texts[i].id
+    			);
+			}while(text.length > maxStringLength)
+	
 		}
 		
 		textArray.forEach(function(entry){
-			requests.push(
-				element(
+			requests.push({
+			    ids:entry.ids,
+			    data:element(
 					"TranslateArrayRequest",
 					element("AppId","Bearer " + appId) +
 					element("From",from) +
-					element("Texts",entry.join("")) +
+					element("Texts",entry.data.join("")) +
 					element("To",to)
-			));
+			    )
+			});
+			requests[requests.length - 1].length  = requests[requests.length - 1].data.length;
 		});
 	}
 

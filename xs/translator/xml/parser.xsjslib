@@ -1,25 +1,27 @@
-function getTexts(response){
+function getTexts(response,ids){
 	
 	var translatedTextStart = "<TranslatedText>";
 	var translatedTextEnd   = "</TranslatedText>";
 	
-	var copy = response;
-	
+	var i = 0;
 	var s = 0;
 	var e = 0;
 	var sl = translatedTextStart.length;
 	var el = translatedTextEnd.length;
 	
 	var texts = [];
-	
-	while(copy.search(translatedTextStart) !== -1){
+	var subText = "";
+	while(response.search(translatedTextStart) !== -1){
 		
-		s = copy.indexOf(translatedTextStart);
-		e = copy.indexOf(translatedTextEnd);
+		s = response.indexOf(translatedTextStart);
+		e = response.indexOf(translatedTextEnd);
 		
-		texts.push(copy.substring(s + sl,e));
-		
-		copy = copy.substring(e + el);
+		if(ids[i] !== undefined){
+		    subText = response.substring(s + sl,e);
+		    texts[ids[i]] = texts[ids[i]] ? texts[ids[i]] + subText : subText;
+		}
+		response = response.substring(e + el);
+		i++;
 	}
 	return texts;
 }

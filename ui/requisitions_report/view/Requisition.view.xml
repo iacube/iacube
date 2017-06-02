@@ -47,7 +47,7 @@
 						<uxap:subSections>
 							<uxap:ObjectPageSubSection>
 								<uxap:blocks>
-									<Table id="req_details_cand_table" items="{ui>candidates}">
+									<Table id="req_details_cand_table" items="{ui>candidates}" class="sapUiCompact" >
 										<columns>
 											<Column hAlign="Left">
 											</Column>
@@ -76,7 +76,7 @@
 										<items>
 											<ColumnListItem type="Navigation" press="onCandidatePress">
 												<cells>
-													<Image src="{ui>Photo}" />
+													<Image height="3rem" src="{ui>Photo}" />
 													<Text text="{ui>FirstName}" />
 													<Text text="{ui>LastName}" />
 													<Text text="{ui>Experience}" />

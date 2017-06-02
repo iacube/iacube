@@ -242,7 +242,8 @@ BEGIN
 			FROM :checkedComments
 	;
 	
-	CALL "iacube.db.procedures.document::updateDocuments"();
+	--CALL "iacube.db.procedures.document::updateDocuments"();
+	--CALL "iacube.db.procedures.document::updateDocumentsByReq"(reqId INTEGER) TODO: change inpup to table
 	
 	errors = 
 		SELECT 

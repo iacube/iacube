@@ -46,7 +46,7 @@ sap.ui.define([
 			var oForm = new SimpleForm("candInfoForm", {
 				minWidth: 1024,
 				maxContainerCols: 2,
-				editable: false,
+				editable: true,
 				layout: sap.ui.layout.form.SimpleFormLayout.ResponsiveGridLayout,
 				labelSpanL: 3,
 				labelSpanM: 3,
@@ -93,7 +93,7 @@ sap.ui.define([
 					}),
 					new Link("cand_info_site", {
 						text: "{local>/Link}",
-						editable: false
+						href: "{local>/Link}"
 					}),
 					
 					//Описание
