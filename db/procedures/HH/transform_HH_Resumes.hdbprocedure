@@ -5,18 +5,15 @@ PROCEDURE "IACUBE"."iacube.db.procedures.HH::transform_HH_Resumes"()
 	AS
 BEGIN 
 
-	candidates =
-		SELECT 
-				IFNULL(c."CandidateId","iacube.db.sequences::candidateId".nextval) AS "CandidateId",
+	preCandidates =
+		SELECT DISTINCT
+				c."CandidateId",
 				a."LastName",
 				a."FirstName",
 				a."MiddleName",
 				a."BirthDate",
 				b."iaId" AS "GenderId",
-				a."City" AS "Location",
-				null AS "ProfArea",
-				a."ResumeId",
-				a."Photo"
+				a."City" AS "Location"
 			FROM "iacube.db::tables._HH.Resumes" AS a
 			LEFT JOIN "iacube.db::tables._HH._mapping.Gender" AS b
 				ON a."GenderId" = b."hhId"
@@ -24,9 +21,47 @@ BEGIN
 				ON  a."LastName"   = c."LastName"
 				AND a."FirstName"  = c."FirstName"
 				AND a."MiddleName" = c."MiddleName"
-				AND a."BirthDate"  = c."BirthDate"
-				AND b."iaId"  	   = c."GenderId"
+				AND b."iaId" = c."GenderId"
+				AND IFNULL(a."BirthDate",'1000-01-01') = IFNULL(c."BirthDate",'1000-01-01')
+				AND a."City" 	   = c."Location"
+				AND IFNULL(a."City",'')	   = IFNULL(c."Location",'')
 	;
+	
+	preCandidates =
+		SELECT 
+				IFNULL("CandidateId","iacube.db.sequences::candidateId".nextval) AS "CandidateId",
+				"LastName",
+				"FirstName",
+				"MiddleName",
+				"BirthDate",
+				"GenderId",
+				"Location"
+			FROM :preCandidates
+	;
+	
+	candidates =
+		SELECT DISTINCT
+				c."CandidateId",
+				a."LastName",
+				a."FirstName",
+				a."MiddleName",
+				a."BirthDate",
+				b."iaId" AS "GenderId",
+				a."City" AS "Location",
+				a."Photo",
+				a."ResumeId"
+			FROM "iacube.db::tables._HH.Resumes" AS a
+			LEFT JOIN "iacube.db::tables._HH._mapping.Gender" AS b
+				ON a."GenderId" = b."hhId"
+			LEFT JOIN :preCandidates AS c
+				ON  a."LastName"   = c."LastName"
+				AND a."FirstName"  = c."FirstName"
+				AND a."MiddleName" = c."MiddleName"
+				AND IFNULL(a."BirthDate",'1000-01-01') = IFNULL(c."BirthDate",'1000-01-01')
+				AND b."iaId" = c."GenderId"
+				AND IFNULL(a."City",'')	   = IFNULL(c."Location",'')
+	;
+	
 	languages =
 		SELECT DISTINCT
 				c."CandidateId",
@@ -39,7 +74,7 @@ BEGIN
 				ON a."ResumeId" = c."ResumeId"
 	;
 	contacts = 
-		SELECT 
+		SELECT DISTINCT
 				c."CandidateId",
 				b."iaId" AS "ContactTypeId",
 				a."Value"
@@ -50,7 +85,7 @@ BEGIN
 				ON a."ResumeId" = c."ResumeId"
 	;
 	UPSERT "iacube.db::tables.Candidate.Candidates"
-		("CandidateId","LastName","FirstName","MiddleName","BirthDate","GenderId","Location","ProfArea","Photo")
+		("CandidateId","LastName","FirstName","MiddleName","BirthDate","GenderId","Location","Photo")
 		SELECT DISTINCT
 				"CandidateId",
 				"LastName",
@@ -59,8 +94,7 @@ BEGIN
 				"BirthDate",
 				"GenderId",
 				"Location",
-				"ProfArea",
-				"Photo"
+				FIRST_VALUE ("Photo") OVER (ORDER BY "Photo") AS "Photo"
 			FROM :candidates
 	;
 	UPSERT "iacube.db::tables.Candidate.Languages"
