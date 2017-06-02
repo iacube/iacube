@@ -62,7 +62,7 @@
 			<Toolbar>
 				<ToolbarSpacer />
 				<Button text="{i18n>cand.overview.footer.button}" type="Emphasized"
-					press="onCandidateAssign" />
+					press="onCandidateAssign" enabled="{ui>assignAllowed}"/>
 			</Toolbar>
 		</footer>
 	</Page>
