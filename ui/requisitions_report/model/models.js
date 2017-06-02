@@ -13,7 +13,12 @@ sap.ui.define([
 		},
 		
 		createUiModel: function() {
-			var oModel = new JSONModel();
+			var oModel = new JSONModel({
+				busy: {
+					candidates: false,
+					requisitions: false
+				}
+			});
 			oModel.setDefaultBindingMode("TwoWay");
 			return oModel;
 		}

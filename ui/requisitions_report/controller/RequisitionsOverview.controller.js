@@ -16,6 +16,28 @@ sap.ui.define([
 		 */
 		 onInit: function() {
 		 },
+		 
+		 onSearch :function(oEvent){
+			 var oFilter = {};
+			 var sValueLocation;
+			 var sValueWebsite;
+			 this.oFilterBar.getFilterItems().forEach(function(oFilterItem){
+				 var oControl = this.oFilterBar.determineControlByFilterItem(oFilterItem);
+				 if (oFilterItem.getName() == "req_id" && oControl.getValue()!=""){
+					 oFilter.ReqId = oControl.getValue();
+				 }
+				 if (oFilterItem.getName() == "req_name" && oControl.getValue()!=""){
+					 oFilter.Title = oControl.getValue();
+				 }
+				 if (oFilterItem.getName() == "req_subcategory"  && oControl.getSelectedKey()!=""){
+					 oFilter.SubcategoryId = oControl.getSelectedKey();					
+				 }
+				 if (oFilterItem.getName() == "req_status"  && oControl.getSelectedKey()!=""){
+					 oFilter.StatusCodeId = oControl.getSelectedKey();						
+				 }
+			 }.bind(this));			
+			 this.loadRequisitions(oFilter);
+		 },
 			
 		/**
 		 * Event handler for Press event on subproject item of the table
@@ -49,15 +71,22 @@ sap.ui.define([
 		 * @memberOf manage_vacancy.ui.requisitions_report.view.view.RequisitionsOverview
 		 */
 		onAfterRendering: function() {
+			this.getModel("ui").setProperty("/busy/requisitions", true);
 			this.loadRequisitions();
+			this.loadFilterBar();
 		},
 		
-		loadRequisitions: function(){
+		loadRequisitions: function(oFilter){
 			var oModel = this.getModel("ui");
-			DataHelper.getRequisitions(this).then(function(aRequisitions){
+			DataHelper.getRequisitions(this, oFilter).then(function(aRequisitions){
 				oModel.setProperty("/requisitions", Mapper.mapRequisitions(aRequisitions.data));
-			});
+				oModel.setProperty("/subcategoryIds", Mapper.mapSubcategoryIds(aRequisitions.filter.SubcategoryId));
+				oModel.setProperty("/statusCodes", Mapper.mapStatusCodes(aRequisitions.filter.StatusCodeId, Formatter, this.getResourceBundle()));
+				this.getModel("ui").setProperty("/busy/requisitions", false);
+			}.bind(this));
 		},
+		
+
 		
 		onShowCandPopover: function(oEvent){
 			if( !this._oCandPopover ) {
@@ -75,6 +104,59 @@ sap.ui.define([
 			this.getRouter().navTo("candidates", {
 				ind: parseInt(iIndex)
 			});
+		},
+		
+		loadFilterBar: function(){			
+			this.oFilterBar = this.getView().byId("req_fb");
+			this.oFilterBar.setFilterBarExpanded(false);
+				
+			var oVM = this.oFilterBar._oVariantManagement;
+			oVM.setVisible(true);
+			oVM.initialise = function() {
+				this.fireEvent("initialise");
+				this._setStandardVariant();		 
+				this._setSelectedVariant();
+			};
+		 
+			var nKey = 0;
+			var mMap = {};
+			var sCurrentVariantKey = null;
+			oVM._oVariantSet = {		 
+				getVariant: function(sKey) {
+					return mMap[sKey];
+				},
+				addVariant: function(sName) {
+					var sKey = "" + nKey++;
+	 
+					var oVariant = {
+						key: sKey,
+						name: sName,
+						getItemValue: function(s) {
+							return this[s];
+						},
+						setItemValue: function(s, oObj) {
+							this[s] = oObj;
+						},
+						getVariantKey: function() {
+							return this.key;
+						}
+					};
+					mMap[sKey] = oVariant;
+	 
+					return oVariant;
+				},
+				setCurrentVariantKey: function(sKey) {
+					sCurrentVariantKey = sKey;
+				},
+				getCurrentVariantKey: function() {
+					return sCurrentVariantKey;
+				},
+				delVariant: function(sKey) {
+					if (mMap[sKey]) {
+						delete mMap[sKey];
+					}
+				}		 
+			}
 		}
 
 	});

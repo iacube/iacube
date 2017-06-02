@@ -18,7 +18,7 @@
 				</attributes>
 			</ObjectHeader>
 			<VBox class="sapUiSmallMargin">
-				<Table id="req_report_candidatesTable" inset="false" items="{ui>candidates}">
+				<Table id="req_report_candidatesTable" inset="false" items="{ui>candidates}" busy="{ui>/busy/candidates}" busyIndicatorDelay="0">
 					<headerToolbar>
 						<Toolbar>
 							<Title

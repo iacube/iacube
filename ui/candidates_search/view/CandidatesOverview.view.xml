@@ -53,7 +53,7 @@
 									<Text text="{ui>FirstName}" />
 									<Text text="{ui>LastName}"/>
 									<Text text="{ui>Location}"/>
-									<core:Icon src="sap-icon://globe" color="#6495ED" size="2rem" press="onIconPress"/>
+									<core:Icon src="sap-icon://globe" color="#6495ED" size="1.5rem" press="onIconPress"/>
 									<HBox>	
 										<core:Icon visible="{= ${ui>requis}.length > 0}" src="sap-icon://document" press="onRequisPress" />
 										<Text text="({= ${ui>requis}.length})" class="sapUiTinyMarginBeginEnd"/>
