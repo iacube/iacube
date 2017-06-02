@@ -34,6 +34,8 @@ function call(params){
 
     if(response && response.status === $.net.http.OK){
         body = response.body;
+    }else{
+        var tt = response.body.asString();
     }
     
 	return body;
@@ -58,6 +60,7 @@ function translate(connection){
 			
 				for(i = 0; i < texts.TEXTS.length; i++){
 					pair.texts.push({
+					    id          : i,
 						TextId		: texts.TEXTS[i].TextId,
 						DestTextId	: texts.TEXTS[i].DestTextId,
 						Content		: texts.TEXTS[i].Content
@@ -88,8 +91,9 @@ function translate(connection){
 				    
 					var translated = [];
 					
-					builder(pair.texts,pair.from,pair.to,appId)
-						.forEach(function(request){
+					var requests = builder(pair.texts,pair.from,pair.to,appId);
+					
+					requests.forEach(function(request){
 							
 							var body = call({
 								destination:"translatorTexts",
@@ -98,20 +102,29 @@ function translate(connection){
 									name  : "Content-Type",
 									value : "application/xml"
 								}],
-								body:request
+								body:request.data
 							});
 							
-							var body = request;
-							
 							if(body){
-							   translated = translated.concat(parser(body.asString()));
+							   var parsed = parser(body.asString(),request.ids);
+							   for(var k = 0;k < parsed.length; k++){
+							       if(parsed[k]){
+							           translated[k] = translated[k] ? translated[k] + parsed[k] : parsed[k];
+							       }
+							   }
+							}else{
+							    var d;
 							}
 							
 							
 					});
 
 					pair.texts.forEach(function(text,i){
-						text.Content = translated[i].replace(/\&/g,"&amp;");
+					    if(translated[i]){
+					       text.Content = translated[i].replace(/\&/g,"&amp;");
+					    }else{
+					        var rr;
+					    }
 					});
 					allTexts = allTexts.concat(pair.texts);
 				}
