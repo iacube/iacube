@@ -24,7 +24,7 @@ sap.ui.define([
 						sPath = sPath + "?" + sFilter;
 					}
 					ServiceAccess.ajax({
-						url: sPath,
+						url: encodeURI(sPath),
 						success: function(data) {
 							resolve(data);
 						},
