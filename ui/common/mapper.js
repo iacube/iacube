@@ -214,7 +214,7 @@ sap.ui.define([ "sap/m/MessageToast", "iacube/ui/common/serviceAccess" ],
 									Link : p.Link
 								}
 							}),
-							requisitions : c.requisitions.map(function(r) {
+							requis : c.requisitions.map(function(r) {
 								return {
 									CandidateId : r.CandidateId,
 									ReqId : r.ReqId,

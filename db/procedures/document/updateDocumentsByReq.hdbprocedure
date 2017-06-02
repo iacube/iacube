@@ -4,7 +4,7 @@ PROCEDURE "IACUBE"."iacube.db.procedures.document::updateDocumentsByReq" (reqId 
    AS
 BEGIN
 
-   DECLARE CURSOR lc_req_skill(p_req_id SMALLINT) FOR SELECT "Weight","Skill" FROM "IACUBE"."iacube.db::tables.Requisition.Skills" 
+   DECLARE CURSOR lc_req_skill(p_req_id INTEGER) FOR SELECT "Weight","Skill" FROM "IACUBE"."iacube.db::tables.Requisition.Skills" 
                                                       WHERE "ReqId"=:p_req_id AND "Skill" IS NOT NULL;
                                      
 
@@ -17,11 +17,10 @@ BEGIN
    DELETE FROM "IACUBE"."iacube.db::tables.Document.Documents" WHERE "ExtId"=:reqId AND "ExtType"='R';
 
 -- Lock
+   LOCK TABLE "IACUBE"."iacube.db::tables.Document.Documents" IN EXCLUSIVE MODE;
    SELECT MAX("Id")+1 INTO lv_iD FROM "IACUBE"."iacube.db::tables.Document.Documents";
    INSERT INTO "IACUBE"."iacube.db::tables.Document.Documents"("ExtId","ExtType","Id")  VALUES(:reqId,'R',:lv_iD);
--- Unlock   
 
-   
 -- Requisitions   
    UPDATE "IACUBE"."iacube.db::tables.Document.Documents" AS A
    SET "Language"= (SELECT "Language" FROM "IACUBE"."iacube.db::tables.Requisition.Requisitions" AS B
@@ -50,11 +49,10 @@ BEGIN
 
 
 -- Texts
--- Lock
+
    SELECT MAX("ID")+1 INTO lv_iD FROM "IACUBE"."iacube.db::tables.Document.Texts";
    INSERT INTO "IACUBE"."iacube.db::tables.Document.Texts"("DocId","DOCDIM","ID","EXTID","EXTTYPE","LANGUAGE")
    SELECT "Id","DocDim",((row_number() OVER(PARTITION BY "Class"))+:lv_iD)*2,"ExtId","ExtType","Language" FROM :lt_keyT;
--- Unlock
 
 -- Requisition headline
 

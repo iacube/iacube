@@ -55,8 +55,8 @@
 									<Text text="{ui>Location}"/>
 									<core:Icon src="sap-icon://globe" color="#6495ED" size="2rem" press="onIconPress"/>
 									<HBox>	
-										<core:Icon visible="{= ${ui>requisitions}.length > 0}" src="sap-icon://document" press="onRequisPress" />
-										<Text text="({= ${ui>requisitions}.length})" class="sapUiTinyMarginBeginEnd"/>
+										<core:Icon visible="{= ${ui>requis}.length > 0}" src="sap-icon://document" press="onRequisPress" />
+										<Text text="({= ${ui>requis}.length})" class="sapUiTinyMarginBeginEnd"/>
 									</HBox>
 								</cells>
 							</ColumnListItem>

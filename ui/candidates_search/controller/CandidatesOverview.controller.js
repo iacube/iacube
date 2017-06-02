@@ -55,7 +55,7 @@ sap.ui.define([
 			
 			DataHelper.getCandidates(this,oFilter,sSearchTerm).then(function(aCandidates){
 				oModel.setProperty("/candidates", Mapper.mapCandidates(aCandidates.data));
-				sap.ui.getCore().byId("__xmlview1--idCandidates").setVisible(true);
+				this.getView().byId("idCandidates").setVisible(true);
 				this.getModel("ui").setProperty("/assignBtnVisible", true);
 			}.bind(this));
 		},
@@ -64,9 +64,11 @@ sap.ui.define([
 		 * This hook is the same one that SAPUI5 controls get after being rendered.
 		 * @memberOf manage_vacancy.ui.requisitions_report.view.view.RequisitionsOverview
 		 */
+		onBeforeRendering: function(){
+			this.loadFilterBar();
+		},
 		onAfterRendering: function() {
 				this.loadProfiles();
-				this.loadFilterBar();
 				this.getModel("ui").setProperty("/assignBtnVisible", false);
 		},
 		
@@ -84,8 +86,10 @@ sap.ui.define([
 				if (!this.oSearchField) {
 					var oBasicSearch = new sap.m.SearchField({
 						showSearchButton: false
-					});}
-				this.oFilterBar.setBasicSearch(oBasicSearch);
+					});
+					this.oFilterBar.setBasicSearch(oBasicSearch);
+					}
+				
 				var oVM = this.oFilterBar._oVariantManagement;
 				oVM.setVisible(true);
 				oVM.initialise = function() {
@@ -201,6 +205,8 @@ sap.ui.define([
 			var aSelCandidates= {"candidates": aSelectedCandidates};
 			DataHelper.assignCandidatesToRequisitions(aSelCandidates).then(function(response){
 				if(response.ERRORS.length == 0){
+					this.onSearch();
+					 this.getModel("ui").refresh(true);
 			     }
 			}.bind(this));
 			
