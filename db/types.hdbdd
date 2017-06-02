@@ -44,7 +44,7 @@ context types {
  	type relDim          : String(2);
  	type textId          : Integer;
 	type distance		 : Integer;	
-	
+	type id         	 : Integer;		
 	
 	type error{
 		ERROR_CODE	: Integer;
@@ -423,6 +423,12 @@ context types {
 
                 Content         : docContent;
     
+       };
+
+       type idList{
+  
+                Id              : id;
+
        };
 
 };
