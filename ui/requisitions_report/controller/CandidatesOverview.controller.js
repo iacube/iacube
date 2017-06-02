@@ -74,7 +74,7 @@ sap.ui.define([
 				}
 			});
 			if(aSelectedCandidates.length > 0){
-				DataHelper.assignCandidatesToRequisitions(aSelectedCandidates).then(function(response){
+				DataHelper.assignCandidatesToRequisitions({"candidates": aSelectedCandidates}).then(function(response){
 					if(response.ERRORS.length == 0){
 						var oBundle = this.getResourceBundle();
 						var sRequisitionTitle = this.getModel("ui").getProperty("/selectedRequisitionTitle");
