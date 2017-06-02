@@ -76,7 +76,8 @@ sap.ui.define([ "manage_vacancy/controller/BaseController",
 							.then(
 									function(oData) {
 										that._checkSaveError(sMode, oData, that,
-												sPath, oModel, ReqId)
+												sPath, oModel, ReqId);
+										sap.ui.core.BusyIndicator.hide();
 									});
 				} else if (sMode == "U") {
 					// requisition in update mode
