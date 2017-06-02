@@ -15,6 +15,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function(Controller) {
 				ind: parseInt(ind),
 				ind2: parseInt(ind2)
 			});
+			var bAssignAllow = this.getView().getBindingContext("ui").getObject().StatusCodeId === "OPEN";
+			this.getModel("ui").setProperty(sPath+"/assignAllowed", bAssignAllow);
+
 		},
 		
 		onProfilesPopover: function(oEvent){
