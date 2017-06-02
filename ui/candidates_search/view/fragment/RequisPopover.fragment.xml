@@ -2,5 +2,5 @@
 	xmlns="sap.m"
 	xmlns:core="sap.ui.core"
 	xmlns:f="sap.ui.layout.form" xmlns:layout="sap.ui.layout" xmlns:common="iacube.ui.common">
-	<common:requisitionsListPopover requisitions="{ui>/requisitions}"/>
+	<common:requisitionsListPopover requisitions="{ui>requis}"/>
 </core:FragmentDefinition>							    

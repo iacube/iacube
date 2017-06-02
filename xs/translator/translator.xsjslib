@@ -101,12 +101,10 @@ function translate(connection){
 								body:request
 							});
 							
+							var body = request;
+							
 							if(body){
-							   translated = translated.concat(
-								parser(
-									body.asString()
-								)
-							); 
+							   translated = translated.concat(parser(body.asString()));
 							}
 							
 							
@@ -119,15 +117,15 @@ function translate(connection){
 				}
 			});
 			
-			loadedProcedure = connection.loadProcedure(constants.schema,"iacube.db.procedures.document::translateDocuments");
-			loadedProcedure(allTexts);
+			//loadedProcedure = connection.loadProcedure(constants.schema,"iacube.db.procedures.document::translateDocuments");
+			//loadedProcedure(allTexts);
 		}
 	}catch(e){
 		errors = true;
 	}
 	
 	if(!errors){
-		connection.commit();
+	//	connection.commit();
 	}
 	return error;
 }

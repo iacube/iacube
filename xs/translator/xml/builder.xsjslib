@@ -10,7 +10,7 @@ function element(name,data,properties){
 function request(texts, from, to, appId){
 	
 	var maxTextsPerRequest  = 2000;
-	var maxLEngthPreRequest = 10000;
+	var maxLengthPerRequest = 10000;
 	
 	var i;
 	var n = 0;
@@ -24,7 +24,11 @@ function request(texts, from, to, appId){
 			n++;
 			l += texts[i].Content.length;
 			
-			if(n > maxTextsPerRequest || l > maxLEngthPreRequest){
+			if(texts[i].Content.length > maxLengthPerRequest){
+				texts[i].Content = texts[i].Content.substring(0,maxLengthPerRequest);
+			}
+			
+			if(n > maxTextsPerRequest || l > maxLengthPerRequest){
 				n = 0;
 				l = 0;
 				textArray.push([]);
