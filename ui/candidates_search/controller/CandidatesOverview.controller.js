@@ -13,8 +13,16 @@ sap.ui.define([
 		 * @memberOf manage_vacancy.ui.requisitions_report.view.view.RequisitionsOverview
 		 */
 		onInit: function() {
-			
+			 this.getRouter().attachRouteMatched(this.onRouteMatched, this);
+			 
+		},
 		
+		 onRouteMatched: function(oEvent){		
+			 if(oEvent.getParameter("name") === "home") {	
+				 if (this.onNavigation){
+					this.onSearch();
+				}
+			 }		
 		},
 			
 		/**
@@ -27,6 +35,7 @@ sap.ui.define([
 			var sPath = oEvent.getSource().getBindingContext("ui").getPath();
 			var CandId = this.getModel("ui").getProperty(sPath).CandidateId;
 			var iIndex	= sPath.split("/")[2];
+			this.onNavigation = true;
 			this.getRouter().navTo("candidate", {
 				index: parseInt(iIndex)
 			});
@@ -65,12 +74,16 @@ sap.ui.define([
 		 * @memberOf manage_vacancy.ui.requisitions_report.view.view.RequisitionsOverview
 		 */
 		onBeforeRendering: function(){
+			
 			this.loadFilterBar();
+			
 		},
 		onAfterRendering: function() {
+			
 				this.loadProfiles();
 				var sVisible = this.getView().byId("idCandidates").getVisible();
 				this.getModel("ui").setProperty("/assignBtnVisible", sVisible);
+				
 		},
 		
 		onButtonAssignPress: function(){
@@ -96,15 +109,13 @@ sap.ui.define([
 				oVM.initialise = function() {
 					this.fireEvent("initialise");
 					this._setStandardVariant();
-		 
 					this._setSelectedVariant();
 				};
-		 
 				var nKey = 0;
 				var mMap = {};
 				var sCurrentVariantKey = null;
 				oVM._oVariantSet = {
-		 
+		
 					getVariant: function(sKey) {
 						return mMap[sKey];
 					},
@@ -172,7 +183,7 @@ sap.ui.define([
 				}.bind(this));
 			}
 			else {
-				sap.m.MessageToast.show(oBundle.getText("cand.overview.noCandidates"))
+				sap.m.MessageToast.show(oBundle.getText("cand.overview.noCandidates"));
 			}
 		},
 		
@@ -208,7 +219,7 @@ sap.ui.define([
 				DataHelper.assignCandidatesToRequisitions(aSelCandidates).then(function(response){
 					if(response.ERRORS.length == 0){
 						this.onSearch();
-						 this.getModel("ui").refresh(true);
+						this.getModel("ui").refresh(true);
 				     }
 				}.bind(this));
 			}

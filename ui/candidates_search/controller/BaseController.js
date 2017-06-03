@@ -12,6 +12,9 @@ sap.ui.define([
 		getRouter: function() {
 			return this.getOwnerComponent().getRouter();
 		},
+		onNavBack : function() {
+			window.history.go(-1);
+		},
 
 		/**
 		 * Convenience method for getting the view model by name in every controller of the application.

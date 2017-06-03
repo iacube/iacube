@@ -5,14 +5,14 @@
 			<uxap:ObjectPageLayout id="candidatePage"
 				showTitleInHeaderContent="false">
 				<uxap:headerTitle>
-					<uxap:ObjectPageHeader id="headerForTest"
+					<uxap:ObjectPageHeader id="headerPage"
 						headerDesign="Light" objectTitle="{ui>FirstName} {ui>LastName}"
 						showTitleSelector="true" titleSelectorPress="onProfileSelectorShow"
 						objectSubtitle="{ui>selectedProfile}" objectImageShape="Circle"
-						objectImageURI="{ui>Photo}">
-						<uxap:breadCrumbsLinks>
-							<Link text="{i18n>cand.page.breadcrumps} {ui>/selectedRequisitionTitle}" press="handleLink1Press" />
-						</uxap:breadCrumbsLinks>
+						objectImageURI="{ui>Photo}" >
+						 <uxap:breadCrumbsLinks>
+							<Link text="{i18n>cand.page.breadcrumps}" press="handleBreadcrumps" />
+						</uxap:breadCrumbsLinks> 
 					</uxap:ObjectPageHeader>
 				</uxap:headerTitle>
 				<uxap:sections>

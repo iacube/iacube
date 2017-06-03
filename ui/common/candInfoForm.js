@@ -10,7 +10,7 @@ sap.ui.define([
 	"iacube/ui/common/formatterCom"
 ], function(VBox, SimpleForm, Label, TextArea, Input, Link, Item, ComboBox, oFormatterCom) {
 	"use strict";
-
+	jQuery.sap.includeStyleSheet("/iacube/ui/common/css/commonStyles.css");
 	return VBox.extend("iacube.ui.common.candInfoForm", {
 		
 		metadata : {			
@@ -110,7 +110,7 @@ sap.ui.define([
 						width: "100%"
 					})					
 				]
-			});
+			}).addStyleClass("alignFields");
 
 			this.addItem(oForm);
 		},
