@@ -38,13 +38,14 @@ sap.ui.define([
 			DataHelper.getCandidate(CandidateId).then(function(oData){
 				var oCandidate = oModel.getProperty(sPath);
 				oModel.setProperty(sPath, jQuery.extend(true, oCandidate, Mapper.mapCandidate(oData)));
-			});
+				this.setSelectedProfileText(sPath, 0);
+			}.bind(this));
 		},
 		
-		onNavBack: function(oEvent){
+	/*	onNavBack: function(oEvent){
 			this.getOwnerComponent().getRouter().getTargets().display("home");
 			this.getModel("ui").setProperty("/assignBtnVisible", true);
-		},
+		},*/
 		
 		onProfileSelectorShow: function(oEvent){
 			if (!this.oProfilesPopover) {
@@ -59,25 +60,34 @@ sap.ui.define([
 			var oContext = this.getView().getBindingContext("ui");
 			var oList = sap.ui.getCore().byId("cand_page_popover_profiles_list");
 			var iIndex = oList.indexOfItem(oList.getSelectedItem());//index of selected profile
-			
-			var oInfoForm = this.getView().byId("cand_page_info_form");
-			oInfoForm.bindProperty("Link", {
-				model 	: "ui",
-				path	: "profiles/"+iIndex+"/Link"
-			}).bindProperty("Summary", {
-				model 	: "ui",
-				path	: "profiles/"+iIndex+"/Summary"
-			});
-			
-			var oSkillsForm = this.getView().byId("cand_page_skills_form");
-			oSkillsForm.bindProperty("skills", {
-				model 	: "ui",
-				path	: "profiles/"+iIndex+"/skills"
-			});
-			
-			var sSelectedHeadline = this.getModel("ui").getProperty(oContext.getPath()+"/profiles/"+iIndex+"/Headline");
-			var sSelectedLocation = this.getModel("ui").getProperty(oContext.getPath()+"/Location");
-			this.getModel("ui").setProperty(oContext.getPath()+"/selectedProfile", sSelectedLocation + " / " + sSelectedHeadline);
+			var oBundle = this.getResourceBundle();
+			if (iIndex<0){
+				sap.m.MessageToast.show(oBundle.getText("cand.page.noProfileSelected"));
+			}else{
+				var oInfoForm = this.getView().byId("cand_page_info_form");
+				oInfoForm.bindProperty("Link", {
+					model 	: "ui",
+					path	: "profiles/"+iIndex+"/Link"
+				}).bindProperty("Summary", {
+					model 	: "ui",
+					path	: "profiles/"+iIndex+"/Summary"
+				});
+				
+				var oSkillsForm = this.getView().byId("cand_page_skills_form");
+				oSkillsForm.bindProperty("skills", {
+					model 	: "ui",
+					path	: "profiles/"+iIndex+"/skills"
+				});
+				
+				this.setSelectedProfileText(oContext.getPath(), iIndex);
+				
+			}
+		},
+		
+		setSelectedProfileText: function(sPath, iIndex){
+			var sSelectedHeadline = this.getModel("ui").getProperty(sPath+"/profiles/"+iIndex+"/Headline");
+			var sSelectedLocation = this.getModel("ui").getProperty(sPath+"/Location");
+			this.getModel("ui").setProperty(sPath+"/selectedProfile", sSelectedLocation + " / " + sSelectedHeadline);
 		},
 		
 		onButtonAssignPress: function(){
@@ -106,7 +116,10 @@ sap.ui.define([
 				this._oReqDialog.open();
 			}.bind(this));
 		},
-		
+		handleBreadcrumps: function(){
+			this.onNavBack();
+		},		
+
 		handleReqSearch: function(oEvent){
 			var sValue = oEvent.getParameter("value");
 			var oFilter = new sap.ui.model.Filter("Title", sap.ui.model.FilterOperator.Contains, sValue);
@@ -148,36 +161,15 @@ sap.ui.define([
 			}
 			
 		},
+		
+		
+		
 		handleClose: function(){
 			if (this._oReqDialog) {
 				this._oReqDialog.destroy();
 			}
 		},
-		/**
-		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
-		 * (NOT before the first rendering! onInit() is used for that one!).
-		 * @memberOf manage_vacancy.ui.requisitions_report.view.view.RequisitionsOverview
-		 */
-		//	onBeforeRendering: function() {
-		//
-		//	},
-
-		/**
-		 * Called when the View has been rendered (so its HTML is part of the document). Post-rendering manipulations of the HTML could be done here.
-		 * This hook is the same one that SAPUI5 controls get after being rendered.
-		 * @memberOf manage_vacancy.ui.requisitions_report.view.view.RequisitionsOverview
-		 */
-		// onAfterRendering: function() {
-		// 	
-		// },
-
-		/**
-		 * Called when the Controller is destroyed. Use this one to free resources and finalize activities.
-		 * @memberOf manage_vacancy.ui.requisitions_report.view.view.RequisitionsOverview
-		 */
-		//	onExit: function() {
-		//
-		//	}
+	
 		
 
 	});
