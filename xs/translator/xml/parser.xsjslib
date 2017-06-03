@@ -11,6 +11,7 @@ function getTexts(response,ids){
 	
 	var texts = [];
 	var subText = "";
+	
 	while(response.search(translatedTextStart) !== -1){
 		
 		s = response.indexOf(translatedTextStart);

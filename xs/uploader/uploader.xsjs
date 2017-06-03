@@ -6,9 +6,6 @@ var serviceResponce	 = $.import(constants.serviceProviderPath,"responce").prepar
 var message 	 = buildMessage.get;
 var replacer 	 = buildMessage.getReplacer(constants);
 
-var translator = $.import(constants.translatorPath,"translator").translate;
-
-
 function transformForDb(requestData,transformation){
 
 	var convertObject;
@@ -81,7 +78,7 @@ function transformForDb(requestData,transformation){
 	return convertObject;
 }
 
-function upload(list){
+function upload(list,withTranslation){
 	
 	//execute DB call
 	var connection = $.hdb.getConnection();
@@ -116,12 +113,15 @@ function upload(list){
 			dbResult = dbResult.concat(loadedProcedure.apply(connection));
 			connection.commit(); 
 
-			/*if(translator(connection)){
-				$.response.status = $.net.http.INTERNAL_SERVER_ERROR;
-				$.response.setBody("Translation error");
+			/*if(withTranslation){
+			    var translate = $.import(constants.translatorPath,"translate").translate;
+                var tResult = translate(connection);
+				if(tResult.error){
+                	$.response.status = $.net.http.INTERNAL_SERVER_ERROR;
+                	$.response.setBody("Error duting text translation, not all was updated. " + tResult.count + " texts were updated");
+                }
 			}*/
 		}
-		
 	}catch(error){
 		//exception during DB call
 		$.response.contentType = "application/json";
@@ -180,7 +180,7 @@ if(method){
 						responce.push(message(16000,[entry]));
 					}
 				});
-				upload(preparedUploads);
+				upload(preparedUploads,$.request.parameters.get("translate"));
 			} 
 		}catch(e){
 		//errors in service files

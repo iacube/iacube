@@ -4,7 +4,7 @@
 	xmlns:layout="sap.ui.layout" xmlns:common="iacube.ui.common" xmlns:mc="sap.suite.ui.microchart"
 	xmlns:html="http://www.w3.org/1999/xhtml">
 	<Page showNavButton="true" navButtonPress="onNavBack"
-		title="{i18n>req.detail.page.title} ({ui>/selectedRequisitionIndex} {i18n>req.detail.page.from} {= ${ui>/requisitions}.length })">
+		title="{i18n>req.detail.page.title} ({= parseInt(${ui>/selectedRequisitionIndex}) + 1} {i18n>req.detail.page.from} {= ${ui>/requisitions}.length })">
 		<content>
 			<uxap:ObjectPageLayout id="detObj"
 				showTitleInHeaderContent="false">

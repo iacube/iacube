@@ -93,7 +93,8 @@ sap.ui.define([
 					}),
 					new Link("cand_info_site", {
 						text: "{local>/Link}",
-						href: "{local>/Link}"
+						href: "{local>/Link}",
+						target: "_blank"
 					}),
 					
 					//Описание

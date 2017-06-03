@@ -81,7 +81,7 @@
 			<Toolbar>
 				<ToolbarSpacer />
 				<Button text="{i18n>cand.overview.footer.button}" type="Emphasized"
-					press="onAssignCandidates" />
+					press="onAssignCandidates" enabled="{= ${ui>StatusCodeId} ==='OPEN'}"/> 
 			</Toolbar>
 		</footer>
 	</Page>
