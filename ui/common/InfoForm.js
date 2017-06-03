@@ -10,7 +10,7 @@ sap.ui.define([
 	"sap/ui/model/json/JSONModel"
 ], function(VBox, SimpleForm, Label, TextArea, Input, Item, ComboBox, oFormatterCom, JSONModel) {
 	"use strict";
-
+	jQuery.sap.includeStyleSheet("/iacube/ui/common/css/commonStyles.css");
 	return VBox.extend("iacube.ui.common.InfoForm", {
 		
 		init: function() {
@@ -120,7 +120,7 @@ sap.ui.define([
 						rows: 7
 					})
 				]
-			});
+			}).addStyleClass("alignFields");
 		
 
 			this.addItem(oForm);

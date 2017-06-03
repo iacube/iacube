@@ -61,30 +61,33 @@ sap.ui.define([
 			var oContext = this.getView().getBindingContext("ui");
 			var oList = sap.ui.getCore().byId("cand_page_popover_profiles_list");
 			var iIndex = oList.indexOfItem(oList.getSelectedItem());//index of selected profile
-			
-			var oInfoForm = this.getView().byId("cand_page_info_form");
-			oInfoForm.bindProperty("Link", {
-				model 	: "ui",
-				path	: "profiles/"+iIndex+"/Link"
-			}).bindProperty("Summary", {
-				model 	: "ui",
-				path	: "profiles/"+iIndex+"/Summary"
-			});
-			
-			var oSkillsForm = this.getView().byId("cand_page_skills_form");
-			oSkillsForm.bindProperty("skills", {
-				model 	: "ui",
-				path	: "profiles/"+iIndex+"/skills"
-			});
-			
-			var oExpTable = this.getView().byId("cand_page_exp_table");
-			oExpTable.bindProperty("experience", {
-				model 	: "ui",
-				path	: "profiles/"+iIndex+"/experience"
-			});
-			
-			
-			this.setSelectedProfileText(oContext.getPath(), iIndex);
+			if (iIndex<0){
+				sap.m.MessageToast.show(this.getResourceBundle().getText("cand.page.noProfileSelected"));
+			}else{
+				var oInfoForm = this.getView().byId("cand_page_info_form");
+				oInfoForm.bindProperty("Link", {
+					model 	: "ui",
+					path	: "profiles/"+iIndex+"/Link"
+				}).bindProperty("Summary", {
+					model 	: "ui",
+					path	: "profiles/"+iIndex+"/Summary"
+				});
+				
+				var oSkillsForm = this.getView().byId("cand_page_skills_form");
+				oSkillsForm.bindProperty("skills", {
+					model 	: "ui",
+					path	: "profiles/"+iIndex+"/skills"
+				});
+				
+				var oExpTable = this.getView().byId("cand_page_exp_table");
+				oExpTable.bindProperty("experience", {
+					model 	: "ui",
+					path	: "profiles/"+iIndex+"/experience"
+				});
+				
+				
+				this.setSelectedProfileText(oContext.getPath(), iIndex);
+			}
 		},
 		
 		onCandidateAssign: function(){
@@ -102,7 +105,7 @@ sap.ui.define([
 				if(response.ERRORS.length == 0){
 					var oBundle = this.getResourceBundle();
 					var sRequisitionTitle = this.getModel("ui").getProperty("/selectedRequisitionTitle");
-					sap.m.MessageToast.show(oBundle.getText("cand.overview.assigned.toast", [aSelectedCandidates.length, sRequisitionTitle]));
+					sap.m.MessageToast.show(oBundle.getText("cand.overview.assigned.toast", [aSelectedCandidates.length, sRequisitionTitle, ""]));
 					this.loadCandidate(oCand.CandidateId);
 				}
 			}.bind(this));
