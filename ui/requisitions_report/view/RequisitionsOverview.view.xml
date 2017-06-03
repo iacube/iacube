@@ -37,7 +37,7 @@
 
 			</fb:FilterBar>
 			<VBox class="sapUiSmallMargin">
-				<Table id="idProductsTable" inset="false" items="{ui>/requisitions}" busy="{ui>/busy/requisitions}" busyIndicatorDelay="0">
+				<Table id="req_report_req_table" inset="false" items="{ui>/requisitions}" busy="{ui>/busy/requisitions}" busyIndicatorDelay="0">
 					<headerToolbar>
 						<Toolbar>
 							<Title text="{i18n>req.table.title} ({= ${ui>/requisitions}.length})"

@@ -48,6 +48,7 @@ sap.ui.define([
 			DataHelper.getRequisition(ReqId).then(function(oData){
 				var oRequisition = oModel.getProperty(sPath);
 				oModel.setProperty(sPath, jQuery.extend(true, oRequisition, Mapper.mapRequisition(oData.data)));
+				oModel.setProperty("/AvailablePriorities", Mapper.mapAvailablePriorities(oData.dictionary.prioritytypes));
 			});
 		},
 		
