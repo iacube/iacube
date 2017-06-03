@@ -27,6 +27,10 @@ sap.ui.define([ "sap/m/MessageToast", "iacube/ui/common/serviceAccess" ],
 								}
 							}),
 						}
+					}).sort(function(a,b){
+						if(a.CreatedAt > b.CreatedAt) return -1;
+						if(a.CreatedAt < b.CreatedAt) return 1;
+						return 0;
 					})
 				},
 
@@ -147,6 +151,14 @@ sap.ui.define([ "sap/m/MessageToast", "iacube/ui/common/serviceAccess" ],
         			   Id : p,
         			   value: formatter.formatReqStatus(p, bundle)
         		   }
+        	   }.bind(this))
+           },
+           
+           mapAvailablePriorities:function(aItems){
+        	   return aItems.map(function(p){
+        		   return {
+        				PriorityCode: p.id
+        			}
         	   }.bind(this))
            },
 			
