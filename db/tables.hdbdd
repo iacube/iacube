@@ -1,4 +1,4 @@
-﻿
+
 namespace iacube.db;
 
 @Schema : 'IACUBE'
@@ -464,4 +464,58 @@ context tables{
               TEXT MINING on;
  	   };                 
  	};
+ 	
+ 	context Tuning{
+ 		
+ 		type setId  : Integer;
+ 		type ruleId : Integer;
+ 		type combId : Integer;
+ 		type testId : Integer;
+ 		
+ 		context Sets{
+ 			entity Sets{
+ 				key	Id 	 : setId;
+ 					Name : String(1000);
+ 			};
+ 			entity Requisitions{
+ 				key	SetId : setId;
+ 				key	ReqId : tables.Requisition.reqId;
+ 			};
+ 		};
+ 		context Rule{
+ 			entity Rules{
+ 				key	Id : ruleId;
+ 					Name : String(1000);
+ 			};	
+ 		};
+ 		context Combination{
+ 			entity Combinations{
+ 				key	Id		  : combId;
+ 					Name 	  : String(1000);
+ 					IsCurrent : bool;
+ 			};	
+ 			entity Rules{
+ 				key CombId : combId;
+ 				key RuleId : ruleId;
+ 					Weight : Integer;
+ 			};
+ 		};
+ 		context Test{
+ 			entity Tests{
+ 				key Id 		: testId;
+	 				Name 	: String(1000);
+	 				SetId 	:setId;
+	 				CombId 	: combId;
+	 				Status 	: Integer;
+ 			};
+ 			entity Results{
+ 				key	TestId 		: testId;
+ 				key ReqId  		: tables.Requisition.reqId;
+ 					AvgRelevance:BinaryFloat;
+ 					NumRelevant	:BinaryFloat;
+ 			};
+ 		};
+ 		
+ 	};
+ 	
 };
