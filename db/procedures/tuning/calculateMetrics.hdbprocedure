@@ -1,0 +1,34 @@
+PROCEDURE "IACUBE"."iacube.db.procedures.tuning::calculateMetrics"(IN reqId INTEGER, IN combId INTEGER, OUT AvgRelevance DOUBLE, OUT NumRelevant DOUBLE) 
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY DEFINER
+   READS SQL DATA AS
+BEGIN
+   DECLARE ltAssignedcandidates "IACUBE"."iacube.db::types.assignCandidates";
+   DECLARE lvCurrent TINYINT;
+   DECLARE lvCC DECIMAL;
+   DECLARE lvSS DECIMAL;
+   DECLARE lvHH DECIMAL;
+   DECLARE lvHC DECIMAL;
+   DECLARE lvCnt INTEGER;
+   
+   ltAssignedCandidates=SELECT A."ReqId",A."CandidateId",A."StatusId",A."ProfileId",A."Distance",NULL as "flag" 
+                        FROM "IACUBE"."iacube.db::tables.Requisition.Candidates" A
+                        WHERE A."ReqId"=reqId;
+   SELECT COUNT(*) INTO lvCnt FROM :ltAssignedCandidates;
+   IF lvCnt <> 0 THEN
+      SELECT A."IsCurrent" INTO lvCurrent FROM "IACUBE"."iacube.db::tables.Tuning.Combination.Combinations" A WHERE A."Id"=:combId;
+      IF IFNULL(lvCurrent,0) <> 0 THEN
+         SELECT MAX(CASE A."RuleId" WHEN 1 THEN IFNULL(A."Weight",0) ELSE 0 END) AS "CC",
+                MAX(CASE A."RuleId" WHEN 2 THEN IFNULL(A."Weight",0) ELSE 0 END) AS "SS",
+                MAX(CASE A."RuleId" WHEN 3 THEN IFNULL(A."Weight",0) ELSE 0 END) AS "HH",
+                MAX(CASE A."RuleId" WHEN 4 THEN IFNULL(A."Weight",0) ELSE 0 END) AS "HC"
+         INTO lvCC,lvSS,lvHH,lvHC                    
+         FROM "IACUBE"."iacube.db::tables.Tuning.Combination.Rules" A 
+         WHERE A."CombId"=:combId;
+-- topN == 10             
+         CALL "IACUBE"."iacube.db.procedures.tuning::getRelatedCandidatesW" (reqId, 10, lvCC, lvHH, lvSS, lvHC,ltRelatedCandidates);
+         SELECT COUNT(*)/lvCnt,SUM(B."score")/lvCnt INTO NumRelevant,AvgRelevance FROM :ltAssignedCandidates A JOIN :ltRelatedCandidates B 
+         ON A."CandidateId"=B."CandidateId";        
+      END IF;
+   END IF;
+END

@@ -1,0 +1,15 @@
+PROCEDURE "IACUBE"."iacube.db.procedures.tuning::saveTestResults" (IN TestId INTEGER,
+   IN testResults "IACUBE"."iacube.db::types.testResults" )
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY INVOKER
+   AS
+BEGIN
+   DECLARE CURSOR lcTestResult FOR SELECT "ReqId","AvgRelevance","NumRelevant" FROM :testResults;
+   
+   DELETE FROM "IACUBE"."iacube.db::tables.Tuning.Test.Results" WHERE "TestId"=TestId;
+   FOR lsTestResult AS lcTestResult DO
+      INSERT INTO "IACUBE"."iacube.db::tables.Tuning.Test.Results"
+         ("TestId","ReqId","AvgRelevance","NumRelevant")
+      VALUES(TestId,lsTestResult."ReqId",lsTestResult."AvgRelevance",lsTestResult."NumRelevant");      
+   END FOR;
+END

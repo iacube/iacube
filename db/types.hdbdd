@@ -431,4 +431,11 @@ context types {
 
        };
 
+       type testResults{
+		
+                ReqId           : Integer;
+                AvgRelevance    : DecimalFloat;
+                NumRelevant     : DecimalFloat; 
+       };
+
 };

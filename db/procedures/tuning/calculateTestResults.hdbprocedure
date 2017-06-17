@@ -1,0 +1,29 @@
+PROCEDURE "IACUBE"."iacube.db.procedures.tuning::calculateTestResults" (IN testId INTEGER, 
+   OUT testResults "IACUBE"."iacube.db::types.testResults" DEFAULT EMPTY)
+   LANGUAGE SQLSCRIPT
+   SQL SECURITY DEFINER
+   READS SQL DATA 
+   AS
+BEGIN
+   DECLARE lvAvgRelevance DECIMAL;
+   DECLARE lvNumRelevant DECIMAL;
+   DECLARE laReqId INTEGER ARRAY;
+   DECLARE laAR DECIMAL ARRAY;
+   DECLARE laNR DECIMAL ARRAY;
+   DECLARE lvI INTEGER;
+   
+   DECLARE CURSOR lcReq(pcTestId INTEGER) FOR SELECT A."ReqId",B."CombId" 
+      FROM "IACUBE"."iacube.db::tables.Tuning.Sets.Requisitions" A 
+      JOIN "IACUBE"."iacube.db::tables.Tuning.Test.Tests" B
+      ON A."SetId"=B."SetId" 
+      WHERE B."Id"=pcTestId;
+      lvI:=1;
+      FOR lsReq AS lcReq(testId) DO
+         CALL "IACUBE"."iacube.db.procedures.tuning::calculateMetrics"(lsReq."ReqId", lsReq."CombId", lvAvgRelevance,lvNumRelevant);
+         laReqId[:lvI]:=lsReq."ReqId";
+         laAR[:lvI]:=lvAvgRelevance;
+         laNR[:lvI]:=lvNumRelevant;
+         lvI:=lvI+1;
+      END FOR;
+      testResults=UNNEST(:laReqId,:laAR,:laNR) AS ("ReqId","AvgRelevance","NumRelevant");
+END
